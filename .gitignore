@@ -1,0 +1,41 @@
+# Workshop recordings — too large for GitHub (100 MB limit); keep locally only
+*.mp4
+*.mkv
+*.mov
+*.webm
+
+# Secrets — never commit wallet keys, seed phrases or API keys
+.env
+.env.*
+!.env.example
+*.export
+*wallet*.json
+*.pem
+*.key
+
+# Node
+node_modules/
+dist/
+build/
+.next/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Rust / Concordium smart contracts
+target/
+*.wasm.v1
+concordium-out/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json

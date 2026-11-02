@@ -1,0 +1,1225 @@
+[00:00] What to expect in this series, the first three weeks
+[00:03] is gonna be a bit more of like a bootcamp
+[00:05] where we'll be learning about Concordium
+[00:08] and then we'll go on to a bit of a series
+[00:09] at the end of that.
+[00:11] We are joined today by Peter, who is Concordium CTO
+[00:14] and he'll be leading the workshop
+[00:16] from their behalf in a little bit.
+[00:18] I've got a little bit of a slideshow here
+[00:20] which I will rattle through.
+[00:22] So here we go, a little structure of it.
+[00:25] I'll give you guys a rundown now.
+[00:27] So yes, the first three weeks
+[00:28] which is from now, the 2nd of November
+[00:30] until the 8th of November,
+[00:32] we're gonna be doing six live workshops.
+[00:35] So that's every Monday and every Wednesday at 3pm UTC
+[00:39] which is the current time you guys are joining us.
+[00:41] So well done for joining that.
+[00:43] Let's get a chat going actually.
+[00:44] If you let us know where you're joining from in the world,
+[00:46] that'd be super interesting to see how international
+[00:48] this has all been made
+[00:49] and what you guys are looking forward to
+[00:51] getting out of this series.
+[00:52] And then weeks four to six, so from the Thursday
+[00:56] the 19th of November,
+[00:58] we're gonna be learning a bit more about
+[00:59] integrating Cucordium into your project.
+[01:02] We'll have office hours
+[01:04] and this is when the sort of the build period
+[01:06] is gonna start.
+[01:07] And then final submissions are gonna be closing
+[01:10] at the end of the first week of December,
+[01:12] so the 9th of December on submissions always close
+[01:15] at midnight on a Sunday
+[01:18] and make sure you lock all those in
+[01:19] and then we'll have a period of judging
+[01:21] before announcing the winners.
+[01:25] All right, let's move on to the next.
+[01:26] So these are the workshops which you guys
+[01:28] are gonna be having in the near future.
+[01:30] So today we've got to verify once prove everywhere
+[01:33] and revealing nothing.
+[01:35] And then next Monday and then Monday and then Monday.
+[01:37] We've got Monday, Wednesday, Monday, Wednesday.
+[01:39] So keep an eye on the schedule.
+[01:40] I will be sending regular emails and updates
+[01:42] to all you guys so that you to ensure
+[01:44] that you're aware of what workshops we have in coming up
+[01:46] any deadlines we have coming up for submitting things
+[01:49] and whatnot.
+[01:50] The checkpoints where you should be aware of
+[01:53] is by Sunday the 22nd of November.
+[01:56] So just a little bit after the build period is gonna start,
+[01:58] you need to make sure that you've created your project,
+[02:00] added your team and shared your very brief initial ideas
+[02:04] on what you guys are planning on building
+[02:06] on the platform page,
+[02:07] which you're joining on the platform page.
+[02:08] So you should all hopefully have accounts here.
+[02:11] The option is to join a project
+[02:14] or create your own project.
+[02:15] You can join a project via,
+[02:17] if you create a project,
+[02:18] your team leader will have a code
+[02:19] which they can share with your teammates
+[02:21] and then you can join onto other people's projects.
+[02:23] We often have solar builders,
+[02:26] we have teams that have up to three or four works,
+[02:30] but if you're building on your own, that's fine.
+[02:33] Particularly if you're learning or it looks great.
+[02:35] And then final submissions on the night of December,
+[02:37] like I just mentioned.
+[02:39] The steps to signing up and joining a team
+[02:41] should hopefully be pretty straightforward.
+[02:45] And I think a lot of you guys
+[02:46] will have hopefully done hackathons
+[02:48] and programs with us before.
+[02:50] So you're hopefully familiar with this,
+[02:51] but if not, well, I just explained how to do it anyway,
+[02:55] but it is quite straightforward.
+[02:56] So what you're gonna be needing to submit,
+[02:58] this is subject to change for the moment.
+[03:01] The final submissions will need a little description
+[03:03] about what you built and how it works.
+[03:05] We'll need a public repo.
+[03:06] So GitHub is fine for this.
+[03:08] A three minute demo video,
+[03:09] talking through what your product is,
+[03:11] what problems it solves, these kind of things.
+[03:13] A CCD Explorer link and then a path to production.
+[03:17] And then if you wanna have some demo slides in there
+[03:20] as well, that's also fine.
+[03:24] And then there are some prizes out afterwards as well,
+[03:27] which I'm sure people will mention a bit more about,
+[03:29] but winners can have the option to get grants
+[03:33] from Concordium 75 CCD Grants Programme there.
+[03:39] There's multiple ways here how to get help here.
+[03:41] So we're gonna have office hours Tuesdays and Fridays.
+[03:44] These will probably be,
+[03:47] we'll either do a live session live office hours
+[03:50] or we'll do a sync office hours on Discord
+[03:53] where you can ask your questions
+[03:54] and we'll make sure someone from the Concordium team
+[03:56] is present to answer these questions live.
+[03:59] And we often have the,
+[04:01] obviously have the Discord as well.
+[04:02] There's a link to join the Discord,
+[04:03] connect your Discord in the platform page,
+[04:05] make sure you do so.
+[04:06] And you can chuck any questions that you have
+[04:08] into the Discord.
+[04:09] We also have recordings, all these workshops
+[04:11] will be recorded in case you do wanna catch up on them
+[04:13] and they'll be made available on the platform page.
+[04:16] So just because you missed one,
+[04:19] do come back and watch it,
+[04:20] but make sure you're trying to get all of these live
+[04:22] because you get the opportunity to ask brilliant people,
+[04:25] brilliant questions in the comment section.
+[04:27] So, and you can get your queries answered then.
+[04:30] So your next steps now are going to be
+[04:33] creating or joining your project,
+[04:34] thinking about maybe what you're looking to be building,
+[04:38] what you're looking to get out of this series
+[04:40] and then getting into your schedule,
+[04:42] all these workshops, so you're attending them live
+[04:44] and you're gonna be getting the most out of them.
+[04:47] I will now hand over to Peter,
+[04:49] who's gonna be giving us our first workshop.
+[04:54] And I think Peter, you are gonna share some screens
+[04:57] and we'll go from there.
+[04:59] I'll stop sharing my screen so that you can take over.
+[05:01] Awesome.
+[05:02] In fact, I'm gonna stop sharing my screen.
+[05:05] Actually, I'll leave it as it is for now
+[05:08] so I can do a bit of talking
+[05:09] and then I'll share the screen
+[05:10] and they can check it on the screen.
+[05:12] Good morning, beautiful people.
+[05:14] Welcome.
+[05:15] My name is Peter Marisons.
+[05:16] Thanks for that guys, for the intro.
+[05:18] I am the CTO of Concordium
+[05:20] and I'll be running the first couple of sessions with you.
+[05:24] And I'm glad to see you all here.
+[05:27] So let's get going.
+[05:28] Now I need to sort myself with the screens
+[05:31] and who goes where, so bear with me.
+[05:32] I'm just gonna choose the right screen
+[05:34] which is obviously gonna go wrong.
+[05:36] Oh no, I managed to get that right.
+[05:38] There we go.
+[05:40] Cool.
+[05:42] Let's kick things off.
+[05:44] Right, I'm gonna try to make this work.
+[05:48] Can you confirm that you can see my full screen?
+[05:51] Yeah, slides.
+[05:52] Yep, I get that fantastic.
+[05:54] And I'm gonna try to keep an eye on the kind of chat
+[05:57] if you have any questions or whatever,
+[05:58] by all means pop it down here
+[05:59] and I'll try to keep an eye on it.
+[06:01] We've got a fair amount to cover.
+[06:03] I'll try to go at a pace that kind of makes sense
+[06:06] but if you do want to kind of interrupt
+[06:08] or do something for your hand up and whatnot
+[06:09] and I'll try to address it as we go.
+[06:13] But yes, Concordium, verify once,
+[06:15] prove everywhere and reveal nothing.
+[06:17] That is literally what we're all about.
+[06:20] So we're here to learn about Concordium
+[06:22] and then you figure out what you wanna use out of it, right?
+[06:25] We have lots of different features
+[06:26] and functionalities on the chain
+[06:29] and on Concordium as an ecosystem.
+[06:31] And you as builders can kind of pick and choose
+[06:34] on what you're building.
+[06:36] Doesn't have to be on the Concordium chain.
+[06:38] It could be wherever it is
+[06:39] or your application could be wherever it is
+[06:41] and then you integrate the Concordium ecosystem.
+[06:45] So what are we gonna do to it?
+[06:47] We can build natively all on Concordium as I said
+[06:50] or you can kind of just bring in the verification
+[06:53] and the agent toolkits that we're building
+[06:55] that makes things a lot simpler
+[06:56] and allows your agent to have an accountability layer
+[06:59] which doesn't exist in a lot of places.
+[07:02] This is a kind of our main focus.
+[07:04] So let us kind of get into it.
+[07:07] This is a very high view of Concordium at a glance
+[07:12] from a technical standpoint of view, right?
+[07:14] So we are a public permissionless layer one blockchain.
+[07:19] We have identity ingrained at its protocol level.
+[07:23] Okay, it was founded in 2018.
+[07:25] We launched in Mainnet in 2021.
+[07:29] And we've got protocol level locks and tokens
+[07:35] which have been verified by the agent.
+[07:38] We have verified identity
+[07:40] which I'm gonna go into in more detail today.
+[07:43] We can do privacy and zero-knowledge proofs
+[07:45] based on that identity, which I'll explain again today.
+[07:48] Our finality is very fast.
+[07:50] It's about two to four seconds.
+[07:52] So it's not a pain where you have to wait
+[07:54] a few blocks for it to become final.
+[07:57] We don't fork, we just pause.
+[07:59] So if for whatever reason validators
+[08:01] can't produce a block
+[08:03] and the whole blockchain kind of pauses
+[08:05] until the validators come back online
+[08:07] and then we carry on.
+[08:08] So there's no risk of your transaction
+[08:10] kind of being rolled back or anything like that.
+[08:14] We also have a very cool feature
+[08:16] which is our fees are predictable
+[08:18] in the sense that it's always pegged to a Eurocent.
+[08:23] So a transaction is a Eurocent irrelevant
+[08:25] of how much a CCD's token price actually is.
+[08:29] So if fluctuates up or down
+[08:31] the token price goes through the roof or crashes,
+[08:34] it won't change how much it's gonna cost you
+[08:36] to the transaction, which is a Eurocent.
+[08:40] We also have native tokens.
+[08:43] This is kind of our key thing that we did in 2025,
+[08:47] which was to release protocol level tokens.
+[08:50] These are basically stable coins or tokens
+[08:54] that you've launched or the issuer has launched
+[08:56] on the chain that isn't in a smart contract.
+[08:58] This sits alongside the CCD in your wallet
+[09:02] and doesn't actually go into a honeypot like a smart contract.
+[09:06] And we have a smart contract arm, which is rust based.
+[09:11] So if you wanna build anything you can do,
+[09:13] it's just a normal blockchain in that sense.
+[09:17] All the links to here,
+[09:19] Balmings are there already
+[09:20] and I think they're shared on the in-code platform as well.
+[09:25] So six week workshop.
+[09:27] As we just mentioned very quickly,
+[09:29] this is going to be about verifying people this session.
+[09:32] Next one will be about verifying agents.
+[09:34] Then we're gonna get into kind of the features
+[09:36] and functionalities that we have
+[09:38] that are likely to do things with your agents.
+[09:41] And then we have all the safeguarding issues
+[09:43] that we've got in there.
+[09:44] And then we start going into kind of
+[09:47] what we're building into production,
+[09:48] all the wallets and integrations that are out there
+[09:51] and what we dive into.
+[09:52] And then the tooling and plugins and whatnot.
+[09:55] And I think towards session six and five
+[09:57] is gonna be more about your questions
+[09:59] as you interact with the chain and the ecosystem.
+[10:03] Cool.
+[10:04] And obviously main message hackathon coming.
+[10:07] I'm gonna show you everything that the chain does.
+[10:09] What I want you guys to do is pick the bits
+[10:11] that you think work well with your current project
+[10:13] and kind of plug it in.
+[10:14] That's kind of what we wanna see.
+[10:16] We want you to bring in what you've already got
+[10:18] and plug in the Concordium toolkit or features into it.
+[10:25] Very quickly today.
+[10:26] So I'm gonna spend about 15 minutes doing the IDID app stuff.
+[10:29] Then we're gonna go into privacy guardians
+[10:31] and who they are and how they work on here.
+[10:33] I'll quickly cover Verifying Access,
+[10:36] which is kind of our product that we launched last year.
+[10:39] And I'm gonna show you a little demo here and there
+[10:41] on Mainnet and then leave some questions towards the end.
+[10:44] Let's see how time goes.
+[10:46] And God, all means just keep me on track
+[10:49] if you need me to move fast,
+[10:50] just ping me ahead or give me a nudge.
+[10:53] All key dokey.
+[10:57] So problem with identity verification, okay?
+[11:01] Now, obviously what we do is whenever we've got a requirement
+[11:07] for verification, we upload our passport
+[11:11] and then you go to the next site,
+[11:12] we upload the passport again, you do a selfie
+[11:14] and then maybe you go to another site
+[11:15] and then you do another set of uploading and verification.
+[11:20] What we want to do and say it's a better way of doing it
+[11:23] is to say that you verify your document once,
+[11:27] you hold enough information in your device
+[11:30] that now allows you to generate zero knowledge proofs
+[11:33] which people can verify,
+[11:34] and not through a centralized trust mechanism,
+[11:37] but more through a distributed verification process
+[11:41] that anyone can do.
+[11:43] And I don't have to review myself, right?
+[11:45] The same way as, you know,
+[11:47] I might be showing my age here,
+[11:50] when I used to go up to clubs, I would walk in,
+[11:52] I would just take a look at my face
+[11:54] or look at my features or whatever that may be
+[11:56] and make a decision,
+[11:57] the bouncer would make a decision and go,
+[11:59] yeah, I think he's on very team and let me in.
+[12:01] And if I wasn't or he or she had a kind of a doubt
+[12:06] that maybe I'm 18 or not,
+[12:08] and they would say give me some ID, right?
+[12:10] And in that scenario, even if I showed my ID,
+[12:13] he would very quickly check the date of birth
+[12:16] and then they would say, yep, okay, that's fine, go in.
+[12:18] They wouldn't take a copy of the identity,
+[12:20] they wouldn't take a photocopy over
+[12:22] and keep it and whatnot, right?
+[12:24] Whereas now online,
+[12:25] you kind of end up doing that process, right?
+[12:27] Where we show these information
+[12:29] and we show this document I want now,
+[12:31] and it's held in many multiple places.
+[12:36] And what we want to do is be able to say,
+[12:37] look, I can prove I'm over 18,
+[12:39] but you don't need to see my document,
+[12:41] you don't need to see my date of birth.
+[12:43] Here is a mathematical way of proving
+[12:46] that I'm indeed over 18.
+[12:48] And this is kind of what we've built
+[12:49] and this is what zero knowledge proofs are all about.
+[12:53] So how does the concording mind you work?
+[12:55] Well, you do what you always do,
+[12:58] which is the simple one off.
+[13:00] Get your document, do a selfie, identify yourself,
+[13:04] and we have things called IDPs on the chain
+[13:07] which do this for you.
+[13:09] We have about three who will do personal ones
+[13:11] and then a fourth one which will do a business.
+[13:13] So we can verify a human and individual
+[13:16] as well as a business.
+[13:19] And then with the wallets and the keys
+[13:22] and then photography that exists these days
+[13:24] on technology, we basically sign and safeguard
+[13:29] and verify that this identity object
+[13:33] has been reviewed, verified,
+[13:36] and is set up in your device,
+[13:39] which you can then use to create an account
+[13:40] on the concording chain.
+[13:42] Okay?
+[13:43] And I'll show you kind of how this goes.
+[13:47] So one thing to be very clear here is
+[13:50] the chain validates the proof,
+[13:52] the chain doesn't store any PII,
+[13:55] the chain doesn't store any of your personal information.
+[13:59] No one can see this information
+[14:00] if they look at the public chain and go,
+[14:02] oh look, there's Pete's password details.
+[14:03] I mean, that would be silly.
+[14:05] Or even here's Pete's password details encrypted.
+[14:08] So I'm just gonna go and decrypt that
+[14:11] or hack it or whatever that Pete is incommits
+[14:13] and I'll get into the detail in a minute.
+[14:17] And voila, here it is.
+[14:18] This has got a lot on this slide,
+[14:22] but I'll talk you through it bit by bit
+[14:23] and hopefully it will make sense.
+[14:25] So in order to do ID verification on concordium, right?
+[14:30] You do what I just said.
+[14:31] You download the concordium ID app
+[14:33] or a compatible wallet or the concordium wallets, right?
+[14:37] The first thing you do is you have to go
+[14:40] through a verification process.
+[14:41] So the key thing here is every single account
+[14:44] that is on the concordium chain is backed by an identity.
+[14:47] There is no kind of,
+[14:49] we don't know who this account belongs to
+[14:52] or more correctly said is there is no account
+[14:55] that isn't backed by an identity.
+[14:58] Now, what you'll see here
+[14:59] and what you hopefully understand
+[15:00] as I go through today is that this information
+[15:04] is not seen by any one specific person
+[15:07] and that they can do anything with.
+[15:09] So you download the app.
+[15:12] You select an IDP that you want
+[15:13] to do the verification with, right?
+[15:16] They you are now in the IDPs website,
+[15:19] the same as you do very for your T or anything like that, right?
+[15:22] You take a copy of your identity documentation
+[15:26] whether that's a driving license
+[15:27] or a passport or whatnot.
+[15:29] And this is going directly to the IDP.
+[15:31] So this doesn't sit on the chain.
+[15:33] It doesn't go to concordium foundation.
+[15:35] It's not like there's a concordium verification arm
+[15:38] or body that sits there.
+[15:40] We as concordium as a foundation, we don't see anything.
+[15:43] We don't even know you've done this, to be honest.
+[15:48] The IDP then says, right,
+[15:49] I need access to your camera as well
+[15:51] because I'm going to do a liveness and selfie check.
+[15:54] So that takes place.
+[15:55] They do the verification here, right?
+[15:58] So they start doing, does this picture match this document?
+[16:01] Is this document valid?
+[16:03] Is there anything like fake or deep fake
+[16:06] or AI generated that they're identifying and they fail it?
+[16:10] If everything is good and hunky-dory,
+[16:13] they basically say, right, I verified the attributes.
+[16:16] I've extracted the information into a JSON structure.
+[16:19] I'm going to encrypt it with the privacy guardians details
+[16:23] which I'm going to come back to and explain to you
+[16:25] who they are.
+[16:26] And then I'm going to sign it as an IDP.
+[16:29] So basically they create this object
+[16:32] that has got all the information of your identity in it.
+[16:35] And it is signed and verified by them.
+[16:37] It is also kind of protected by the privacy guardians.
+[16:41] There's a unique identity that is encrypted.
+[16:46] All of that information comes back to your device.
+[16:48] So at this stage, nothing has gone on the chain.
+[16:51] Nobody's even known that you have created
+[16:53] a download ID verification process.
+[16:56] Only the IDP that you've selected is aware of this.
+[17:00] You now have two choices.
+[17:03] If you are doing this in the Concordium ID app,
+[17:06] you can simply just store it in the ID app and you are done.
+[17:09] That means you have not verified your identity document
+[17:13] and it's now held within your device
+[17:15] and you can use it on sites, on merchants,
+[17:20] or wherever it may be,
+[17:21] where you need to do a zero-knowledge proof
+[17:23] that you are who you are or here's a date of birth.
+[17:29] I can prove my age without giving my date of birth away.
+[17:32] We also do have the ability to reveal
+[17:34] without zero-knowledge proofs.
+[17:36] So if the merchant wants, they can say,
+[17:38] can you reveal your name to me?
+[17:41] And we have the ability for you to kind of consent to that.
+[17:44] So you'll get a message popping up on your Concordium ID app
+[17:47] or a compatible wallet that will say,
+[17:51] so and so site wants you to reveal your name.
+[17:54] Do you agree?
+[17:55] And if you say yes, what will happen is,
+[17:57] then your name that is held in your identity object
+[18:01] is sent to the merchant.
+[18:02] And the merchant actually has a way
+[18:04] of verifying that this is indeed your name
+[18:07] against the cryptography that exists.
+[18:11] Alternatively, if you don't order an ID app
+[18:14] and you wanna go down to create an account on Concordium,
+[18:17] you can, you need a wallet obviously
+[18:19] because now you need a signing key
+[18:21] that's gonna be able to interact and transact
+[18:23] with the chain.
+[18:24] So we can either use the Concordium wallet
+[18:26] which is all built in.
+[18:27] So your identity and your wallet functionality
+[18:30] is all in one app.
+[18:32] Or you can use the majority,
+[18:33] many of our third party wallets like bitcoin.com,
+[18:37] like coin98, ledger and things like that
+[18:40] where we have that wallet integrated.
+[18:42] It's also integrated in the WDK.
+[18:44] So if you're writing your own wallet or whatnot
+[18:48] or wanna use wallet functionality,
+[18:49] the Concordium chain is also in the WDK.
+[18:53] And what this will do is it will create an account
+[18:56] and drop Peterson commits of your ID attributes
+[18:59] against this account.
+[19:01] Now we're gonna get to the verification a bit later on
+[19:04] but this is kind of the process that takes place
+[19:07] to create an account.
+[19:10] So now that we have this object,
+[19:12] we can do multiple proofs, right?
+[19:15] Because we have a zero knowledge proof engine
+[19:17] that works against this identity.
+[19:18] We can prove we're over 18 by saying
+[19:20] is my date of birth within a range
+[19:24] that means from today onwards I will be 18.
+[19:27] So as long as my date of birth falls in
+[19:30] that range that I give it,
+[19:32] I can prove that I'm over 18.
+[19:35] I can also prove what countries I'm in or not in
+[19:37] depending on again what the question is,
+[19:39] I'm part of a group or I'm not part of a group.
+[19:42] But all of this information as to kind of which one
+[19:44] I actually am stays hidden.
+[19:47] Now this is based on the fact that the merchant
+[19:49] or the person that you're interacting with
+[19:51] is asking you the right question.
+[19:53] If indeed the person asks you,
+[19:56] is your date of range from the 21st of February
+[20:03] 1998 to 22nd of February 1998,
+[20:08] right literally means is one day and you produce a proof.
+[20:10] Well, then you're kind of giving your date of birth weight,
+[20:12] which is why it's important to read what it is
+[20:14] that the site is asking you to do.
+[20:17] And be able to then verify that same with what country
+[20:20] your document is based on, et cetera, et cetera.
+[20:24] But it opens up the ability to do lots
+[20:27] of zero knowledge proofs as well as reveals.
+[20:32] So privacy by design, right?
+[20:34] This is kind of why we mean by privacy preserving, right?
+[20:38] And accountability is what stands behind it.
+[20:41] Now the way this works,
+[20:43] nobody sees any of this information, right?
+[20:46] The IDP, right?
+[20:47] Doesn't know what account you created,
+[20:49] doesn't know what device this information ended up in,
+[20:52] doesn't know kind of what your phone number is,
+[20:54] et cetera, et cetera.
+[20:55] They just basically verified your identity,
+[20:57] signed it, created this unique ID identifier,
+[21:02] and then they also signed it
+[21:04] with the privacy guardians keys.
+[21:07] Now, I'm gonna get into who the privacy guardians are.
+[21:09] Concordium definitely didn't see anything.
+[21:11] And even if you put it into an account,
+[21:13] which is obviously publicly visible
+[21:15] because it's a public chain,
+[21:16] nobody can see that that is Pete's account, right?
+[21:20] All they see is an account number was opened on Concordium.
+[21:24] And everybody knows that accounts
+[21:26] on Concordium is backed by an identity
+[21:28] either of a person or a company.
+[21:34] And in that scenario,
+[21:36] what you've got is addresses more than anything else.
+[21:42] What you can't see is the actual identity information.
+[21:46] I can see a question popped up here.
+[21:48] Let me see if I can get this.
+[21:54] Actually, I'm gonna come back to the questions
+[21:56] because that was a bit of a long question.
+[21:57] I'm gonna read it back.
+[21:57] And let's put that back down.
+[22:00] I can't call.
+[22:01] Let me carry on.
+[22:02] And then if the questions are still valid at the end,
+[22:04] I'll answer them as quickly as I can.
+[22:08] So, there's the user who holds the credentials, right?
+[22:12] You have it in your device.
+[22:13] You use that device to generate the proofs,
+[22:16] no one else, nothing else, right?
+[22:18] Then you've got ID provider.
+[22:20] All they do is just verify your identity
+[22:22] and give you the information back to you, right?
+[22:24] You gave them a secret, which they base it against.
+[22:28] And then you receive that back from the IDP
+[22:33] with the signatures and whatnot.
+[22:34] It's back into your device, all that it was verified.
+[22:37] The privacy guardians,
+[22:40] they basically are the guardians of the chain.
+[22:42] They're your privacy guardians, as the name suggests, right?
+[22:45] Everything stays private on the chain
+[22:47] until there is that need to then go
+[22:50] and open up these boxes.
+[22:51] And I'm gonna get to why these privacy boxes
+[22:54] get opened up by these privacy guardians.
+[22:58] It only works if there is a actual authority
+[23:02] that says there's a legal requirement
+[23:04] for us to know who actually this account belongs to, right?
+[23:08] So there has to be a court order,
+[23:10] and not just any court order,
+[23:11] but a court order from a Swiss court, right?
+[23:13] That says, I need to have,
+[23:15] I have enough legitimate reason to find out
+[23:18] exactly who this account on concordian belongs to.
+[23:23] A court order is raised
+[23:24] and that is taken to our privacy guardians
+[23:26] or actually lawyers who sit there.
+[23:29] And as long as two out of the three lawyers
+[23:31] that are on the chain,
+[23:32] basically go through the process and verify this warrant
+[23:35] and go, yes, we're gonna now decrypt
+[23:37] that unique identifier that exists
+[23:40] in this object that sits in the account.
+[23:44] If two of the three basically decrypted,
+[23:47] the authorities or the person
+[23:49] who's actually doing the investigation,
+[23:50] like the police or whoever, maybe,
+[23:52] can put it together and find out that,
+[23:54] okay, this is indeed identity 345
+[23:57] that was done by IDP2.
+[23:59] That will take that same warrant,
+[24:01] go to IDP2 and say,
+[24:03] we need to know who identity 234 actually is.
+[24:08] And it's only at that point
+[24:10] that the documents that I sent kind of pop up
+[24:17] and you can see who actually it belongs to.
+[24:20] Now, in that scenario,
+[24:22] the IDP still doesn't know what account they're talking about
+[24:25] because all they saw was ID234,
+[24:28] the unique ID that was generated
+[24:29] at the point of verification.
+[24:30] The IDP still doesn't know
+[24:32] what account that person has, right?
+[24:35] We as Concordium are not aware
+[24:37] of what account has been investigated
+[24:40] and where that kind of identity came from
+[24:43] and who it belongs to.
+[24:43] So again, we have no visibility as a foundation
+[24:46] or as a chain.
+[24:49] Purely the people who are doing the investigation,
+[24:51] purely the court that agreed it was valid
+[24:53] to have this investigation done.
+[24:57] So I just explain this,
+[25:01] legal request, you have the number
+[25:04] of privacy guardians actually decrypted
+[25:06] and then the identity kind of gets mapped back, right?
+[25:08] No single party can link a person,
+[25:11] real identity with their own chain accounts.
+[25:13] So it's not possible to just look at the chain
+[25:16] and go, I know exactly who this is.
+[25:17] It's also not possible to link accounts between each other.
+[25:21] So I have one identity, I can create multiple accounts
+[25:25] and it's not obvious by just looking at the chain
+[25:27] that these accounts are linked together
+[25:30] and it's also not relevant to kind of say,
+[25:34] since I've opened up this account,
+[25:35] I can open up this one, this one and this one, right?
+[25:38] If you are indeed investigating all four accounts
+[25:42] or five accounts or however many accounts
+[25:44] that you need a warrant for each account.
+[25:49] So zero knowledge proof, answer the question, not the ID, okay?
+[25:54] So the applications only needs to know
+[25:56] whether the person is old enough, right?
+[25:59] Not what is your date of birth
+[26:00] and then I'll work out what it is
+[26:01] or give me a copy of your passport
+[26:04] and I'll figure out what it is.
+[26:05] We just need to do a zero knowledge proof
+[26:07] and then verify it.
+[26:10] And the wallet proves, yes, you are a great team.
+[26:14] So how does verifying access work?
+[26:16] I would do it one time, I think we're okay.
+[26:18] How does verifying access work?
+[26:19] Right, so here's the flow.
+[26:21] S-Site will put a requested, right?
+[26:25] So are you over the age of 18, right?
+[26:28] The user sees that pop up in their compatible wallet
+[26:31] or ID app or wherever maybe that their identity exists, right?
+[26:35] You consent to it, you say, well,
+[26:37] I can prove this from identity number three, for example,
+[26:41] right, because you might have a driving license,
+[26:43] you might have a passport,
+[26:44] you might have a national ID card or something like that.
+[26:47] And you can choose which one you wanna use
+[26:49] due to verify this request.
+[26:52] So you select the one that you want and you say approve.
+[26:56] And that will then generate a zero knowledge proof
+[26:59] that is then sent back to the site.
+[27:02] Now what the site can do independently
+[27:05] is take that zero knowledge proof,
+[27:08] do the cryptography and the maths
+[27:10] to make sure that the proof is valid itself.
+[27:12] Then it can go and verify with the information
+[27:16] that's in the proof that it matches the cryptography
+[27:18] that is on the account that's on the chain
+[27:21] that was originally used to create the account
+[27:23] in the first place.
+[27:24] Now, just to kind of go a bit deeper,
+[27:28] we're not going too much into detail.
+[27:31] If I got that JSON object from the IDP
+[27:34] and then I went and changed my date or birth
+[27:36] before creating the account,
+[27:38] the signature that exists from the IDP will match, right?
+[27:42] Because the signature validated a certain amount
+[27:45] of information or a certain set of that information.
+[27:47] So as soon as I change the date of birth,
+[27:49] that signature that exists no longer matches, right?
+[27:53] So the chain wouldn't even allow me to create that account.
+[27:56] So at the point of creating the chain,
+[27:58] the creating the account,
+[27:59] the chain has already verified that everything is legit.
+[28:03] So that when the merchant comes back to the account
+[28:06] to verify that actually,
+[28:08] does the cryptography here match up?
+[28:10] Is there, can I do the same calculations
+[28:12] and not put the same answer?
+[28:14] We know that the date of birth hasn't been modified.
+[28:17] We know that the ID information hasn't been verified
+[28:20] and this is a valid proof.
+[28:23] So I can verify that without relying on anybody else,
+[28:26] apart from what's publicly available on the chain.
+[28:29] And on that note, if everything is good and green,
+[28:34] I can then decide, yes, I'm gonna let you in
+[28:36] because you are indeed over 18, okay?
+[28:40] So let me just very quickly show you
+[28:46] the next most complicated slide that we have in here,
+[28:49] which is how does verifying access work?
+[28:51] So we've built a mechanism that uses the concordium chain
+[28:57] to make sure that there is no reusing of proof
+[29:00] that have been generated somewhere else.
+[29:02] There is no cross site verification.
+[29:05] So I prove it to one site
+[29:07] and then I use it to log into another site.
+[29:10] That there is this ability to be audited, right?
+[29:15] So one of the main things that we did in 2025
+[29:17] when age verification came in is we built this
+[29:20] and we put it in front of Ofcom,
+[29:23] the UK body that actually verifies
+[29:25] that are applications that are used.
+[29:27] And they looked at it and they said,
+[29:29] they don't approve things.
+[29:31] They're not that kind of a body,
+[29:33] but they also look at it and to see if it's
+[29:35] within their guidelines.
+[29:37] And our approach and process is within their guidelines.
+[29:40] And it does mean that there is now proof
+[29:44] that you as a site did the best that you could
+[29:48] to verify that someone was 18 before you let them in
+[29:50] and here's an anchor on chain that is immutable
+[29:53] that can't be changed.
+[29:54] It's got the timestamp on it.
+[29:55] It's got the question that I asked
+[29:57] and it's got the actual proof
+[29:59] or that I got back from the device,
+[30:01] but it's got a hash of it rather than the actual proof itself
+[30:04] because we don't wanna put that onto the chain
+[30:06] and have zero-node proof leakage.
+[30:09] So here's the process.
+[30:12] You go to a site.
+[30:13] I need you to verify yourself with Concordium.
+[30:15] A VRA is put onto the chain.
+[30:18] This is a verification request anchor.
+[30:22] It's got the question in it.
+[30:24] It's got a validity window.
+[30:25] So it's only valid for maybe five minutes, two minutes,
+[30:27] whatever the merchant wants to decide.
+[30:30] It's got a specific one-time use in there
+[30:33] and it's also got the domain
+[30:34] that the website is actually calling from.
+[30:36] So who is actually asking for this verification?
+[30:41] And then shows you a QR code, right?
+[30:43] So you scan that QR code with your Concordium ID.
+[30:46] That creates a wallet connect between the merchant
+[30:49] and yourself and the device that has the identity in it
+[30:54] and it asks you the question.
+[30:55] This domain wants to verify this question.
+[30:59] Are you happy to generate the proof?
+[31:01] Which you can then prove.
+[31:02] And I'm gonna show you this hopefully
+[31:05] if everything works because I'm not sure
+[31:07] if we're gonna be able to see
+[31:09] the mobile screen or not, hopefully we will.
+[31:11] If not, by all means go and do it yourselves.
+[31:14] It's all available for you to play with.
+[31:17] Once we've connected and generated the proof,
+[31:20] you send that back to the merchant.
+[31:22] Now the verification to take place,
+[31:24] we will use the anchor in the first place
+[31:26] to make sure that it is indeed the one that I asked for.
+[31:28] It's answering the question.
+[31:30] It is my anchor as the merchant who dropped it
+[31:32] as to kind of what it is.
+[31:35] And if everything checks out,
+[31:36] I'm happy to say I'm gonna grant you access.
+[31:39] And what we do at that point to cover
+[31:42] the merchant's audit trail is we then drop another anchor.
+[31:48] And that anchor says I as a merchant did my verification
+[31:53] and the answer was positive.
+[31:55] And you do a hash of all this information
+[31:58] that you store in your own database,
+[32:00] in your own files or wherever it is
+[32:02] to prove that you did the verification.
+[32:04] And all you do is you drop a hash of that anchor
+[32:06] onto the chain.
+[32:08] With the hash of that information
+[32:09] has an anchor onto the chain.
+[32:11] So now if six months from now,
+[32:14] somebody comes in and says,
+[32:15] you know, there seems to be a bit of a question
+[32:17] as to whether you verify that person
+[32:18] before you let them in or not.
+[32:20] You can very safely say, well,
+[32:23] here's the mutable anchor that started
+[32:25] that proves the question that I asked.
+[32:27] And here is a hash of the anchor
+[32:28] that proves I use this proof with this result.
+[32:32] And this is kind of how, why I let the person in, right?
+[32:35] And in there, here is my log
+[32:38] and you can kind of verify that that hash
+[32:40] still matches what's on the chain.
+[32:42] So there's no debate about whether you did your bit
+[32:45] as a merchant or not.
+[32:46] And that's kind of the,
+[32:50] where are we going?
+[32:52] Ooh, we jumped out.
+[32:55] And that is the proof that has been verified by Ofcom, right?
+[32:59] When they looked at it, they were like,
+[33:00] yes, this kind of makes sense.
+[33:01] And we can use this should we ever need to actually
+[33:04] do a, what it has cells of a site.
+[33:08] Now that sounds all very complicated for merchants
+[33:10] and whatnot.
+[33:11] So I'd like to take this moment to kind of just bring in
+[33:14] one of our partners called Veryox.
+[33:16] They basically built a platform that allows merchants
+[33:19] to very easily and quickly add
+[33:23] the concording verification process to their site.
+[33:26] So if your project has a site
+[33:28] and you wanna be able to add, verify and access to it
+[33:32] to allow people to do zero noise proofs
+[33:33] to enter your site or use a set of feature
+[33:37] or prove something about identity
+[33:39] without holding their all their information.
+[33:42] It's easy enough.
+[33:43] And I recommend you guys using Veryox, right?
+[33:46] It's not a concording product.
+[33:47] It's indeed a partner.
+[33:49] And I'm gonna see if I can quickly escape out of this
+[34:00] and show you the site.
+[34:03] This is Veryox, okay?
+[34:06] You can kind of see how it all works.
+[34:08] There's details about kind of what you gotta do.
+[34:11] And in essence, what basically ends up
+[34:13] and this is kind of their pricing range.
+[34:15] So it's a very
+[34:19] comparable pricing in that sense.
+[34:22] And what you do in essence is
+[34:26] they use CDNs to do it.
+[34:28] So they run a verification server themselves.
+[34:32] So the merchant doesn't need to do that.
+[34:34] They talk to the node on the chains
+[34:36] or the merchant doesn't need to do that.
+[34:37] All the merchant does is they basically rock up,
+[34:39] create an account on Veryox.
+[34:41] They get an API key.
+[34:43] Then what they do is they,
+[34:45] if they're running something like CloudFair
+[34:46] on their website, they put a CloudFair worker
+[34:51] that as soon as that verification is required,
+[34:53] whatever point on the website it is,
+[34:54] it pings a message with their API key to Veryox.
+[34:59] Veryox then just generates the whole journey
+[35:02] of here's the QR code, scan it,
+[35:05] drop the anchor onto the chain,
+[35:07] do the verification process,
+[35:08] make sure that everything is valid and whatnot
+[35:10] and basically just sends a true or false
+[35:13] or a good or bad or positive negative response
+[35:17] to the merchant.
+[35:18] And the merchant's CloudFair worker basically knows,
+[35:20] okay, everything checks out.
+[35:23] The audit log and everything is held there.
+[35:25] I don't need to worry about it.
+[35:27] I'm gonna let this person in.
+[35:28] And that is basically the service that provides.
+[35:30] So for a merchant to be able to add,
+[35:33] verify an access to their site is very easy
+[35:37] and relatively cheap to do.
+[35:39] And if you wanna play around with it,
+[35:41] here is a site that they've set up as a demo.
+[35:44] So demo.veryox.io, verify back in podium.
+[35:50] You kind of set this up
+[35:52] and you can go through the process yourselves.
+[35:56] I'm wondering if I can do that here.
+[35:59] Well, if I'm gonna show you it,
+[36:01] let's also show you the Concordium ID app.
+[36:05] So let's see.
+[36:10] If we're gonna be able to bring in my mobile here.
+[36:18] You said I should be able to just...
+[36:24] Well, can you bring in my mobile and allow me to use it?
+[36:27] Yeah, let me see.
+[36:28] Let's see if we can do this.
+[36:30] What's your...
+[36:32] My name is Amir.
+[36:34] I got it.
+[36:35] They're showing me that menu, me.
+[36:37] Got it.
+[36:38] I have invited you up to be a panelist.
+[36:40] Okay, okay, okay.
+[36:42] Join as a panelist.
+[36:46] Okay, I'm muted.
+[36:49] Okay.
+[36:50] I'm not sure if Zoom allows two people
+[36:52] to share a screen at once though.
+[36:54] If it's only issue.
+[36:57] I can unmute myself at the moment.
+[37:02] Not sure the mobile version actually allows
+[37:04] sharing of screens.
+[37:07] Yeah, I think this is a Zoom integration basically,
+[37:09] and I think it has limits
+[37:12] on the screen sharing capabilities.
+[37:15] Okay, I think what I'm gonna try to do,
+[37:19] all right, let me leave this meeting.
+[37:40] Gonna have to do it the old-fashioned way.
+[37:42] I'm gonna hold my phone up to the screen.
+[37:46] Excuse me.
+[37:49] Can you see that?
+[37:52] You can just about see it.
+[37:53] Okay, we're gonna try it.
+[37:54] Let's see if we can get this to work.
+[37:56] Oh, you can, there's a comment in chat.
+[37:59] So you can mirror your phone to your laptop.
+[38:04] Mirror my phone to the laptop.
+[38:06] Tell me how I do that, and I'm happy to do it.
+[38:07] Do you have an iPhone?
+[38:09] No, I have an Android.
+[38:10] Ah, that might be.
+[38:12] See how I, you see, see, see.
+[38:15] Well, let's try it this way.
+[38:17] And then if it doesn't work,
+[38:18] we'll then kind of do another session,
+[38:20] maybe on Wednesday with the kind of sharing of a mobile.
+[38:25] So let's see what's, let me share my screen again.
+[38:36] Okay, can you see that?
+[38:38] Yes, you can.
+[38:39] Okay, cool.
+[38:40] So what we're gonna try to do is actually do a verification.
+[38:44] So this is a demo site that we use
+[38:47] to do different verifications.
+[38:48] You've got the SDK version.
+[38:51] You've got the merchant backend doing the verification.
+[38:54] And what I'm also gonna very quickly show you
+[38:56] is the actual consent mechanism.
+[38:58] So we have the ability to ask for consent,
+[39:02] which means I ask you a question.
+[39:04] You say yes to that question and you produce a proof,
+[39:08] the same way as you do a very team proof,
+[39:11] that you agree to this statement.
+[39:13] And again, all of that is logged
+[39:14] in the same manner of the anchors
+[39:16] that you just saw me explain,
+[39:18] which means I have the ability to ask the human
+[39:23] or the entity that is associated to that identity,
+[39:28] are you okay if I do this?
+[39:29] Now as a merchant, it kind of is okay
+[39:32] and it can kind of see the use cases.
+[39:34] But to us as an agent,
+[39:36] that's quite a powerful thing to be able to say, right?
+[39:39] I'm an agent, I need to do this thing.
+[39:41] You asked me to book tickets.
+[39:42] I found you these tickets.
+[39:43] Here is the price of the tickets.
+[39:45] You consented me going ahead and buying this, right?
+[39:48] And you drop an anchor and you say yes, here it is.
+[39:51] Here is the undisputed anchor of me
+[39:54] saying yes to this question.
+[39:56] And that means, should anything be disputed six months from now?
+[40:01] Well, we can come back and say,
+[40:02] look, this is where you agreed to this to take place.
+[40:05] So let's see if we can show you all of these things.
+[40:11] This is our ID app.
+[40:12] Okay, you can see identity in there.
+[40:15] You can create a new one
+[40:17] and I'll show you properly next time when we go into it.
+[40:20] Okay, where we can see my screen and I'll go through it.
+[40:23] You can see that I can do a scan
+[40:25] and I can do settings here, right?
+[40:27] So if I click on this, so open with the ID app.
+[40:33] And I've done this before, so let's just do it again.
+[40:36] So here we go.
+[40:38] Scan with the QR code.
+[40:39] So I hit scan and I take a copy of this QR code
+[40:42] and it goes into pairing
+[40:45] and straight away it says verification in process.
+[40:48] You can see the question that is being asked, right?
+[40:51] And I've got ability to select the identity
+[40:53] which I wanna do it with
+[40:54] and also the fact that the bottom that I can approve it.
+[40:57] So here it is, little slide at the bottom,
+[41:02] that says approve.
+[41:03] So if I slide it across, there we go.
+[41:07] And you can see straight away verification done
+[41:10] and you should see the website going to change.
+[41:14] So approving, there we go, verification approved,
+[41:17] success, verification complete.
+[41:19] And now I can continue to the site.
+[41:22] And this was the browser doing the connection.
+[41:25] So I'm gonna do it again now
+[41:26] with the virtual backend doing it.
+[41:29] So let's do this again.
+[41:32] So scan with the QR code, there we go.
+[41:36] You see the pairing in place, question pops up saying,
+[41:39] prove that you're over 18.
+[41:42] There we go, I'm gonna prove it.
+[41:46] And hey, Presto, I'm in, that quickly.
+[41:48] So obviously the backend to backend wallet connect
+[41:51] to the device is much faster.
+[41:54] What I'm also gonna show is the consent
+[41:57] and I'm gonna put in, so I'm gonna change this
+[41:59] so you don't say that I confirm my code idea
+[42:04] that I approve this is a live in code session.
+[42:14] Right?
+[42:17] What's wrong with that one?
+[42:19] So I'm gonna say request consent.
+[42:23] It's gonna pretty much do the same thing
+[42:25] where it asks me to connect to.
+[42:28] So I'm gonna scan that and here we go.
+[42:31] You can see the message hopefully
+[42:33] that that is exactly the consent
+[42:35] that I just typed in, okay?
+[42:39] And again, if I just do approve,
+[42:42] so it's verification in progress, approving, complete.
+[42:50] And there we go, and we're back into the site.
+[42:53] Now, one thing which I just want to very quickly show you
+[42:57] before going into questions and answers.
+[43:01] If I was to scan this again,
+[43:07] what I want you to see at the top there, right?
+[43:11] Which is our verification process right at the top.
+[43:16] You can see that the domain has got verified next to it.
+[43:21] And this is the new functionality
+[43:23] that we built into the ID app
+[43:25] that basically allows us to link
+[43:29] the account that's connecting to the wallet,
+[43:32] to this device, to verify.
+[43:35] So the ID app that basically goes and says,
+[43:37] I'm gonna check the domain DNS of this URL
+[43:41] to see if there does indeed exist
+[43:43] a concordium signed entry in the DNS
+[43:49] that I can then verify against the chain
+[43:52] to say that it all matches.
+[43:54] Now, tomorrow, when we do the agent IDP
+[43:57] and then the kind of agent registry
+[43:59] and how the agentic world works
+[44:02] with this concordium technology,
+[44:04] you'll see how we can verify end to end
+[44:07] that I am indeed talking to the right agent.
+[44:09] It is indeed backed by who I think it should be backed by
+[44:14] and the card is valid and that the URL is valid
+[44:17] and that everything is basically ticked.
+[44:20] And hence, I can drop these anchors
+[44:22] and do these verifications
+[44:24] without having to trust anyone
+[44:25] apart from what's publicly available on the chain.
+[44:28] So that is a very quick demo of that.
+[44:33] So I'm just gonna approve that and close that,
+[44:36] because just to show that that is working.
+[44:38] And as I said, we'll see if there's a better way
+[44:40] to show you the screens of the ID app.
+[44:43] By all means, if you can't,
+[44:44] if you didn't see that very well,
+[44:46] go and download it.
+[44:47] It's available from all the Play stores
+[44:50] and you can kind of install it and go through it.
+[44:54] One thing which I'll very quickly show you
+[44:55] while I've got you on the screen.
+[44:57] Am I sharing or is it gone?
+[45:04] No, not sharing anymore.
+[45:06] I'm not sure.
+[45:06] Did it, was I sharing throughout that whole time?
+[45:08] Yeah, you were sharing.
+[45:09] You literally just stopped.
+[45:10] Okay, just stop.
+[45:12] Okay, let's do that again.
+[45:17] Can you see that now?
+[45:19] Yep.
+[45:20] Okay, cool.
+[45:21] So these are all the links and whatnot.
+[45:23] What I'll quickly, very quickly show you is here,
+[45:25] I've got the browser wallet,
+[45:27] which is one of the Concordian wallets.
+[45:30] You can go and download the browser wallet as well,
+[45:33] set yourself up and you'll be able to get CCDs
+[45:37] to play around with and do whatever you want.
+[45:39] In that sense, I'll quickly show you
+[45:42] what an identity kind of looks like the process.
+[45:46] I'm gonna go through it, don't worry.
+[45:47] But here is your IDPs that I was talking about.
+[45:51] And this one at the top here,
+[45:52] which is the Concordian Test.IDP.
+[45:55] If you click on it, hopefully you'll see this pop up.
+[45:58] You basically get a blank form to fill in
+[46:00] with identity information.
+[46:01] So you can pick what country you're in,
+[46:03] you can pick your date of birth,
+[46:04] what your name is, et cetera,
+[46:06] expiry dates, numbers, whatever you may wanna
+[46:10] kind of set yourself up as a test, right?
+[46:12] So I know I look old, but I'm not that old.
+[46:15] So let's put it to the 80s and let's,
+[46:20] well, let's not do John Doe, let's do Peter.
+[46:26] And last thing we'll do in code, right?
+[46:29] And if I submit it, we get it back here, ID5, right?
+[46:34] Craig Concordian Account, it takes a few seconds,
+[46:37] account creation in progress.
+[46:39] This is your account number.
+[46:40] You get it kind of almost straight away.
+[46:43] And in about a few seconds, your account is up and running,
+[46:47] right?
+[46:47] If you click on activity here, you can request CCDs, right?
+[46:52] And if you do that straight away,
+[46:53] you get 20,000 CCDs to now start playing around with
+[46:56] and doing things which you want.
+[46:58] You can receive some blah, blah, blah.
+[47:00] It's a normal wallet, okay?
+[47:04] Just so you're aware very quickly again,
+[47:06] if you are using the browser wallet,
+[47:07] there's a network button, same with the ID app,
+[47:09] there's a network button,
+[47:11] and it connects to our making up testnet.
+[47:13] Make sure you're obviously on the testnet
+[47:14] if you want free CCDs and play around with.
+[47:17] And obviously the testnet IDP
+[47:18] that I just showed you is on testnet.
+[47:20] If you go to mainnet, you only get the official IDPs
+[47:25] that will do a proper full on identity check.
+[47:29] And that's kind of the very quick view
+[47:33] of identity on Concordian, right?
+[47:38] Why don't you have a go?
+[47:39] Try to build a site, use variops if you want,
+[47:42] or build it yourself, use our SDKs,
+[47:44] all the links are around.
+[47:46] The toolkit here has everything that you need.
+[47:48] It's also around in the encode platform
+[47:51] where you can click on these things
+[47:53] and get them to learn with and play around with, okay?
+[47:59] One of the things which I will say,
+[48:00] which I think you might try today,
+[48:02] is this local stack.
+[48:03] Basically, if you download this locally onto your laptop,
+[48:06] it will fully set you up with a Concordian node,
+[48:10] testnet, well, it's actually the DevNet version of it.
+[48:15] And you can start playing around with it straight away
+[48:17] without having to do anything else, right?
+[48:19] So you get the wallets, you get the CCD Explorer,
+[48:21] everything in this one local stack,
+[48:23] which makes it much easier to play with.
+[48:25] And if you don't like it
+[48:25] or if you do something wrong,
+[48:26] it doesn't matter, just kill it and restart it again.
+[48:29] All the explanations is in the Git repo,
+[48:31] but I'll just go in there, read it.
+[48:34] Any questions?
+[48:35] We know where we are.
+[48:36] And obviously I'll be back on Wednesday as well.
+[48:39] So let's see if we can get a few questions in.
+[48:42] We've probably got five minutes, I reckon.
+[48:44] I reckon, okay.
+[48:46] Proves are like unlinkable.
+[48:48] So one person can verify 10 creative wallets
+[48:52] and we can't tell.
+[48:54] Is there a verification scope,
+[48:55] sort of name nullifier to detect this identity proof?
+[48:59] So the uniqueness between accounts,
+[49:02] if that's what you're kind of leading to,
+[49:04] is something that is being designed in identity 2.0,
+[49:07] which is a whole bunch of research
+[49:09] that we've been doing right now in the science team,
+[49:12] as to kind of how we can enhance the ID layer
+[49:14] to give a uniqueness across all accounts.
+[49:18] So me as Pete will get a zero-null
+[49:20] of proof uniqueness value
+[49:22] that we can then apply across anything
+[49:24] that I create using that identity or that document.
+[49:30] For a business to business use case,
+[49:31] example, a service providers agent making changes
+[49:34] on a client's infrastructure.
+[49:36] Can the providers company act on its own ID provider
+[49:40] for its engineers?
+[49:41] Or must each engineer go through a public IDP?
+[49:44] And can the client verify this agent
+[49:47] is backed by a verified engineer of company X
+[49:50] without learning who the engineer is?
+[49:52] So both are possible, right?
+[49:55] If you are a big enough enterprise
+[49:57] and you wanna run your own identity,
+[49:59] provider against the chain you can do
+[50:02] because it's a public chain,
+[50:03] we do need to have a governance committee signature
+[50:06] that allows you to add that IDP to the chain.
+[50:09] So we try to keep it to actual proper ID verification servers
+[50:16] rather than just the kind of one-off use case,
+[50:18] unless the use case is big enough, right?
+[50:20] In any case, irrelevant of how you verified yourself,
+[50:24] whether it's a public IDP or an internal one,
+[50:27] yes, you can of course prove that you belong
+[50:30] to this company with zero-null of proofs, right?
+[50:33] Multiple ways of doing it.
+[50:34] You can do the company reveal.
+[50:35] You can just kind of say here's a zero-null of proof
+[50:37] that I am of this IDP, for example,
+[50:40] if it is an IDP thing, et cetera, et cetera.
+[50:42] Or you could just do a signature that's in the agent card.
+[50:46] And I will get to that tomorrow.
+[50:48] And hopefully make a bit more sense what I'm saying.
+[50:51] What can we do before November the 19th?
+[50:53] Can we use a code base made before that day?
+[50:56] So the whole point of this hackathon, to be honest,
+[50:59] is to bring your current project
+[51:01] and add the functionality that you need
+[51:03] from Concordium into it and show us how the agent
+[51:09] took it or adding verification,
+[51:10] whether that's human verification, company verification,
+[51:13] agent verification into your schedule project
+[51:18] has basically helped it become better
+[51:22] or do something that it couldn't do before.
+[51:26] Is the consent secure and protected?
+[51:31] Quick thought, what if someone tries to change
+[51:33] consent message?
+[51:34] Is that possible?
+[51:35] Are there guaranteed?
+[51:36] Right, so very quickly, we obviously
+[51:39] dropped that anchor with the question and information
+[51:41] in there, so the hash of that text is on the chain.
+[51:47] So when the idea picks that up,
+[51:49] it does a very quick check to make sure that it matches.
+[51:51] So in transport, if through Wallop Connect or on the device,
+[51:56] it's somebody changes that question.
+[51:59] The idea will kind of go, hang on a minute,
+[52:01] this doesn't match, right?
+[52:02] The verification doesn't match.
+[52:04] Even if you say the idea is kind of compromised,
+[52:07] when it goes back, the verification process
+[52:12] will also flag that up depending on what's
+[52:14] been compromised by.
+[52:15] So there's a fair amount of safeguards in there.
+[52:17] Yes.
+[52:21] Is that the last question?
+[52:24] Oh, there's a Q&A in the Q&A and then there's a chat.
+[52:29] Oh, wow.
+[52:30] They're pretty big.
+[52:32] I can save these questions.
+[52:33] I'll put them in a talk.
+[52:34] Yeah, I think if we do that, then we'll come back to it as well.
+[52:36] I'm conscious of the time we've only got four minutes left.
+[52:40] Hopefully that's been helpful.
+[52:43] There's a challenge if you want it.
+[52:45] I'll see you guys back on Wednesday for the next session.
+[52:49] Thank you very much for listening.
+[52:50] Have a great day.
+[52:50] Thank you very much, Peter.
+[52:52] And yeah, we'll see you guys on Wednesday.
+[52:54] Make sure you comment again, because we've got another great workshop
+[52:57] then.
+[52:58] And thank you for joining.
+[52:59] We'll see you guys later.
+[53:00] Bye bye.
+[53:00] Awesome.
+[53:01] Thanks, everyone.
