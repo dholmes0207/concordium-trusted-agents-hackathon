@@ -3,6 +3,7 @@
 | Đường dẫn | Nội dung |
 |---|---|
 | [Tong-hop-Workshop01-va-Hackathon.md](Tong-hop-Workshop01-va-Hackathon.md) | **Đọc file này trước.** Tổng hợp thể lệ, lịch, bài nộp, kiến thức Workshop 01, kiểm chứng research |
+| [Bao-cao-Workshop01.md](Bao-cao-Workshop01.md) | Báo cáo chi tiết Workshop 01 (đã hiệu đính theo slide): thể lệ, giải thưởng, công nghệ, Q&A, rủi ro và 3 hướng dự án |
 | [Research-Hackathon/](Research-Hackathon/) | 4 bản research trước cuộc thi (30/10/2026) |
 | [Workshop01/slides/](Workshop01/slides/) | 30 slide trích từ video Workshop 01 (1080p): `01–10` của Encode, `11–30` của Concordium |
 | [Workshop01/Workshop-01-transcript-EN.txt](Workshop01/Workshop-01-transcript-EN.txt) | Bản chép lời tiếng Anh có timestamp (Whisper) |
