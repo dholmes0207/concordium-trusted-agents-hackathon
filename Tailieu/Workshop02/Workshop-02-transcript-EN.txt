@@ -1,0 +1,799 @@
+[00:00] Hand over to Peter who's going to be doing a bit of a live demo here today using chat using get hobbles sorts of different things
+[00:07] You find out some technical difficulties with screen sharing. So this will be much better
+[00:13] To you Peter
+[00:15] Cheers buddy. Thanks for that. Good morning beautiful people. Welcome back
+[00:19] I guess if you're back, it means you like me the first time around and they did not back well fair enough
+[00:24] I've got a fair amount to get through today
+[00:26] But just before we kind of get going I'll answer
+[00:31] Three kind of outstanding questions. I didn't get a chance to last time
+[00:35] Is it possible for an agent to confirm over 18 without getting any other personal data?
+[00:40] Yes, I will show you how that is going to be possible today's one of the things we're going to cover
+[00:46] Well, I'm gonna explain how it's gonna work and then a bit further down in the in the in the weeks and the lessons
+[00:52] Is the actual kind of how it gets done?
+[00:55] How does privacy guardians multi-party disclosure part work like who are the guardians and can they ever reveal if something happens?
+[01:04] Yes, so these are basically lawyers who exist on the chain
+[01:08] We have contracts and legal binding agreements with them
+[01:11] That basically means they need to act in a certain way that they've got a certain process wish to follow etc etc
+[01:18] and should a kind of a court judgment
+[01:22] Be raised and a warrant being kind of issued and then obviously they get discovered and reached out to
+[01:30] And the other third and final one is if my agent already has an address in Ethereum or Salana
+[01:36] Do I need any minimum to add the link to the court in my D again?
+[01:40] One of things that I shall be covering today. So with that note
+[01:45] Let me share my screen and we get going
+[01:51] entire screen choose screen and
+[01:56] There we go
+[02:00] Slide show it a little thumbs up to say they can see this
+[02:08] And everything's cool and we can get going
+[02:11] Yeah, okay, cool. Awesome
+[02:14] Lovely lovely people. Well, welcome to the second session and today
+[02:17] I mean last yesterday or Monday we covered about kind of identity and how it works under the paint
+[02:23] And now we're gonna kind of go into the realms of how this identity
+[02:27] Can be applied in the agentic world, right?
+[02:29] So we want to be in a position where we have accountable agents
+[02:34] We can say that they're accountable to a verified human or a company
+[02:39] So your agents can stay on if you're in my Salana, it's quite funny because that was the exact question
+[02:45] And we can add an identity
+[02:48] to them or at least add accountability to them with the human or company identity behind them
+[02:55] So we're gonna cover kind of badges a to a's we're gonna have the agent IDP
+[03:01] Which I'm gonna get into the registration
+[03:03] 8004 scanner which you can see these entries on
+[03:06] The kind of verify back recording badge what it looks like
+[03:10] Again actually gonna hopefully go through a registration so you can see what that looks like and how the MCP works
+[03:15] And then any questions at the end now
+[03:19] What I wanted to do just before we got into it actually
+[03:24] is test this ability for
+[03:29] The screen sharing so let's see because I don't think you guys kind of saw that probably yes on Monday
+[03:36] so I am going to
+[03:39] Open up
+[03:40] This and I'm gonna enable it. I'm gonna say entire screen
+[03:47] And then I'm gonna go to here. There you go. So this is the Android
+[03:54] Application that I've got on the side here, which is about the concordium ID as you can see
+[03:59] You can kind of click on add new there we go. It's popping up
+[04:03] You can do a business which is global Finreck at the bottom there
+[04:08] This is all in test that you can see at the top right there
+[04:11] Or you can do individuals and it will automatically based on where you are kind of filter it down through the best IDB to use
+[04:17] And obviously in test that we defaulted to the concordium test that I
+[04:22] IP so if we say continue you should see a page pop up and
+[04:32] in there
+[04:33] Will be the form that allows you to basically fill in everywhere. This is kind of what
+[04:38] Potentially quickly showed you last time but you can fill in all the different components there is
+[04:44] Right. I'm just gonna change that one to be
+[04:48] Here we go
+[04:51] Peter true and I'm gonna do it in bold because I like screwing my name out
+[04:56] And here I'm gonna change the date of birth and I'm gonna make myself
+[05:02] Much younger I'm gonna make myself
+[05:05] 25 years old. How's that?
+[05:08] And you can obviously change all the other ones you can kind of see when the document was issued
+[05:13] Nandates country of residence, etc. Etc. Etc. Etc. And if we hit submit
+[05:19] What you'll get
+[05:20] Once you've put in your code the screen blanks up because I'm putting in my code is
+[05:25] In your identity
+[05:27] Which is this one here?
+[05:29] And if you click on it, you can see Peter two in capital screaming money came out and there's my date of birth
+[05:36] Right. So now we have our identities
+[05:40] Let's go back here and what I'm gonna do is
+[05:44] I'm gonna run this demo again very quickly just to show case where it works. Here's our
+[05:50] ID
+[05:52] This is already connected. So I'm just gonna disconnect and I'm also gonna
+[05:59] There we go, so now I'm gonna scan and you can see that this is live where we go
+[06:03] That's my thing. I'm gonna do that and way pressed out pairing
+[06:07] straight away I get
+[06:11] The kind of request what to do and if I change my identities, right I
+[06:17] Can go to these ones where I'm not old enough, right?
+[06:22] So this is my date of birth is too low. This is I'm 25
+[06:27] So it's okay and any one of these I can use I can say confirm
+[06:31] I want to use that identity and then approve and hey presto. There it goes
+[06:40] Okay, and then I can get into the site the merchant one is
+[06:45] A lot quicker because it's server to server. So we just scan that again. There we go
+[06:54] Right and while I'm doing this you can see
+[06:58] That this is being verified there we go the domain is very fine
+[07:01] We get the little tick so we know that the domain that we're talking to is
+[07:05] Signed by the account that's asking for the proof and again, you know, we can pick whichever one we want
+[07:11] This one means I can't even confirm it
+[07:13] I can't use that ID if I want because the confirmation button is not enabled
+[07:18] So if it's asking your question that your identity can't do like I don't know location or whatever may be
+[07:23] Or very revealable password number or something that it doesn't have it will kind of basically tell you I can't do this
+[07:29] But we can use different ones there we go. We're gonna use ID five this time approve it
+[07:35] Get it's verified on the screen verification done go back to merchant. Hey presto
+[07:41] Everything is done and just very quickly. Here's the consent one
+[07:49] Let's see I
+[07:52] Prove that this request is from
+[07:56] I
+[07:58] Confirm I can quality my dApps that I approve this request from
+[08:05] Just put something there
+[08:07] And I can just do requests screen gone off apologies
+[08:12] Just gonna log back on a bit too fast. There we go. We're back in
+[08:23] Enable that entire screen. I go back to Concordia map
+[08:29] Let's do a little scan
+[08:32] There we go and there we go, right?
+[08:36] So here is the proof now in this particular case because I haven't asked for an age to be verified
+[08:44] It means I actually I can use that for identity
+[08:48] Just not go anything over right because it's it's it's now. This is interesting because this is a
+[08:54] A
+[08:55] Test version of the app and we are aware that this is here
+[08:59] It doesn't need to be we shouldn't show it because there is no proof that's being requested
+[09:03] So we're aware of that but I just want to show that he can confirm it using because it's actually not asking any questions in the background
+[09:10] That's just a UI problem on here
+[09:13] I'm able to to
+[09:14] approve this
+[09:15] Because there is no actual age verification that is required and just to kind of show that that is the case
+[09:22] I'm gonna tick this. I'm also requesting to be 18 and you should see that now
+[09:28] Not being the case because that same identity there you go
+[09:34] Say my identity now that you requested the proof to be over 18 is no longer a valid proof
+[09:39] Okay, and there's there's everything working that I couldn't show you yesterday or Monday properly
+[09:47] So hey, Prisa
+[09:49] Let's go back to
+[09:52] and
+[09:53] If there's any questions coming up
+[09:58] Let's see
+[10:00] Okay
+[10:04] Well, I'll get to the questions towards the end right because I was we're gonna keep getting distracted and whatnot
+[10:08] So let's start today's session and run through it because there's a fair amount of demo to be done at the end. Okay, and so
+[10:17] An agent and an agent connect right but who stands behind them. So we know as a human or a business that's coming who owns it
+[10:25] We have the identity liveness status that we can put in there. We can publish capabilities and endpoints we can kind of
+[10:33] Do that in the agent card and whatnot and then you know
+[10:37] Can we trust the car that's the agent card that is being generated there?
+[10:41] And we do that by kind of dropping in an anchor and I'll show you how we all do that kind of thing
+[10:45] And it is all the mutable hashes and whatnot right so
+[10:50] You know
+[10:51] We'll go through all of this
+[10:53] In more detail in a minute what you will see is this kind of verify by concordium
+[10:58] This is a concordium badge, right and what this tells you is the fact that there's a there's a there's an entry in the agent registry
+[11:06] You can verify it. So if you go to a site, which I'll show you in a minute, you know the 8004 scanner for example
+[11:12] Bill scans through
+[11:15] Your agent cards, right and if you seize the concordium block
+[11:18] It has the ability to actually go and verify those blocks and then put a badge on the screen to say that this agent here
+[11:25] That is in the registry has got a concordium account
+[11:29] Or a concordium badge and I have verified it and hence I can show you this icon
+[11:33] And it is verified
+[11:35] A bit like if you remember
+[11:37] The yellow lock that we used to get on the browser might be showing my age here, but back in the day
+[11:43] You had a yellow lock that would appear for websites that you
+[11:48] Visited that had HTTPS versus HTTP and it was an indicator that okay
+[11:53] This site is legit and safe because the certificates that can validate it the browser is doing the validation
+[11:57] And this is what we're hoping the concordium verification badge will do is once an agent is talking or you're looking at a screen or
+[12:04] Or you're watching something or an agent is interacting, you know
+[12:08] If you see that concordium badge in the corner, you know that this is being verified by the sites that it is
+[12:15] You know backed or accountable to a human or an entity or a company for that matter
+[12:20] And we'll get to the external key binding which is they fear in one Solana
+[12:25] part of it
+[12:27] Right, I'm running through this because hopefully the demo will explain everything by itself
+[12:33] So what does that registry need well, we obviously know we need a human or a business right to be verified on concordium that we're aware of
+[12:41] What we've got is a sis 8004, which is very much based on the RC 8000 for a standard
+[12:47] But this is our concordium standard and because we've got our
+[12:54] Identity as what's gonna back it we don't need reputation or anything else. We just literally have an entry
+[13:02] In the in the agent registry that will mint a non-fungible token
+[13:07] It gets added to the account and they count signs for it
+[13:11] So we kind of know that this agents NFT is actually backed by an entity or backed by a human
+[13:17] And because we can do zero knowledge proofs and because we can kind of even do zero knowledge reveals
+[13:21] So if we can say show me your name, so if you're a company, I can say show me your company name
+[13:27] And I can verify that yes the signature matches the account which matches the NFT which manages the agent
+[13:32] Which matches the company that I told you so this is indeed the agent for this company
+[13:39] And we've obviously got a
+[13:41] Eightway compatible agent card Jason I guess created I'll show you all of that as well
+[13:46] And we push that kind of card hash onto the registry
+[13:52] So they can verify that whatever is in that Jason structure hasn't been modified since the day registry was made
+[14:00] I hope they will show all this if this if demo gods allow me to today
+[14:05] and
+[14:07] now
+[14:08] We have the registry which is the sys eight thousand and four right that is a
+[14:13] Standard entry which I'll show you what we've done on top of this is basically allow you to verify an external key in
+[14:20] Another contract called the sys eight contract. It's a standard contract
+[14:23] But only is going to look at it on a documentation all the kind of details is there and you can kind of verify to see how it works
+[14:31] But in principle what it will do and what is trying to say basically is at the point in time
+[14:38] The the the person or the individual or someone had access to both keys that had access to the
+[14:45] Ethereum keys a Lana key wherever it may be and that the concordia key which has their identity against it
+[14:51] So what we basically do is through a process of kind of signing and then resigning and signing again and
+[14:58] Verify the smart contract will verify that
+[15:01] this is indeed the Ethereum key that is registered to that address and it will do kind of a a a a
+[15:09] Graphic check on the actual signature
+[15:12] As well as going right well, I'm gonna register that against the concordia of account
+[15:17] That's actually making this transaction into the small contract, right?
+[15:21] So in essence what we've done there is said that this is a theorem key that you know nothing about
+[15:27] And it could be just anybody could be owning this key
+[15:30] At this point in time this person that backs this concordia of account has access to it
+[15:36] Therefore that have signed enough information into the sys eight small contract
+[15:42] That allows us to say that this key is also owned by by this concordia of account backed by this identity or
+[15:50] company and
+[15:52] Then what we do is we reference that entry in the sys eight
+[15:56] Contract when we registered the 8004 agent card and get an MP. So in essence in the agent registry smart contract
+[16:04] We say here's the NFT here's the concordia of account that owns it and here is the smart contract proof
+[16:10] That the the the the theory of key or Solana key. In fact, you'll see we kind of have access to 200
+[16:19] Chains or or platforms that you can kind of verify your key with
+[16:25] Is also been verified here in this smart contract, right?
+[16:29] And all of that gets recorded and obviously it's a blockchain. It's a mutable, etc.
+[16:33] Etc. And I'll show you where they are and I think a bit further down the week
+[16:38] You like to get to play with it because you will have the MCP server that's going to do that for you
+[16:44] Right
+[16:46] So
+[16:47] They go hand in hand. I just kind of explain it. This is just kind of going in in a bit more detail
+[16:52] But yes the sys eight basically
+[16:54] Links your external public key to your concordia of account and then the sys 8004 basically registers the NFT and mints it
+[17:02] And gives you a badge and says, you know, if this badge is now linked to this external key
+[17:08] It's all being verified and the agent card that exists with this NFT is also being verified and hash exists
+[17:15] So you can actually verify it
+[17:18] Cool, which means you don't need to know anything like concordium to be honest
+[17:22] You just need an identity
+[17:23] Which is relatively simple to get other using the concordia magia for any of the wallets you just do kind of that
+[17:29] verification
+[17:30] As a business or as an individual you can then use the MCPs, which is what we're going to show you today
+[17:37] Register your agents against your concordium account and hence give your agents an accountability no matter where the agent is
+[17:48] Agent cards are public
+[17:50] Jason is this kind of verifiable. There'll be information in there and I'll show you what's the
+[17:55] Kind of Jason stretch it looks like but basically your
+[17:59] Concordium badge ends up in under capabilities of the extents extensions following the 8004 standard and the agent card standard
+[18:07] Okay, and I'll show you the detail
+[18:09] In shortly once we do start doing the demos
+[18:11] I'm just conscious of the time and I'm trying to rush through because I know these demos
+[18:14] I'm gonna go necessarily right because the demo goes. Let's see
+[18:19] and
+[18:20] obviously we publish the
+[18:23] The hashes onto the registry which means it's there and you can verify it or another agent can verify that the card and
+[18:29] All the Jason information that's in there is valid and legit and hasn't been changed since the verification took place
+[18:35] Or since the registration took place
+[18:37] So what it does do and what it doesn't do right what it can do is that there is a business or
+[18:47] Human behind it. Okay, there is an account an active status of the actual
+[18:52] Agent registration because you can revoke it right so you can say this agent no longer belongs or this NFD is no longer there
+[18:59] It can prove that the agent Jason or the agent card Jason is
+[19:05] Valid that hasn't been modified since it was registered, right?
+[19:09] And it can obviously show you that there is an external key that has been verified by a small contract to be true and existing
+[19:16] What it doesn't do is doesn't say that the agent has permission to spend or act or do anything
+[19:21] It is not a it could it's not bad or verification the code of the agent is good or anything like that
+[19:26] Or indeed that's the business that you're interacting with is a reputable one, right?
+[19:30] Those are still things that need to be verified once you know what the business is right
+[19:37] So
+[19:39] One of the things that the question comes is can the agent hold this identity now up to now what you've seen is me
+[19:45] Holding my identity in my wallet in my device, right? Which?
+[19:50] Kind of then brings the question. Well, what does the agent have here?
+[19:53] Does I mean the agent needs to have access to my account and my wallet and my ID etc, etc
+[19:58] So what we did is we have built and is now live in there net and agent IDP now
+[20:05] Just bear with me here and I'll quickly explain it, right? You have the ability to actually go and say
+[20:11] Here's my identity to an IDP
+[20:13] They create this identity object
+[20:15] They give it to you or cryptically safe and your device etc. etc anchors signatures so forth, which is what we covered on Monday
+[20:24] What we've done with the agent IDP is you can literally ask your agent and say go and get yourself a concordium badge
+[20:30] It will go and look on the concordium network and it will find the agent IDP
+[20:35] It will do a MCP and say, right? I need an ID. I need a badge
+[20:40] The agent IDP will return it with a URL and go and give this to your human, right?
+[20:45] Get your human to click on this link
+[20:48] To verify they are who they are
+[20:51] So, you know your AI assistant shows you the link and says look I can get a concordium ID badge
+[20:57] But I need you to kind of do the human part of this so you click on that link
+[21:02] It pops up
+[21:03] Do you do a connection to other your concordium ID app or any concordium compatible wallet?
+[21:10] So your code or deep link or
+[21:14] whichever device you have at that point in time
+[21:17] And then what it allows you to do is it allows you to utilize our ability to do zero knowledge with reveals
+[21:25] To then give so at this stage you're now talking to agent IDP directly
+[21:29] You're not talking to your agent you just follow the link and I've ended up on the agent IDPs website
+[21:34] The same way as when you follow a link to do the verification of your passport and your your face or your
+[21:40] Document and your face and you're all on the IDPs servers, right?
+[21:44] You're not on the concordium servers or anything like that or or anywhere else
+[21:48] That's the same here. You're now on the servers of the IDP the agent IDP
+[21:53] And you say right out of my identity object that I hold on this device and you can select which one it is
+[21:59] I want to reveal maybe my name my date of birth
+[22:02] That's it or in fact not even my my name or anything else
+[22:06] I just want to give the agent my date of birth so they can verify that it's acting on behalf of someone who is an adult
+[22:12] Or who is over 18, right?
+[22:15] What happens there is the same process now happens between the agent IDP and the agent
+[22:20] So in essence what we had is agents is here went to the agent IDP and said I need a I need a badge
+[22:27] Agent IDP said well here's a link give it to a human so the human that comes into place
+[22:31] Now the IDP and the human do whatever they got to do and kind of reveal
+[22:36] information that wants
+[22:37] And IDP goes okay great. I now have what the human wants to share with you, Mr. Agent
+[22:43] I'm going to now sign the same way as I sign any other
+[22:48] Identity object and whatnot and I'm going to give it to you as here is your concordium ID
+[22:54] Jason structure which now allows the agent to continue
+[22:58] Talk to the MCP server and create an account and register itself and accounts that they can have a key, etc. etc
+[23:05] now
+[23:07] Two things here to keep in mind
+[23:08] This is identity at this point and it means that the agent has a copy of that ID object
+[23:14] Which is only got the date of birth in it because that's the only thing we revealed
+[23:19] But it means it has all the keys and
+[23:22] Verifications that it needs to be able to now generate zero knowledge proofs and have someone verify it against the account that it just created
+[23:30] Now the question here is how do we know that an account on concordium is an agentic?
+[23:36] account or a human account and the reality is every account
+[23:41] Specifies which IDP the ID came from
+[23:45] So we can tell straight away by just looking at the account publicly that that account there is actually an
+[23:51] Account that is in verify with the agent ID
+[23:54] Right further down the line when we do modifications to the protocol will add more
+[23:59] Details as to kind of which one's an agentic one versus which one's not an agentic one and so far
+[24:03] But even right now with what we have we can identify a genetic accounts versus human or company accounts
+[24:10] So again if we're doing a to a or if we're trying to put safeguards in or we're trying to kind of identify
+[24:17] Is this a human spending money or is this an agent spending money?
+[24:20] We have the ability to see that on the chain and kind of stop things or progress things depending on what it is
+[24:26] But now that this exists now that this agent has this this this account can now
+[24:31] register itself with the agent registry get yourself an NFT badge create its
+[24:38] Agent card do the hash edit today to register
+[24:42] And it comes in native and podium bad holding agent with identification that it can now go anywhere and
+[24:49] prove that it's acting on the other entity that is over a team
+[24:53] and the more important thing is that's the person that they're verifying against can come and
+[25:00] Validate those proofs
+[25:01] Against the chain and have their own piece of mind that yes everything here is legit without giving any information away
+[25:08] We like giving anything about who I am or where I am or etc etc etc
+[25:11] And even if they didn't kind of go wrong because sometimes they do this doesn't have access to the whole of my identity
+[25:18] And it kind of just do things which I don't want to do
+[25:22] So there you go
+[25:24] and
+[25:26] As I said, this is kind of what agent IDP is a bit further down in the lessons
+[25:31] You'll kind of get a session where you understand how you interact with this and how you play with it and kind of
+[25:37] What you do and how it works. I'm not going to demo that to you today today
+[25:40] I'm just gonna do the agent registration so you see how the NFT the agent card and the MCP servers all work
+[25:48] Right so obviously now that we've got this we have agent a talking to agent B
+[25:54] You know request a service from another agent. We want to resolve the badge
+[25:58] So so what we do is we go in and we kind of say right this is what we're gonna verify against
+[26:06] the
+[26:08] Protocols that we have in there which I've already explained and I'll get into it now one thing
+[26:12] Which I just want to kind of cover here is how the identity structure works in the podium
+[26:18] And I know this is kind of a lot on the page
+[26:21] But just there with me and I quickly explain it right and then you can read it in more detail
+[26:26] offline or
+[26:27] afterwards
+[26:28] You can create one
+[26:31] Verified ID it's in your device
+[26:33] What the chain allows you to do is to create up to 26 accounts off that one ID
+[26:39] So account one account two count three etc etc etc, right?
+[26:43] All with separate addresses and what not and
+[26:46] You can't tell that account one is linked to account two only you can because you have it on your device
+[26:52] With all these accounts, but just looking at the chain. No one can tell
+[26:56] What we then have is inside each account you can have multiple account credentials, right?
+[27:01] so you can have a bcd etc etc etc and
+[27:05] Each one of these credentials can have up to 255 keys associated to it and with all of them
+[27:12] you can have this kind of
+[27:16] N or M to sign for the signature to be valid, right?
+[27:19] So you could do any one of these could sign or you could say two out of the three or you could say all three could sign and
+[27:25] so forth so this is how the account structure exists on a
+[27:32] Concordium account so kind of allows you to to kind of filter quite the fair amount, right?
+[27:37] but this is a
+[27:40] Concordium account with keys, right? So this is a spendable or this is kind of visible on the on the chain itself
+[27:48] obviously this is eight
+[27:51] Kind of external keys you can register as many as you want and associated to NFTs one by one
+[27:56] And then you can kind of store that all the data registry and give it all to the one account
+[27:59] So this one account could hold multiple NFTs
+[28:04] Which I link to multiple keys externally to some other chain and
+[28:10] So the reason the reason I'm kind of going
+[28:16] Into this is because what allows you to do is to say for one owner if we reply to the agent kind of world
+[28:23] One owner can have agent one agent two agent three, right?
+[28:27] All with keys external keys as as we call it because they're not really external keys
+[28:32] But they're just keys, but they're registered in the sys eight, right?
+[28:36] So what that kind of transpires and stay with me on this one because it takes a bit to to get your head around
+[28:42] I can as an individual have one account that now owns
+[28:47] 255 agents against that one account
+[28:51] All visible on concordium all the keys are kind of there and you can kind of see that the public keys are there
+[28:56] And each agent can get the one private key
+[29:00] Register it in the sys eight contract right and associate it to an nft
+[29:06] And then that agent can prove that it is indeed that agent by signing that
+[29:11] private key itself
+[29:13] So all of it is visible on the concordium chain
+[29:15] And you can verify it against the accounts and against the sys eight and against the sys eight thousand four
+[29:21] Contracts and I hope that that kind of makes sense a bit as to kind of how you scale this should you need so many
+[29:27] kind of agents
+[29:29] To be registered on the concordium chain itself and for the hackathon. I'm not assuming this is needed
+[29:36] Or unless you use case warrants
+[29:38] 250 agents in which case I'll very interested to see what that is
+[29:43] But it just means that this is the structure that we can create
+[29:48] And I just want to kind of clarify the difference between the keys and what each one does or should do or shouldn't do right
+[29:54] There's three different keys three different kind of outcomes. There's the identity credential
+[29:59] Right, who is responsible? This is the idp issued identity, right?
+[30:04] And it kind of links it to your
+[30:07] account
+[30:09] Then we got the agent signing key. So this is the key that the agent holds and can sign to prove
+[30:14] That it has access to this to this private key
+[30:17] And hence it can register the public key somewhere like in the sys eight
+[30:21] Contract and put it in this a to a kind of challenge and say look
+[30:26] This is my badge. This is my
+[30:29] Sys eight entry. I should have the own. I am the owner of this private key
+[30:34] Here's a signature that I can give you that you can verify that everything kind of adds up and makes sense
+[30:40] And then you've got the keys which can actually sign transactions on the concordium chain to actually do kind of a movement of
+[30:48] Assets or or interaction with the chain itself because those keys will get very very validated by the validators
+[30:55] Against the contract against us that the account on the chain
+[30:59] And hence allow a transaction to go through
+[31:01] Right now that's all on the concordium side
+[31:05] there is in in in the in the kind of
+[31:08] 8004 standard the ability to say here's an agent wallet which is completely different which can mean
+[31:14] I'm an agent that is registered on salana or i'm not on registered on some platform
+[31:19] That isn't even a blockchain
+[31:21] I can have my concordium badge and be registered with the sys eight and in the 8004
+[31:27] But I can also then say my actual signing key where my money is for this agent is here on ethereum over here
+[31:34] Right, so this all exists on how these whole things come together and depending on use case and depending on the application
+[31:42] You kind of have to figure out which one to use where as long as it kind of all adds up and and and it can be verified
+[31:48] It doesn't really matter. It's just a preference and speed and and and cost think I guess
+[31:54] If you ever kind of worried which one to use or trying to figure out what you should do or whatever then ping me during the hackathon or whatever
+[32:01] During the the office hours and will will will help out
+[32:06] Right, let's register something shall we because we learned enough talking
+[32:13] Let's see if this is going to work
+[32:15] so
+[32:19] Hitchhike gtp. Here's my get repo. Let's see what happens just before we got into here actually here is the agent registry
+[32:27] right
+[32:28] Balm is go to it play around with it have a look you can actually just register an agent straight from here on the
+[32:34] UI right you cannot put in what it is
+[32:37] What type of agent it is you can do cross chain right? Here's the main ones but look there is a fair number of chains
+[32:45] that
+[32:46] we support
+[32:48] okay, um and and
+[32:52] You know depending on where your program is or where your application is and what it's doing you can just kind of pick up this
+[32:58] 226 at the moment right?
+[33:02] An mcp supported is basically the ones where it's not necessarily something that we do here
+[33:08] But we can actually do the entry of the sys 8 registration
+[33:11] Through the mcp rather than the screens because there's no wallet that will sign for it, right?
+[33:16] But you can do it in the background so actually up to 290 almost 300
+[33:21] Applic platforms that can be supported here
+[33:25] But I am not going to do it through the screen here
+[33:29] I'm going to do it through the mcp just to see if it works. We're going to do a live demo
+[33:35] Interaction with it. This is this is what an
+[33:37] I can quote in badge looks like this is obviously in testnet, right?
+[33:40] my
+[33:41] Wallet is connected my testnet wallet is connected you can kind of see
+[33:45] This is the badge right is when it was registered. Here's the account that owns it
+[33:51] Right, there's no hash or URL at the moment on this one
+[33:55] We've got our sys 8 entries, right? This is the public key so you can see kind of what
+[34:01] Cryptography is using etc and ethereum is a personal is an ethereum one
+[34:06] Minus on base etc etc etc and the status is active
+[34:10] I strongly advise you guys to come and play around with it and take a look
+[34:17] And and see what it does and I works and obviously you can revoke
+[34:21] The nft as well so the status basically changes and you can only revoke it if you are the owner of this badge
+[34:27] Right, so you do a signature you sign for it and then they will update this
+[34:33] Entry to say that the badges were removed or revoked
+[34:36] So if you have so if anybody claims to have that badge it will obviously fail because it's been revoked
+[34:43] And you have to register anyone and here is that concordium verified badge that I was talking about
+[34:49] And if you go to cross agents you'll also see the
+[34:56] Kind of network they come from okay, right
+[35:01] I'm gonna leave that there
+[35:04] And I'm gonna show you a thousand and four scan just very quickly. So if we
+[35:09] Go here. So this is on my net. They can also do test net
+[35:13] One thing which I will say is they the first phase one is to be able to identify concordium badges
+[35:19] Phase two will be able to actually read the concordium registry
+[35:23] So at the moment, this is just reading the registries that they have integrated with
+[35:27] And any card any agent card in those registries that has a concordium badge will then pop up right with
+[35:36] So if I do a search for concordium like this one, for example
+[35:40] You'll see the little concordium badge pop up and there you go verify by concordium
+[35:46] right
+[35:48] And and and this is kind of what I was talking about by you start kind of seeing this badge appear
+[35:53] Um kind of indicating
+[35:55] That there is an accountable person or entity behind us. Okay
+[36:00] So that's a thousand and four scan, uh, which we're carrying working on
+[36:05] And one other thing which I like to show very quickly is this is another partner that's built agent cards
+[36:10] Which are specifically for concordium, right? Um, it allows you to uh, mint a card host a card
+[36:15] I think you get 10 free cards and whatnot
+[36:17] There's an mcp that allows you to do things with it and whatnot
+[36:21] I suggest you kind of go and take a look at it as well. It is quite helpful
+[36:24] Now, let's see in the last 10 minutes 20 minutes if we can actually do this
+[36:29] So here's chat gdp and I'm gonna say
+[36:33] Can you see the concordium mcp?
+[36:39] uh
+[36:41] Agent
+[36:55] Let's see now play with me
+[37:01] right
+[37:02] Okay
+[37:04] Okay, I see previous workers are another they're plugging in. No, it's not a plugin. So we're gonna go to the url
+[37:11] Uh use this url. Okay
+[37:15] And let me find oh
+[37:17] Let me find the url as well
+[37:21] um
+[37:37] There with me this where it all starts
+[37:40] being
+[37:55] Let's
+[38:04] See if it likes this one
+[38:17] There we go. Okay. So now
+[38:35] Let's see if it's gonna be able to actually make these calls
+[38:51] and
+[38:56] Uh, maybe because I am not um, can you switch to work?
+[39:17] Okay, so let's see if we can go into work mode quickly
+[39:24] There we go. Let's see what we're saying here
+[40:03] Uh
+[40:05] I'm curious to see if this is actually gonna work
+[40:24] It did work previously when we did
+[40:28] And he managed to find it and it did quite a good job in actually setting it all up
+[40:33] So I'm just curious to see if I can do that again now in the last few minutes that we have
+[40:51] I'm wondering if it's the model that's
+[40:56] I don't know. It's doing it
+[41:02] There with me. Let's see what it does
+[41:06] There we go
+[41:15] If we say let's see what it's got
+[41:24] 40 tools in total, right? So here's everything that the mcp can do
+[41:31] And let's kind of
+[41:36] Let's
+[41:55] Oh, okay, there we go
+[42:26] Right
+[42:28] Make it into a form
+[42:57] So it's not going to do any signing itself, which is good. Okay, uh, I'll be both with the copy and paste it
+[43:18] This better work yourself
+[43:20] Okay
+[43:22] Bob
+[43:33] My personal pa to um help me with my
+[43:42] Calendar and meetings there we go
+[43:50] Let's do testnet, please
+[43:59] Right, so I'm gonna use my testnet wallet here. I've got this one here
+[44:05] Which is here. So I'm just gonna copy that one
+[44:11] Oh, no wrong one. I didn't work. Let's try that again
+[44:21] Copied that a bit too fast. Okay. There we go. Uh, so, uh, no
+[44:35] But I do have a good
+[44:40] Reaper I can use to hold the agent card, right?
+[44:50] Um, and we're gonna do something like this. Um, when do you need the view? Right. Okay, cool
+[45:11] Fantastic
+[45:15] For the sake of the demo no, uh external key
+[45:21] Today so now what it's going to do is going to actually go and do the payload
+[45:31] So it's going to talk to the mcp server
+[45:33] Generate the payload that it needs to then send to the agent registry. So the sequence, um, here is
+[45:41] You basically create a
+[45:44] An entry into the sys
+[45:46] 8004 right with the right signatures and whatnot. Um, that gives you a
+[45:51] A badge the concording badge you then go and ask the mcp server to actually generate the jason
+[45:57] To to that badge you then copy and paste that
+[46:01] Section because obviously if you've already got an agent you've already got a card, etc, etc
+[46:05] So you then extract that badge jason information you put it into your agent card
+[46:11] Which is hopefully what it will do. Um, and then, uh, you you you kind of go back to the registry and say now that the card
+[46:19] Is full with the badge and everything in it. Um, I'm going to create a hash and register the url and the the the the hash
+[46:26] of it in one go, right?
+[46:28] Payload is ready. Nothing has been done yet. Next we need your wallet go right here in the files. Okay
+[46:34] um, I use the
+[46:39] Browser wallet, let's see if it can do that
+[46:44] It did the other day
+[46:47] But it is now a whole 24 hours later. Let's see. This is then one of those, um
+[47:02] time ticking boxes
+[47:05] Whether we're going to be able to have chat gtp actually do this registration
+[47:09] Uh, quickly enough
+[47:16] In essence what this is going to do now is basically run the agent registry that I showed you at the beginning
+[47:21] Um in the browser for chat gtp to have access to and then what it should do is
+[47:25] chat gtp will put the payload
+[47:28] Into what the wallet will pop up and that I need to sign so it's not going to sign because it kind of hasn't got access to the keys
+[47:34] Right, uh, but my wallet on the browser does
+[47:36] And what you should see is the payload like literally pop up to saying I'm going to do a sys 8004 registry from this account
+[47:44] And here's the the kind of payload information. Uh, that's going to go in there. Let's see if this works
+[47:52] um, okay
+[48:02] Uh, switch to wallet. Okay, uh open registry page in the browser where the uh, hang on. Let's see. Can you use the
+[48:11] uh
+[48:12] chat gpt extension to
+[48:16] Do it
+[48:19] I will sign once it
+[48:27] Spell extension
+[48:41] There we go
+[48:43] So hopefully
+[48:45] Something will pop up in the top corner there
+[48:51] Let's see if it manages to do it
+[49:02] There we go. All right. It's actually using the agent card
+[49:08] So it's using the other site to do the registration either way
+[49:12] It will actually pop up for me to sign it
+[49:16] Let's see and at the moment, uh while this is going on, uh, just to be aware all, uh,
+[49:22] Mainnet agent registrations
+[49:24] Um are sponsored. So if you use the form you don't actually need to hold any ccds
+[49:27] You don't need to go and on ramp and and get ah, there we go as we were talking
+[49:31] Um, here's the here's the account that we're using that we said right? It's a sys 8004 registration
+[49:37] It's on test that because this is the test net uh index
+[49:40] Um, and here is the payload right? So this is the url
+[49:43] Uh that is going to do and at the moment it's just going something because it doesn't know what the url is yet
+[49:48] We're going to come back. There's no hash. Uh, there's no external reference needed
+[49:52] Uh, so let's just do it and get ourselves a badge
+[49:55] So i'm going to say done
+[50:02] And then see what happens. There we go. Uh, the registration
+[50:08] Agent card yet. That's the site. So we're going to put it on there
+[50:11] Oh, it's actually registering it on that one rather than the
+[50:13] url at the moment
+[50:17] So that is done too
+[50:29] So at the moment what it's done is actually generated a card on the agent card rather than on git
+[50:35] So let's see if we can get it to change
+[50:37] And update the badge. Uh, bobby registers on test net and all of creation checks pass
+[50:42] So it actually used the agent card instead of the agent registry to do it. Uh, so I found another way. Um, I
+[50:49] want to
+[50:51] Create
+[50:54] A agent card
+[50:56] And
+[50:58] My it
+[51:00] Wea
+[51:02] So let's use the mcp to
+[51:06] Generate
+[51:08] the
+[51:10] Then I will save it here
+[51:15] Save it
+[51:17] In my git and give you the url
+[51:22] You can update it all and
+[51:28] Register the new url
+[51:31] And hash and what I'll do here is I'm just gonna add
+[51:45] So we did one for an here, right? And it's just agent dash card
+[51:49] Jason. So let's go back here. We're gonna add a file
+[51:53] Create new file and what I'm gonna do. I'm gonna call it bob
+[51:57] agent
+[52:02] Right, and I'm just gonna do it empty
+[52:07] One for now
+[52:10] There we go
+[52:11] And then I'm gonna use the raw
+[52:16] Okay, uh
+[52:24] There we go. Let's see what it does
+[52:32] Conscious of the time
+[52:34] But hopefully you kind of get to see what we're saying
+[52:38] And how this all comes together. Let's see what it says
+[52:41] Our journey was cut. Okay. So hopefully we'll see a jason here
+[52:47] And I can quickly talk through jason even if I don't get to finish the full demo before time is up
+[52:52] There you go. That's what I wanted to see
+[52:56] There's the capabilities. There's the extension. Hey presto
+[53:01] That is indeed what we wanted to see and I can quickly talk you through it
+[53:07] Um and see if indeed
+[53:11] Copy code. So now let's go and edit this
+[53:15] Right, um, then let's
+[53:18] Paste that in there. Here we go, right
+[53:21] So here's bob my personal assistant, etc, etc, etc
+[53:25] This is kind of all a to a card standards
+[53:28] I'm sure you guys can are aware or or we can easily pick it up the bit that I just want to kind of focus on and concentrate on here
+[53:34] Is this capability here bit, which is the extension bit, which is the concordium badge itself, right?
+[53:39] So here's the concordium extension concordium badge version one you can verify. So this is kind of readable
+[53:45] Here's the actual token. So this is a
+[53:48] Cis 19 uh, no, it says 19 a cake 19 format. This is kind of what it looks like. This is the actual
+[53:55] badge itself
+[53:57] And this is our chain and whatnot and this is a sys 2 nft token, which is what's being kind of described there
+[54:03] Here's the actual account address. So these are all captured here. This is the small contract address and whatnot
+[54:09] And the bit that is is kind of where it really gets
+[54:12] Exciting say exciting for me. Anyway, um, is the actual verification you are. Look if I just take this
+[54:18] right
+[54:19] And I copy it from here
+[54:22] Right and I paste it
+[54:24] Uh, what I'll get is an actual verification output as the kind of what status the card is in, right?
+[54:31] Now, obviously we haven't updated the json yet, right?
+[54:35] So this is pointing to the old agent card site and that's why everything is still true and working correctly
+[54:41] So now let's change it to the get one uh and take it from there
+[54:46] So I'm going to commit these changes, right and right at the bottom. This is the kind of agent id and registration
+[54:51] Um, so let's commit these changes. Uh, yep update
+[54:57] Hey presto
+[55:00] Done
+[55:02] update
+[55:04] URL and hash
+[55:06] Let's see
+[55:14] So there you go. It's going to get it from the get repo. It's going to hash it and then it's going to then
+[55:20] um
+[55:21] Set it up so that I can sign and say yes update the the agent card and then that will be the last demo
+[55:34] Let's see
+[55:43] 10s moments just before the end
+[55:45] It's kind of where everybody's just sitting on the edge
+[55:49] Well, at least I'm sitting on the edge
+[55:53] Let's see
+[55:55] I mean it did work once
+[55:59] So I can I can I can safely say it managed to pop up something to sign with the browser wallet
+[56:06] um
+[56:08] But let's see if I'm I'm lucky twice in one demo
+[56:13] But you kind of kind of see the the key bits here, right?
+[56:16] And this is kind of what's the a to a protocol will use
+[56:19] This is all the information that another agent needs in order for it to be able to verify that this is indeed an agent
+[56:24] That is acting on behalf of someone on this account and if you add this now the agent can do a
+[56:31] um
+[56:32] A reveal a zero no if we reveal it can actually say are you really pete's?
+[56:37] PA can you do a reveal of the name that is associated to you on this?
+[56:42] Account here, right so you can say yes, I am pete's PA
+[56:46] um, and his his his is a zero no reveal that allows me to say I'm pete's and you can go and verify it all
+[56:53] against the chain and against the registries and against my card and against all the hashes that exist
+[56:58] So, you know, there's there's there's enough proof for someone else to know that yes
+[57:02] You're actually booking the meeting to talk to pete rather than anybody else, right?
+[57:07] um
+[57:09] Okay, so it's still doing it. Let's see
+[57:14] So the get card is valid. Great. It's gonna do the hash great
+[57:23] Put your sim the card but doesn't expose the custom url
+[57:27] Okay
+[57:29] I was close
+[57:33] You should be able to update the url and hash
+[57:39] using
+[57:41] The
+[57:48] Let's see
+[57:50] Let's see if it can do it
+[57:53] And don't forget this we haven't actually done an mcp plugin to chat gp yet, right?
+[57:58] We have we it's not like we set it up for it to use or anything like that
+[58:01] It it just found it and it's now using it
+[58:04] So we didn't have to do a plugin setup or anything like that. These are hosted mcp servers
+[58:11] What you'll get a bit further down the line and later on is the actual
+[58:16] mcp that you'll download and set up, okay?
+[58:19] And these are kind of npm ones that you'll bring into your project or into your code that will then allow you to interact with the concordium chain
+[58:26] Okay, um
+[58:29] Let's see if it does this will give it another minute
+[58:31] Gold I know you got I don't know if we're how we're doing on time. I know we're just over
+[58:36] But let's see if it can manage to do this or not. Yeah, no, okay. We're good. We're all good. Okay
+[58:42] Give it another give it another minute and if it doesn't work we know it worked at least once
+[58:49] Now it doesn't seem to find it at the moment. So
+[58:53] What I will show you is the the other card that was actually registered and so on testnet if we look here's the agent card, right? Here's our
+[59:01] NFT this is our
+[59:06] Our
+[59:07] Account and here it is the actual thing and you can see that it still has that verification URL here as well
+[59:14] Because this is the one that is on the agent card
+[59:17] But you can update it obviously using the mcp, right?
+[59:20] And it will update the the to the new URL put a new hash in
+[59:24] And what you can see in the registry
+[59:28] Here if I click on it
+[59:33] Here's the hash, right, which will correspond to whatever is in this json here in this URL
+[59:40] And hopefully that's been helpful. Um, you got to see a lot of it kind of in action
+[59:45] Strongly recommend you guys play around with it. There's only so much I can showcase here
+[59:49] But you can kind of see how easy it can be it does generate everything
+[59:52] There's a lot of tools there's 40 tools on the mcp server for the agent registry
+[59:56] Go and play around with it. Take a look as to kind of what it does
+[59:59] You can see kind of how the json structure comes about this is all generated by the mcp
+[60:04] So you don't have to sit there doing this yourself. Um, you know, you don't really need to know how concording works
+[60:10] So you see in lessons of covering how concording works so you get a
+[60:14] Sense of what the chain is doing in the background but to actually interact with it and to actually integrate it into your into your
+[60:22] Into your project is, um, you know, rather straight forward and easy hopefully
+[60:28] By all means, uh, shoot me any questions you've got now or afterwards or whatever it may be. Uh, I think that's the
+[60:35] Question in chat
+[60:36] I just noticed if you want to pick up on that from which
+[60:40] Uh, if my agent or is is already live on ethereum or salon now
+[60:46] What's the quickest way to get it registered and showing the verified by concording badge?
+[60:51] this week
+[60:52] Uh, mate, I think that the the easiest one if you don't want to muck about with mcp servers
+[60:56] It's literally come to the agent registry here. I go to mainnet. So if I disconnect my test that wallet
+[61:02] um
+[61:03] You can go to mainnet here
+[61:08] This is now i'm gonna have issues with it because it's already connected to a wallet. Let's see if I can do a full reset on this
+[61:17] But in essence
+[61:21] You know it because it's still connected to the wallet and what you on when you connect to mainnet you'll be able to register an agent
+[61:29] Uh, put in your concording url. Whatever you may be right to cross chain one
+[61:34] Put ethereum or salana here. Uh, I'll do ethereum now very quickly just to kind of
+[61:40] Uh, let's do this one here just for argument sake
+[61:44] Because if you hit something in there, okay cross chain one ethereum click on the next
+[61:51] So yep, yep, yep, and then you you have to literally connect your evm wallet, right?
+[61:56] So wherever it is you sign for it with your evm
+[61:59] It goes through
+[62:00] The the processes it helps you go through it bit by bit and then that's it you register and you get a concording badge
+[62:07] Then you can get a concording agent, right?
+[62:09] Um, you can also use the the the agent card site to look at it once you've got an agent card, right?
+[62:15] Um, you obviously do need to on ramp onto concordium
+[62:19] To to to get an id, right? So
+[62:23] You can get a testnet one just download the browser wallet connect the testnet
+[62:28] And go through the testnet idp like I showed you when I was doing it on the on the
+[62:32] Uh, on the tablet here
+[62:34] Uh, and here you can like it's this testnet
+[62:38] I uh idp or ip that will allow you to then set up whatever you want and if you want to remain it then obviously you gotta go through a proper
+[62:44] Identification
+[62:46] Hopefully that answers your question
+[62:48] Um, of course you can play around with the mcp as well. All the links are
+[62:53] Yeah
+[62:54] Uh, and everything that you need
+[62:56] Anything else from anyone else?
+[63:01] Uh,
+[63:04] I think it's a cup or more
+[63:07] Are you guys running any events in the near future? I assume that means any event in london or somewhere?
+[63:13] Yeah, I mean we're we're all over the place at the moment. Um, and you know join join our discord channel join our
+[63:19] Telegram channels and and we can keep you posted as to everything that we're doing and anywhere we're going
+[63:24] Uh, you know marketing and commercial are busy attending a lot of events, but we'll keep you posted on those channels
+[63:31] Where can I join the discord channel?
+[63:33] Uh
+[63:36] Let me just I think it's all on our website as well if you go to concording.com
+[63:42] Uh, right
+[63:46] There we go all the links are here is everywhere that we are at this is x linkedin discord etc etc
+[63:52] So if you just click on it, they'll tell you where we are
+[63:55] Lovely, uh, are you guys gonna be at devcon?
+[63:58] Uh, I'm we are hoping to be there. I'm not too. I'm not too sure as to what capacity, but yes
+[64:05] Uh, and then I think the final one is about judging
+[64:09] um
+[64:11] What would stand out?
+[64:13] For judging beyond just adding a concording badge. Uh, and what is it?
+[64:17] You guys looking to
+[64:20] That's putting me on the spot a certain extent. Uh, look to be honest. I think is um
+[64:26] We we're all about kind of accountability, right?
+[64:28] We're all about being able to drop anchors on to chain and say look, this is proof
+[64:34] And that this agent is acting on behalf of a an accountable entity, right?
+[64:39] So, you know in tests that set yourself up
+[64:41] With global fiddler as a as a company and say here's my agents, uh, which are acting on this
+[64:48] Company and then have on the other end agents which are acting on behalf of people and then talking to each other
+[64:53] right and actual genuine news case where
+[64:57] Human gets benefit from having these agents doing stuff for them. Uh, that's the world. I think we're going towards right?
+[65:03] Maybe we're not here today or tomorrow, but definitely in in a year or so
+[65:08] These things are going to be acting on our behalf
+[65:10] Um, and we want to make sure two things a we want to make sure they're interacting with the right person on the other end
+[65:16] So are you for example, if you're doing the shopping on my behalf
+[65:19] Are you actually buying it from the supermarket that I want or are you randomly just ordering it from some agent that is pretending to be that supermarket?
+[65:27] Uh, and in the same way on the other end, uh, the merchant who's taking these orders
+[65:31] I want to know that I'm about to supply an alcohol in this shopping basket and I can verify
+[65:36] Um, autonomously that yeah, this is a need-owned. Uh, you know, this agent is acting on behalf of someone who is over 80
+[65:43] Uh, and whatnot payments. I think you know if we're getting incorporated that as well even better
+[65:48] Even more fantastic because you can kind of anchor things again on the chain
+[65:52] You can get consent like on the concordium idea if you can get a consent for the human saying
+[65:57] I can send to this transaction taking place go ahead
+[66:00] Mr. Agent these are the kind of things that would fantastic to see
+[66:03] Um in a real kind of world scenario
+[66:08] Anything else?
+[66:12] Let's see. Oh, thanks
+[66:14] You
+[66:17] Cool, um, do you think that's it for today?
+[66:20] Yeah, I think that I think I agree that rusted up. There's a good nice demo worked out well in the end. Uh,
+[66:27] Finally
+[66:30] So next workshop guys is on monday
+[66:34] 3k um, uk time again. So same time all consistent nice easy for you. Um, this is going to be with doris as far as i'm aware
+[66:41] correct
+[66:43] And we're gonna be looking at
+[66:45] I'll do it in trip to doris and then you guys can can have lots of fun
+[66:49] Okay, nice. Um, that's gonna be a bit more about letting your agent uh pay and get paid
+[66:54] So come back for that one on uh monday. I'll send you guys a weekly update as well and uh, I'll see you guys then
+[67:01] Awesome. Thanks everyone. Bye. Bye. Cheers. Bye
