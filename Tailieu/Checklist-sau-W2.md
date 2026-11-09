@@ -79,7 +79,8 @@ Chỉ ghi thông tin **công khai** (địa chỉ account, hash giao dịch, lin
 
 | Vai trò | Identity (IDP) | Địa chỉ account | Ghi chú |
 |---|---|---|---|
-| Kỹ sư (trên 18 tuổi) | Concordium testnet IP ("Identity 1") | ~~`38KJ...hW6s`~~ **bỏ, không dùng** | Ví #1 bị lộ seed phrase (09/11). Tạo lại trên ví mới |
+| Kỹ sư (trên 18 tuổi) | Concordium testnet IP ("Identity 1"), **ví #2** | `3Rgk...6gaw` (rút gọn, chờ địa chỉ đầy đủ) | Account tạo xong (09/11), chưa có CCD |
+| ~~Kỹ sư (trên 18 tuổi), ví #1~~ | ~~Concordium testnet IP~~ | ~~`38KJ...hW6s`~~ **bỏ, không dùng** | Ví #1 bị lộ seed phrase (09/11) |
 | Kỹ sư (dưới 18 tuổi) | Concordium testnet IP | | Dùng cho case bị từ chối |
 | Công ty A | Global FinReg (Business ID) | | |
 
@@ -111,7 +112,8 @@ Toàn bộ là dữ liệu thử nghiệm, không phải giấy tờ thật. Ghi
 | 09/11 | Account của Identity 1 tạo xong: các nút Buy/Receive/Send/Stake/Activity đã dùng được; ví nhắc "Backup Your Wallet" | ✅ Số dư 0.00 CCD |
 | 09/11 | ⚠️ **Seed phrase của ví #1 bị lộ** (ảnh chụp màn hình gửi vào chat). Quyết định: **bỏ ví #1** và toàn bộ identity/account trong đó, xóa extension, tạo ví mới | ❌ Ví #1 không dùng nữa |
 | 09/11 | Xóa và cài lại extension, làm lại các bước | ❌ Lỗi **"Duplicate idCredPub"**. Nghi ngờ ví mới vẫn dùng seed phrase cũ (khôi phục ví #1), nên credential key trùng với account đã có trên chain |
-| | Tiếp theo: kiểm tra đã chọn "Concordium Wallet Account" (ví mới, 24 từ mới) chứ không phải "Restore With a Seed Phrase" → tạo lại ví #2 | |
+| 09/11 | Tạo ví #2 với seed phrase mới (đã chép ra giấy), tạo lại Identity 1 bằng dữ liệu giả cũ, Create account | ✅ Địa chỉ mới `3Rgk...6gaw` (khác ví #1, xác nhận là ví mới). Số dư 0.00 CCD |
+| | Tiếp theo: Request CCD → ghi địa chỉ đầy đủ → identity #2 (dưới 18 tuổi) → Global FinReg (công ty A) | |
 
 | Việc | Link CCDExplorer / ghi chú |
 |---|---|
