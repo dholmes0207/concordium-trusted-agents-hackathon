@@ -79,9 +79,33 @@ Chỉ ghi thông tin **công khai** (địa chỉ account, hash giao dịch, lin
 
 | Vai trò | Identity (IDP) | Địa chỉ account | Ghi chú |
 |---|---|---|---|
-| Kỹ sư (trên 18 tuổi) | Concordium Test IDP | | |
-| Kỹ sư (dưới 18 tuổi) | Concordium Test IDP | | Dùng cho case bị từ chối |
-| Công ty A | Global FinReg | | |
+| Kỹ sư (trên 18 tuổi) | Concordium testnet IP | | |
+| Kỹ sư (dưới 18 tuổi) | Concordium testnet IP | | Dùng cho case bị từ chối |
+| Công ty A | Global FinReg (Business ID) | | |
+
+### Dữ liệu giả đã nhập vào form Concordium testnet IP
+
+Toàn bộ là dữ liệu thử nghiệm, không phải giấy tờ thật. Ghi lại để biết identity nào trả lời được câu hỏi nào khi test proof.
+
+| Trường | Identity #1 (trên 18 tuổi) | Identity #2 (dưới 18 tuổi, dự kiến) |
+|---|---|---|
+| Fail identity | Không tích | Không tích |
+| Identity expiry | 11/2027 | 11/2027 |
+| First name / Last name | DHolmes / Leo | (tên giả khác, ví dụ Minor / Tester) |
+| Sex | 0 (not known) | 0 |
+| Date of birth | 19990812 | 20120601 |
+| Country of residence / Nationality | DK / DK | DK / DK |
+| Document type / number / issuer | 1 (passport) / 12345 / DK | 1 / 67890 / DK |
+| Document issued at / expires at | 20200101 / 20300101 | 20200101 / 20300101 |
+| National id no / Tax id no | N-1234 / T-1234 | N-5678 / T-5678 |
+
+## Lịch sử thực hiện
+
+| Ngày | Việc | Kết quả |
+|---|---|---|
+| 09/11 | Cài Concordium Wallet (Browser Wallet) trên Ubuntu, tạo ví mới, chuyển sang Testnet | ✅ Thấy danh sách IDP testnet: Concordium testnet IP, Digital Trust Solutions TestNet, Global FinReg (Business ID), Dataspike |
+| 09/11 | Phát hiện: **Global FinReg (Business ID) có sẵn trong Browser Wallet**, không bắt buộc dùng ID App | ℹ️ |
+| 09/11 | Điền form Concordium testnet IP cho identity #1 (trên 18 tuổi) | ⏳ Chờ submit |
 
 | Việc | Link CCDExplorer / ghi chú |
 |---|---|
