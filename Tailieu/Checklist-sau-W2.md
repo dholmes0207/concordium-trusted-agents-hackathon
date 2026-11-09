@@ -12,7 +12,7 @@
   - [x] Ví #2 trên Testnet, Identity 1 (trên 18 tuổi), account, nhận 20.000 CCD (09/11)
   - [x] Identity 2 (dưới 18 tuổi) (09/11)
   - [x] Account cho Identity 2 (09/11), đã kiểm tra đúng identity
-- [ ] **Tạo identity doanh nghiệp bằng Global FinReg** trên testnet (đóng vai công ty A) (W2 [04:03])
+- [ ] **Tạo identity doanh nghiệp bằng Global FinReg** trên testnet (đóng vai công ty A) (W2 [04:03]). ⏸️ 09/11: tạm dừng, form yêu cầu Sign In hoặc KYB bằng giấy tờ thật; đang hỏi Discord
 - [ ] Cài ID App, chuyển sang Testnet, chạy lại 3 luồng demo trên `ccd-ui-sdk.netlify.app` (W1 [38:40–42:50])
 - [ ] Thử **consent kèm statement "trên 18 tuổi"** trong cùng một yêu cầu (W2 [09:15–09:39]); đây là nền của L3
 - [ ] Cài Node.js ≥ 18, Git
@@ -123,7 +123,8 @@ Toàn bộ là dữ liệu thử nghiệm, không phải giấy tờ thật. Ghi
 | 09/11 | Tạo account cho Identity 2 | ✅ `3Exu…Vbkss`, index 19408, 0 CCD. ⚠️ CCDExplorer hiện nhãn "Identity 1", cần đối chiếu trong ví |
 | 09/11 | Kiểm tra trong ví: account `3Exu…` nằm dưới Identity 2 | ✅ Nhãn "Identity 1" trên CCDExplorer không phản ánh tên identity trong ví |
 | 09/11 | Mở form Global FinReg (Business ID) | ℹ️ Trang `concordium-testnet.web.app/en/ccd-id-verifier/company`, có nhãn "TEST ENVIRONMENT" và "PREVIEW MODE · FAST VERIFICATION PATH". Bước đầu là "Select your company": cần **Sign in** để lấy công ty theo dữ liệu **LEI** (Legal Entity Identifier). Chưa điền gì, đang xem phần còn lại của trang |
-| | Tiếp theo: Global FinReg (công ty A) → chạy demo `ccd-ui-sdk.netlify.app` → đăng câu hỏi Discord | |
+| 09/11 | Xem hết trang Global FinReg | ⏸️ **Tạm dừng.** "Fast verification path" cần **Sign In** (chưa rõ đăng nhập bằng gì). "Standard Process" là KYB thật: nhập LEI, tải giấy đăng ký kinh doanh dưới 3 tháng, khai UBO, quét hộ chiếu, đội compliance duyệt trong 1 ngày làm việc; yêu cầu giấy tờ công ty và giấy tờ tùy thân thật. Không nhập thông tin thật. Hỏi Discord cách dùng Global FinReg trên testnet |
+| | Tiếp theo: đăng câu hỏi Discord (G1/G2 + Global FinReg) → chạy demo `ccd-ui-sdk.netlify.app` bằng ID App → W3 22:00 | |
 
 | Việc | Link CCDExplorer / ghi chú |
 |---|---|
