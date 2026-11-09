@@ -117,6 +117,7 @@ Toàn bộ là dữ liệu thử nghiệm, không phải giấy tờ thật. Ghi
 | 09/11 | Tạo ví #2 với seed phrase mới (đã chép ra giấy), tạo lại Identity 1 bằng dữ liệu giả cũ, Create account | ✅ Địa chỉ mới `3Rgk...6gaw` (khác ví #1, xác nhận là ví mới). Số dư 0.00 CCD |
 | 09/11 | Request CCD | ✅ Số dư 20.000 CCD, đã kiểm tra trên CCDExplorer testnet (account index 19406, IDP: Concordium testnet IP) |
 | 09/11 | ⭐ Phát hiện cho G1: menu Browser Wallet (bản hiện tại, testnet) có mục **"Web3 ID"**, nên phía người giữ credential CIS-4 được hỗ trợ trong Browser Wallet. Còn cần kiểm chứng: Verify & Access có yêu cầu được proof trên Web3 ID không, ID App có hỗ trợ không | ℹ️ Menu gồm: Identities, Accounts, Seed phrase, Passcode, Web3 ID, Stake, Network, About, Restore, NFT |
+| 09/11 | Tạo identity #2 qua menu Identities | ❌ Lỗi "SeedPhrase should not be retrieved without unlocking the wallet": ví đã tự khóa giữa chừng. Cách xử lý: mở lại ví, nhập passcode, làm lại ở chế độ Fullscreen |
 | | Tiếp theo: identity #2 (dưới 18 tuổi) → Global FinReg (công ty A) → chạy demo `ccd-ui-sdk.netlify.app` → đăng câu hỏi Discord | |
 
 | Việc | Link CCDExplorer / ghi chú |
