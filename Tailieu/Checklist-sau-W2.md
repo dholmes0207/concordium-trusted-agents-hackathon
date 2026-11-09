@@ -110,7 +110,8 @@ Toàn bộ là dữ liệu thử nghiệm, không phải giấy tờ thật. Ghi
 | 09/11 | Bấm Create Concordium Account cho Identity 1 | ⏳ "Account Creation in Progress", địa chỉ `38KJ...hW6s`, số dư 0.00 CCD |
 | 09/11 | Account của Identity 1 tạo xong: các nút Buy/Receive/Send/Stake/Activity đã dùng được; ví nhắc "Backup Your Wallet" | ✅ Số dư 0.00 CCD |
 | 09/11 | ⚠️ **Seed phrase của ví #1 bị lộ** (ảnh chụp màn hình gửi vào chat). Quyết định: **bỏ ví #1** và toàn bộ identity/account trong đó, xóa extension, tạo ví mới | ❌ Ví #1 không dùng nữa |
-| | Tiếp theo: tạo ví #2 (chép seed ra giấy, không chụp, không copy clipboard) → tạo lại Identity 1 với cùng dữ liệu giả → Create account → Request CCD | |
+| 09/11 | Xóa và cài lại extension, làm lại các bước | ❌ Lỗi **"Duplicate idCredPub"**. Nghi ngờ ví mới vẫn dùng seed phrase cũ (khôi phục ví #1), nên credential key trùng với account đã có trên chain |
+| | Tiếp theo: kiểm tra đã chọn "Concordium Wallet Account" (ví mới, 24 từ mới) chứ không phải "Restore With a Seed Phrase" → tạo lại ví #2 | |
 
 | Việc | Link CCDExplorer / ghi chú |
 |---|---|
