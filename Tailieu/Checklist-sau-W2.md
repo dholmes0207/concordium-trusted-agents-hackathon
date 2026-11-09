@@ -79,7 +79,7 @@ Chỉ ghi thông tin **công khai** (địa chỉ account, hash giao dịch, lin
 
 | Vai trò | Identity (IDP) | Địa chỉ account | Ghi chú |
 |---|---|---|---|
-| Kỹ sư (trên 18 tuổi) | Concordium testnet IP | | |
+| Kỹ sư (trên 18 tuổi) | Concordium testnet IP ("Identity 1") | `38KJ...hW6s` (rút gọn, chờ địa chỉ đầy đủ) | Account đang tạo (09/11) |
 | Kỹ sư (dưới 18 tuổi) | Concordium testnet IP | | Dùng cho case bị từ chối |
 | Công ty A | Global FinReg (Business ID) | | |
 
@@ -105,7 +105,10 @@ Toàn bộ là dữ liệu thử nghiệm, không phải giấy tờ thật. Ghi
 |---|---|---|
 | 09/11 | Cài Concordium Wallet (Browser Wallet) trên Ubuntu, tạo ví mới, chuyển sang Testnet | ✅ Thấy danh sách IDP testnet: Concordium testnet IP, Digital Trust Solutions TestNet, Global FinReg (Business ID), Dataspike |
 | 09/11 | Phát hiện: **Global FinReg (Business ID) có sẵn trong Browser Wallet**, không bắt buộc dùng ID App | ℹ️ |
-| 09/11 | Điền form Concordium testnet IP cho identity #1 (trên 18 tuổi), bản cập nhật: expiry 12/2027, sex 1, số giấy tờ mới | ⏳ Chờ submit |
+| 09/11 | Điền form Concordium testnet IP cho identity #1 (trên 18 tuổi), bản cập nhật: expiry 12/2027, sex 1, số giấy tờ mới | ✅ Submit xong |
+| 09/11 | Identity #1 hiển thị là "Identity 1 — Verified by Concordium testnet IP" (Passport, 13118023) | ✅ |
+| 09/11 | Bấm Create Concordium Account cho Identity 1 | ⏳ "Account Creation in Progress", địa chỉ `38KJ...hW6s`, số dư 0.00 CCD |
+| | Tiếp theo: chờ account xong → Request CCD → ghi địa chỉ đầy đủ | |
 
 | Việc | Link CCDExplorer / ghi chú |
 |---|---|
