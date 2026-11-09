@@ -9,6 +9,8 @@
 - [x] Kết nối Discord
 - [ ] **Tạo project trên trang Encode** (bắt buộc trước Checkpoint 1)
 - [ ] Browser Wallet → Testnet → Test IDP: tạo **2 identity cá nhân** (một trên 18 tuổi, một dưới 18 tuổi) → tạo account → **Request CCD**. Faucet từng sập trong W2, nên xin dự trữ ngay
+  - [x] Ví #2 trên Testnet, Identity 1 (trên 18 tuổi), account, nhận 20.000 CCD (09/11)
+  - [ ] Identity 2 (dưới 18 tuổi) và account
 - [ ] **Tạo identity doanh nghiệp bằng Global FinReg** trên testnet (đóng vai công ty A) (W2 [04:03])
 - [ ] Cài ID App, chuyển sang Testnet, chạy lại 3 luồng demo trên `ccd-ui-sdk.netlify.app` (W1 [38:40–42:50])
 - [ ] Thử **consent kèm statement "trên 18 tuổi"** trong cùng một yêu cầu (W2 [09:15–09:39]); đây là nền của L3
@@ -79,7 +81,7 @@ Chỉ ghi thông tin **công khai** (địa chỉ account, hash giao dịch, lin
 
 | Vai trò | Identity (IDP) | Địa chỉ account | Ghi chú |
 |---|---|---|---|
-| Kỹ sư (trên 18 tuổi) | Concordium testnet IP ("Identity 1"), **ví #2** | `3Rgk...6gaw` (rút gọn, chờ địa chỉ đầy đủ) | Account tạo xong (09/11), chưa có CCD |
+| Kỹ sư (trên 18 tuổi) | Concordium testnet IP ("Identity 1"), **ví #2** | `3Rgk3fkCJVsyqdpetE7Xq6w8KFhY7RQhQh8na1Qc36b4A26gaw` | Account index 19406. Có 20.000 CCD (09/11). [CCDExplorer](https://ccdexplorer.io/testnet/account/3Rgk3fkCJVsyqdpetE7Xq6w8KFhY7RQhQh8na1Qc36b4A26gaw) |
 | ~~Kỹ sư (trên 18 tuổi), ví #1~~ | ~~Concordium testnet IP~~ | ~~`38KJ...hW6s`~~ **bỏ, không dùng** | Ví #1 bị lộ seed phrase (09/11) |
 | Kỹ sư (dưới 18 tuổi) | Concordium testnet IP | | Dùng cho case bị từ chối |
 | Công ty A | Global FinReg (Business ID) | | |
@@ -113,9 +115,10 @@ Toàn bộ là dữ liệu thử nghiệm, không phải giấy tờ thật. Ghi
 | 09/11 | ⚠️ **Seed phrase của ví #1 bị lộ** (ảnh chụp màn hình gửi vào chat). Quyết định: **bỏ ví #1** và toàn bộ identity/account trong đó, xóa extension, tạo ví mới | ❌ Ví #1 không dùng nữa |
 | 09/11 | Xóa và cài lại extension, làm lại các bước | ❌ Lỗi **"Duplicate idCredPub"**. Nghi ngờ ví mới vẫn dùng seed phrase cũ (khôi phục ví #1), nên credential key trùng với account đã có trên chain |
 | 09/11 | Tạo ví #2 với seed phrase mới (đã chép ra giấy), tạo lại Identity 1 bằng dữ liệu giả cũ, Create account | ✅ Địa chỉ mới `3Rgk...6gaw` (khác ví #1, xác nhận là ví mới). Số dư 0.00 CCD |
-| | Tiếp theo: Request CCD → ghi địa chỉ đầy đủ → identity #2 (dưới 18 tuổi) → Global FinReg (công ty A) | |
+| 09/11 | Request CCD | ✅ Số dư 20.000 CCD, đã kiểm tra trên CCDExplorer testnet (account index 19406, IDP: Concordium testnet IP) |
+| | Tiếp theo: identity #2 (dưới 18 tuổi) → Global FinReg (công ty A) → chạy demo `ccd-ui-sdk.netlify.app` → đăng câu hỏi Discord | |
 
 | Việc | Link CCDExplorer / ghi chú |
 |---|---|
-| Nhận test CCD | |
+| Nhận test CCD | [Account Identity 1 trên CCDExplorer](https://ccdexplorer.io/testnet/account/3Rgk3fkCJVsyqdpetE7Xq6w8KFhY7RQhQh8na1Qc36b4A26gaw); giao dịch thấy trên trang: `41837ab6c4b33b5b81c834c3388e0fba65a213a76ce8b3c8fccf03cdcb617c8c` (chưa xác định loại) |
 | Đăng ký agent | |
