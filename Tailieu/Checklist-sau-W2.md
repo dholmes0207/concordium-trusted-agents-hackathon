@@ -10,7 +10,8 @@
 - [ ] **Tạo project trên trang Encode** (bắt buộc trước Checkpoint 1)
 - [ ] Browser Wallet → Testnet → Test IDP: tạo **2 identity cá nhân** (một trên 18 tuổi, một dưới 18 tuổi) → tạo account → **Request CCD**. Faucet từng sập trong W2, nên xin dự trữ ngay
   - [x] Ví #2 trên Testnet, Identity 1 (trên 18 tuổi), account, nhận 20.000 CCD (09/11)
-  - [ ] Identity 2 (dưới 18 tuổi) và account
+  - [x] Identity 2 (dưới 18 tuổi) (09/11)
+  - [ ] Account cho Identity 2
 - [ ] **Tạo identity doanh nghiệp bằng Global FinReg** trên testnet (đóng vai công ty A) (W2 [04:03])
 - [ ] Cài ID App, chuyển sang Testnet, chạy lại 3 luồng demo trên `ccd-ui-sdk.netlify.app` (W1 [38:40–42:50])
 - [ ] Thử **consent kèm statement "trên 18 tuổi"** trong cùng một yêu cầu (W2 [09:15–09:39]); đây là nền của L3
@@ -118,7 +119,8 @@ Toàn bộ là dữ liệu thử nghiệm, không phải giấy tờ thật. Ghi
 | 09/11 | Request CCD | ✅ Số dư 20.000 CCD, đã kiểm tra trên CCDExplorer testnet (account index 19406, IDP: Concordium testnet IP) |
 | 09/11 | ⭐ Phát hiện cho G1: menu Browser Wallet (bản hiện tại, testnet) có mục **"Web3 ID"**, nên phía người giữ credential CIS-4 được hỗ trợ trong Browser Wallet. Còn cần kiểm chứng: Verify & Access có yêu cầu được proof trên Web3 ID không, ID App có hỗ trợ không | ℹ️ Menu gồm: Identities, Accounts, Seed phrase, Passcode, Web3 ID, Stake, Network, About, Restore, NFT |
 | 09/11 | Tạo identity #2 qua menu Identities | ❌ Lỗi "SeedPhrase should not be retrieved without unlocking the wallet": ví đã tự khóa giữa chừng. Cách xử lý: mở lại ví, nhập passcode, làm lại ở chế độ Fullscreen |
-| | Tiếp theo: identity #2 (dưới 18 tuổi) → Global FinReg (công ty A) → chạy demo `ccd-ui-sdk.netlify.app` → đăng câu hỏi Discord | |
+| 09/11 | Tạo identity #2 (dưới 18 tuổi) sau khi mở khóa ví | ✅ Identity 2 đã tạo; chờ địa chỉ account |
+| | Tiếp theo: account cho Identity 2 → Global FinReg (công ty A) → chạy demo `ccd-ui-sdk.netlify.app` → đăng câu hỏi Discord | |
 
 | Việc | Link CCDExplorer / ghi chú |
 |---|---|
