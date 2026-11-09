@@ -90,14 +90,14 @@ Toàn bộ là dữ liệu thử nghiệm, không phải giấy tờ thật. Ghi
 | Trường | Identity #1 (trên 18 tuổi) | Identity #2 (dưới 18 tuổi, dự kiến) |
 |---|---|---|
 | Fail identity | Không tích | Không tích |
-| Identity expiry | 11/2027 | 11/2027 |
-| First name / Last name | DHolmes / Leo | (tên giả khác, ví dụ Minor / Tester) |
-| Sex | 0 (not known) | 0 |
+| Identity expiry | 12/2027 | 12/2027 |
+| First name / Last name | DHolmes / Leo (nickname) | (tên giả khác, ví dụ Minor / Tester) |
+| Sex | 1 (male) | 0 |
 | Date of birth | 19990812 | 20120601 |
 | Country of residence / Nationality | DK / DK | DK / DK |
-| Document type / number / issuer | 1 (passport) / 12345 / DK | 1 / 67890 / DK |
+| Document type / number / issuer | 1 (passport) / 13118023 / DK | 1 / 67890 / DK |
 | Document issued at / expires at | 20200101 / 20300101 | 20200101 / 20300101 |
-| National id no / Tax id no | N-1234 / T-1234 | N-5678 / T-5678 |
+| National id no / Tax id no | N-8023 / T-1311 | N-5678 / T-5678 |
 
 ## Lịch sử thực hiện
 
@@ -105,7 +105,7 @@ Toàn bộ là dữ liệu thử nghiệm, không phải giấy tờ thật. Ghi
 |---|---|---|
 | 09/11 | Cài Concordium Wallet (Browser Wallet) trên Ubuntu, tạo ví mới, chuyển sang Testnet | ✅ Thấy danh sách IDP testnet: Concordium testnet IP, Digital Trust Solutions TestNet, Global FinReg (Business ID), Dataspike |
 | 09/11 | Phát hiện: **Global FinReg (Business ID) có sẵn trong Browser Wallet**, không bắt buộc dùng ID App | ℹ️ |
-| 09/11 | Điền form Concordium testnet IP cho identity #1 (trên 18 tuổi) | ⏳ Chờ submit |
+| 09/11 | Điền form Concordium testnet IP cho identity #1 (trên 18 tuổi), bản cập nhật: expiry 12/2027, sex 1, số giấy tờ mới | ⏳ Chờ submit |
 
 | Việc | Link CCDExplorer / ghi chú |
 |---|---|
