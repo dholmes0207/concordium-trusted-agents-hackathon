@@ -11,7 +11,7 @@
 - [ ] Browser Wallet → Testnet → Test IDP: tạo **2 identity cá nhân** (một trên 18 tuổi, một dưới 18 tuổi) → tạo account → **Request CCD**. Faucet từng sập trong W2, nên xin dự trữ ngay
   - [x] Ví #2 trên Testnet, Identity 1 (trên 18 tuổi), account, nhận 20.000 CCD (09/11)
   - [x] Identity 2 (dưới 18 tuổi) (09/11)
-  - [x] Account cho Identity 2 (09/11), cần kiểm tra lại đúng identity
+  - [x] Account cho Identity 2 (09/11), đã kiểm tra đúng identity
 - [ ] **Tạo identity doanh nghiệp bằng Global FinReg** trên testnet (đóng vai công ty A) (W2 [04:03])
 - [ ] Cài ID App, chuyển sang Testnet, chạy lại 3 luồng demo trên `ccd-ui-sdk.netlify.app` (W1 [38:40–42:50])
 - [ ] Thử **consent kèm statement "trên 18 tuổi"** trong cùng một yêu cầu (W2 [09:15–09:39]); đây là nền của L3
@@ -84,7 +84,7 @@ Chỉ ghi thông tin **công khai** (địa chỉ account, hash giao dịch, lin
 |---|---|---|---|
 | Kỹ sư (trên 18 tuổi) | Concordium testnet IP ("Identity 1"), **ví #2** | `3Rgk3fkCJVsyqdpetE7Xq6w8KFhY7RQhQh8na1Qc36b4A26gaw` | Account index 19406. Có 20.000 CCD (09/11). [CCDExplorer](https://ccdexplorer.io/testnet/account/3Rgk3fkCJVsyqdpetE7Xq6w8KFhY7RQhQh8na1Qc36b4A26gaw) |
 | ~~Kỹ sư (trên 18 tuổi), ví #1~~ | ~~Concordium testnet IP~~ | ~~`38KJ...hW6s`~~ **bỏ, không dùng** | Ví #1 bị lộ seed phrase (09/11) |
-| Kỹ sư (dưới 18 tuổi) | Concordium testnet IP ("Identity 2"), ví #2 | `3Exu4kLu375FiXzUE8rxCjnRcYhxsJZwCoyUqDudHS78hVbkss` | Account index 19408, 0 CCD. Dùng cho case bị từ chối. ⚠️ CCDExplorer ghi nhãn "Identity 1", cần kiểm tra trong ví account này có thuộc Identity 2 không. [CCDExplorer](https://ccdexplorer.io/testnet/account/3Exu4kLu375FiXzUE8rxCjnRcYhxsJZwCoyUqDudHS78hVbkss) |
+| Kỹ sư (dưới 18 tuổi) | Concordium testnet IP ("Identity 2"), ví #2 | `3Exu4kLu375FiXzUE8rxCjnRcYhxsJZwCoyUqDudHS78hVbkss` | Account index 19408, 0 CCD. Dùng cho case bị từ chối. Đã kiểm tra trong ví: account nằm dưới Identity 2 (nhãn "Identity 1" trên CCDExplorer không phải tên trong ví). [CCDExplorer](https://ccdexplorer.io/testnet/account/3Exu4kLu375FiXzUE8rxCjnRcYhxsJZwCoyUqDudHS78hVbkss) |
 | Công ty A | Global FinReg (Business ID) | | |
 
 ### Dữ liệu giả đã nhập vào form Concordium testnet IP
@@ -121,7 +121,8 @@ Toàn bộ là dữ liệu thử nghiệm, không phải giấy tờ thật. Ghi
 | 09/11 | Tạo identity #2 qua menu Identities | ❌ Lỗi "SeedPhrase should not be retrieved without unlocking the wallet": ví đã tự khóa giữa chừng. Cách xử lý: mở lại ví, nhập passcode, làm lại ở chế độ Fullscreen |
 | 09/11 | Tạo identity #2 (dưới 18 tuổi) sau khi mở khóa ví | ✅ Identity 2 đã tạo; chờ địa chỉ account |
 | 09/11 | Tạo account cho Identity 2 | ✅ `3Exu…Vbkss`, index 19408, 0 CCD. ⚠️ CCDExplorer hiện nhãn "Identity 1", cần đối chiếu trong ví |
-| | Tiếp theo: kiểm tra account thuộc Identity 2 → Global FinReg (công ty A) → chạy demo `ccd-ui-sdk.netlify.app` → đăng câu hỏi Discord | |
+| 09/11 | Kiểm tra trong ví: account `3Exu…` nằm dưới Identity 2 | ✅ Nhãn "Identity 1" trên CCDExplorer không phản ánh tên identity trong ví |
+| | Tiếp theo: Global FinReg (công ty A) → chạy demo `ccd-ui-sdk.netlify.app` → đăng câu hỏi Discord | |
 
 | Việc | Link CCDExplorer / ghi chú |
 |---|---|
