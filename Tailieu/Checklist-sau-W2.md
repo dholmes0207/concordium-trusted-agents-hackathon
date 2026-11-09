@@ -124,6 +124,7 @@ Toàn bộ là dữ liệu thử nghiệm, không phải giấy tờ thật. Ghi
 | 09/11 | Kiểm tra trong ví: account `3Exu…` nằm dưới Identity 2 | ✅ Nhãn "Identity 1" trên CCDExplorer không phản ánh tên identity trong ví |
 | 09/11 | Mở form Global FinReg (Business ID) | ℹ️ Trang `concordium-testnet.web.app/en/ccd-id-verifier/company`, có nhãn "TEST ENVIRONMENT" và "PREVIEW MODE · FAST VERIFICATION PATH". Bước đầu là "Select your company": cần **Sign in** để lấy công ty theo dữ liệu **LEI** (Legal Entity Identifier). Chưa điền gì, đang xem phần còn lại của trang |
 | 09/11 | Xem hết trang Global FinReg | ⏸️ **Tạm dừng.** "Fast verification path" cần **Sign In** (chưa rõ đăng nhập bằng gì). "Standard Process" là KYB thật: nhập LEI, tải giấy đăng ký kinh doanh dưới 3 tháng, khai UBO, quét hộ chiếu, đội compliance duyệt trong 1 ngày làm việc; yêu cầu giấy tờ công ty và giấy tờ tùy thân thật. Không nhập thông tin thật. Hỏi Discord cách dùng Global FinReg trên testnet |
+| 09/11 | Bấm Sign In của Global FinReg để xem | ℹ️ Trang `concordium-testnet.web.app/en/signin`: đăng nhập bằng **email + mật khẩu**, có tab **Sign Up**. Không có tài khoản test ghi sẵn. Chưa nhập gì |
 | | Tiếp theo: đăng câu hỏi Discord (G1/G2 + Global FinReg) → chạy demo `ccd-ui-sdk.netlify.app` bằng ID App → W3 22:00 | |
 
 | Việc | Link CCDExplorer / ghi chú |
