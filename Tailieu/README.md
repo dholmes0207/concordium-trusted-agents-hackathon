@@ -7,6 +7,7 @@
 | [Bao-cao-Workshop02.md](Bao-cao-Workshop02.md) | **Báo cáo Workshop 02 (04/11)**: Agent Registry, CIS-8/CIS-8004, badge, 3 loại key, Agent IDP, demo MCP, Q&A về tiêu chí chấm, phân tích chat |
 | [Danh-gia-chot-huong-sau-W2.md](Danh-gia-chot-huong-sau-W2.md) | **Đánh giá chốt hướng nghiên cứu sau W2 (05/11)**: đã đủ dữ kiện chưa, chấm lại 3 hướng, hướng đề xuất MandateOS (gộp A+B), việc còn thiếu |
 | [Danh-gia-chot-huong-sau-W2-v2.md](Danh-gia-chot-huong-sau-W2-v2.md) | **Bản v2 (06/11)**: đánh giá lại Hướng C, thêm Web3 ID / CIS-4, đề xuất C-lite có điều kiện, mốc quyết định 11/11, dự phòng A+B |
+| [Lo-trinh-hoc-va-tham-khao.md](Lo-trinh-hoc-va-tham-khao.md) | **Lộ trình học (09/11)**: kiến thức nền mới (delegation, verifiable credential/ZK, tamper-evident log), bối cảnh ngành, giao thức agent, docs Concordium theo lớp L1–L4, lịch học |
 | [Checklist-chuan-bi-tam.md](Checklist-chuan-bi-tam.md) | Checklist chuẩn bị (bản tạm, sau W1): ví testnet, ID App, Local Stack, mốc thời gian kèm timestamp video |
 | [Research-Hackathon/](Research-Hackathon/) | 4 bản research trước cuộc thi (30/10/2026) |
 | [Workshop01/slides/](Workshop01/slides/) | 30 slide trích từ video Workshop 01 (1080p): `01–10` của Encode, `11–30` của Concordium |
