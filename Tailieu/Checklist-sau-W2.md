@@ -79,7 +79,7 @@ Chỉ ghi thông tin **công khai** (địa chỉ account, hash giao dịch, lin
 
 | Vai trò | Identity (IDP) | Địa chỉ account | Ghi chú |
 |---|---|---|---|
-| Kỹ sư (trên 18 tuổi) | Concordium testnet IP ("Identity 1") | `38KJ...hW6s` (rút gọn, chờ địa chỉ đầy đủ) | Account đã tạo xong (09/11), chưa có CCD |
+| Kỹ sư (trên 18 tuổi) | Concordium testnet IP ("Identity 1") | ~~`38KJ...hW6s`~~ **bỏ, không dùng** | Ví #1 bị lộ seed phrase (09/11). Tạo lại trên ví mới |
 | Kỹ sư (dưới 18 tuổi) | Concordium testnet IP | | Dùng cho case bị từ chối |
 | Công ty A | Global FinReg (Business ID) | | |
 
@@ -109,7 +109,8 @@ Toàn bộ là dữ liệu thử nghiệm, không phải giấy tờ thật. Ghi
 | 09/11 | Identity #1 hiển thị là "Identity 1 — Verified by Concordium testnet IP" (Passport, 13118023) | ✅ |
 | 09/11 | Bấm Create Concordium Account cho Identity 1 | ⏳ "Account Creation in Progress", địa chỉ `38KJ...hW6s`, số dư 0.00 CCD |
 | 09/11 | Account của Identity 1 tạo xong: các nút Buy/Receive/Send/Stake/Activity đã dùng được; ví nhắc "Backup Your Wallet" | ✅ Số dư 0.00 CCD |
-| | Tiếp theo: Request CCD → ghi địa chỉ đầy đủ | |
+| 09/11 | ⚠️ **Seed phrase của ví #1 bị lộ** (ảnh chụp màn hình gửi vào chat). Quyết định: **bỏ ví #1** và toàn bộ identity/account trong đó, xóa extension, tạo ví mới | ❌ Ví #1 không dùng nữa |
+| | Tiếp theo: tạo ví #2 (chép seed ra giấy, không chụp, không copy clipboard) → tạo lại Identity 1 với cùng dữ liệu giả → Create account → Request CCD | |
 
 | Việc | Link CCDExplorer / ghi chú |
 |---|---|
