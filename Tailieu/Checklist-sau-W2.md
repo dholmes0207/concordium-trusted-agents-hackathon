@@ -122,6 +122,7 @@ Toàn bộ là dữ liệu thử nghiệm, không phải giấy tờ thật. Ghi
 | 09/11 | Tạo identity #2 (dưới 18 tuổi) sau khi mở khóa ví | ✅ Identity 2 đã tạo; chờ địa chỉ account |
 | 09/11 | Tạo account cho Identity 2 | ✅ `3Exu…Vbkss`, index 19408, 0 CCD. ⚠️ CCDExplorer hiện nhãn "Identity 1", cần đối chiếu trong ví |
 | 09/11 | Kiểm tra trong ví: account `3Exu…` nằm dưới Identity 2 | ✅ Nhãn "Identity 1" trên CCDExplorer không phản ánh tên identity trong ví |
+| 09/11 | Mở form Global FinReg (Business ID) | ℹ️ Trang `concordium-testnet.web.app/en/ccd-id-verifier/company`, có nhãn "TEST ENVIRONMENT" và "PREVIEW MODE · FAST VERIFICATION PATH". Bước đầu là "Select your company": cần **Sign in** để lấy công ty theo dữ liệu **LEI** (Legal Entity Identifier). Chưa điền gì, đang xem phần còn lại của trang |
 | | Tiếp theo: Global FinReg (công ty A) → chạy demo `ccd-ui-sdk.netlify.app` → đăng câu hỏi Discord | |
 
 | Việc | Link CCDExplorer / ghi chú |
