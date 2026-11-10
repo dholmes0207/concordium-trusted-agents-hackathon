@@ -1,0 +1,1173 @@
+[00:00] Hello, everybody. Welcome back to Workshop Number 3 now of the Concordium Trusted Agents Hackathon.
+[00:06] We have got Doris today, who is a blockchain security engineer at ChainSecurity and was also
+[00:13] formerly engineer at Concordium. So she knows this whole stack inside out.
+[00:18] There's lots to be learnt here. Questions? Chuck them in the Q&A chat. I don't know if any of you
+[00:24] guys have been at DevCon recently. I know Doris is calling from Mumbai, which is great. But if any
+[00:28] of you guys have any questions, check them in the chat. And again, this session will be recorded. So
+[00:34] if you need to drop out, you can rewatch it on the platform afterwards. Please don't do so,
+[00:39] though, because we need to. That's a good opportunity to get some questions answered live
+[00:43] from the minds at Concordium. So I will hand over to Doris and we'll kick things off.
+[00:52] Yeah, thanks very much. I need to share my screen. So I hope you can see it now.
+[00:58] Yeah, thanks everyone for coming.
+[01:00] I hope you have already seen the previous ones,
+[01:03] so there was like two sessions before this one.
+[01:06] One was last Monday and one was on Wednesday
+[01:09] and I think Peter did them.
+[01:11] So if you're interested like in the ones
+[01:13] they were really good so I can highly recommend them.
+[01:15] But I will do the workshop today as well so that you can
+[01:18] show this out having this previously watched workshops.
+[01:20] But yeah, I still recommend to watch them.
+[01:23] What we do today and we will look into agents and you
+[01:27] how agents can get paid and how they can pay other entities.
+[01:31] Let's get started.
+[01:34] It's mainly focused on agents obviously,
+[01:37] but it can be also your users or other entities.
+[01:40] We also want to make it nice for users in a way that they don't see these payments
+[01:45] pumped especially if it's related to
+[01:47] like transaction fees because it's usually
+[01:48] a very high hurdle for people to get onboarded.
+[01:52] If it's new users, they're not familiar with Web3.
+[01:55] And we will do this in three sections.
+[01:57] So this is the first part, the second part, the third part.
+[02:00] The first part will be we will look into what agents can pay with.
+[02:03] So we look into stablecoins, PLTs, I'll explain what it is later.
+[02:07] And then we will look into the second part, which is like sponsored transactions.
+[02:11] So how can we make it as easy as possible for new users
+[02:13] kind of hiding the transaction fee in the complicated parts of blockchains.
+[02:17] And then we look into this new standard X4-02, which you maybe have heard.
+[02:22] and this is a new way how agents can
+[02:24] pay each other and services.
+[02:27] So let's get started.
+[02:28] I already mentioned the first three topics, parts.
+[02:31] These are the main things we will look into today.
+[02:34] And then there will be also a lookout for the future,
+[02:38] what is on the roadmap, what you can look forward,
+[02:41] or what you can already prepare your projects for,
+[02:43] to be prepared for the new features
+[02:46] and any new interesting things that is going on.
+[02:49] And obviously in the end, we have also a question section
+[02:52] that you can ask any questions that you have
+[02:54] during your hackathon that you already want to enter.
+[02:58] And we will today demo everything on testnet.
+[03:00] Why do we do this?
+[03:01] Because test CCT is free on this network.
+[03:03] You can also get the wallets, create a test identity,
+[03:06] meaning you don't need to have a password ID card
+[03:08] or anything for the hackathon.
+[03:12] Okay, we will show you first an example.
+[03:14] And this example we will use more mainly throughout the talk.
+[03:18] You can always think about you have an H&A in H&B,
+[03:21] and H&A wants to, it's like the buyer
+[03:23] that has a wallet and wants to pay H&B for some services.
+[03:27] So you can think about maybe H&B is like a supermarket
+[03:29] and it's wants to sell wine.
+[03:31] So the first part of what the H&A is doing,
+[03:33] it wants to order some wine, send a request to H&B.
+[03:37] Interesting here now you can look at it,
+[03:39] this H&A has some stable coins, 10 Euro,
+[03:44] and it has no CCD because it's like always a hard part
+[03:47] for new people to get to these native currencies.
+[03:50] In contrast, H&B has the opposite.
+[03:52] It actually has CCD and will be willing to sponsor like H&A.
+[03:57] So first we have ordered some wine from H&B,
+[04:00] then H&A will sign the payment transaction and says,
+[04:04] okay, I'm willing to provide some stable coins
+[04:06] for the service that I'm requesting,
+[04:08] or in this case it will be like a wine.
+[04:10] And then H&B will co-sign this transaction
+[04:12] and some message on the chain.
+[04:15] So this will be just one transaction, which has like two action, like one is like the payment,
+[04:20] which goes from agent A to agent B, and then also like some transaction fee, which goes from agent
+[04:25] B to the chain. And if this transaction is finalized on chain, then agent B will send the
+[04:31] wine or the service to agent A. So this is like the main use case we look into today, and we will
+[04:37] it each kind of area we look into more detail. So we will look into the stable coins, we'll look into
+[04:42] like what sponsored transactions are.
+[04:45] And then we will also like look into the X402 standard.
+[04:51] Okay, the first part, stable coins. So what are stable coins?
+[04:55] We have a specific feature on Concordium which are protocol level tokens.
+[04:58] We often abbreviate them with PLTs. And PLTs are very different to smart
+[05:03] contract transactions. So I've made a comparison here. PLTs, this is
+[05:07] what just exists in Concordium. The features are very unique.
+[05:10] Some other chains might have similar protocol-level tokens,
+[05:14] but they have maybe different features,
+[05:15] so it's specific to Concordium.
+[05:18] These ones are like smart contract tokens.
+[05:22] On Concordium, we have them as well.
+[05:23] They are called Sys2 tokens.
+[05:25] That means Concordium Inter-Robility Standard.
+[05:28] If you're familiar with Ethereum,
+[05:29] you will probably know ESE20 tokens or the Solana tokens.
+[05:35] These are very common standards,
+[05:37] and maybe you can think about it in your mental model.
+[05:40] For the PLTs, we have no smart contracts.
+[05:44] So think about it, if you have a normal token and a smart contract token,
+[05:49] you have a balanced table in the smart contract,
+[05:52] and the contract stores your balance in that state.
+[05:57] PLTs is very different.
+[05:59] It's an asset that is built-in into the protocol layer.
+[06:01] It's more likely like CCD,
+[06:03] also some CCDs like the native currencies on Concordium.
+[06:07] It also behaves in some ways similar and some of
+[06:09] the features that CCD has, also PLTs have.
+[06:12] So think more about a native currency,
+[06:14] how these PLTs behave.
+[06:16] And where these balances are stored,
+[06:18] like they always stay on your account,
+[06:20] and they also stored in that kind of account state.
+[06:23] They're not stored in a balance on a smart contract.
+[06:26] Then the question is who can hold these PLTs?
+[06:31] In normal smart contract transactions,
+[06:33] or smart contract tokens,
+[06:35] you have any address that can hold this particular,
+[06:37] Also smart contracts can hold these tokens in PLTs
+[06:41] so that only the accounts can hold it.
+[06:44] So think about maybe externally owned accounts
+[06:46] if you're familiar with the concept on Ethereum.
+[06:49] And in particular on Concordium,
+[06:50] these are actually identity verified accounts.
+[06:52] So that means the accounts and they were excavated.
+[06:55] There was some identity provided to verify
+[06:58] that there's a real world identity behind the account.
+[07:01] Okay, let's, oops, back again.
+[07:04] Launching a token is also different in a way.
+[07:07] So smart contracts, anyone can deploy the code.
+[07:10] It also means you need to audit that code.
+[07:11] It could be different and bugs could be in every new code
+[07:14] that's deployed.
+[07:16] PLTs, it's written only once by the developers
+[07:19] and it's part of the blockchain kind of core node
+[07:22] at that point.
+[07:23] That means the code doesn't change in a way.
+[07:26] So we don't need to deploy new code.
+[07:28] We just, when we issue a new token
+[07:31] and only the input parameters are changed
+[07:33] for that specific new instance of stable coin
+[07:36] that we are launching.
+[07:38] And for issues who want to get a stable coin on Concordium,
+[07:41] they get those who are approval step.
+[07:44] For testnet, they can fill in this form.
+[07:47] It's a manual process,
+[07:48] so someone at Concordium will approve it and then deploy it.
+[07:51] On the mainnet, obviously there's some Concordium,
+[07:53] the foundation needs to agree on it,
+[07:55] so it's a bit more complex process
+[07:57] until your PLT gets on chain.
+[07:59] So it is usually only for like a stepless stable coins
+[08:02] that this process is initiated.
+[08:06] For the Hackathon, now I will show you a demo how you get these stablecoins,
+[08:11] because maybe you want to try them out.
+[08:14] And for that we have a facet, and in this facet it's on testnet.
+[08:19] You can get 100 EU demo stablecoins.
+[08:24] And this is the link to the facet.
+[08:26] What you have to do is that you have to connect your wallet,
+[08:29] then you have to prove that your EU nationality is your identity.
+[08:33] that's behind the account and then you get some demo EU tokens issued to you.
+[08:40] One interesting thing, maybe I will show it later to you, is that this is one transaction,
+[08:45] this whole thing. So it's like one transaction which does several things, so several operations.
+[08:51] We look into it later, it will actually add you to the allow list and MINS tokens and then sends
+[08:55] the tokens to your account. And for this to work, you need to create an identity on testnet that's
+[09:00] part of the European Union.
+[09:03] Just make sure you would select
+[09:05] the European Union country.
+[09:07] Let's do this in life.
+[09:13] Can you see this website?
+[09:21] Can you see the allow list?
+[09:23] Yeah.
+[09:25] Okay, cool. I have my browser wallet installed here.
+[09:30] I need to log in.
+[09:32] So for now, I only have CCD in it.
+[09:34] If you are new and have done it for the first time,
+[09:36] you can call it activity.
+[09:38] There's a button to request some testnet CCD
+[09:41] in case you don't have any funds in that yet.
+[09:43] Okay, for now, I only have CCD.
+[09:45] And later we will create, see a new token
+[09:46] that a PSCL stablecoin.
+[09:49] So we first need to connect our browser wallet.
+[09:52] We connect it.
+[09:54] And we can see now that we are not on the allow list.
+[09:56] So stablecoins on concordant with the PLTs
+[10:00] have different lists.
+[10:01] So there's an allow list and a deny list,
+[10:03] and that can be enabled or disabled.
+[10:05] So what it means if you are on the allow list,
+[10:07] when some tokens are transferred,
+[10:09] then there's always check that the sender
+[10:11] and the receiver of the token is on the allow list.
+[10:13] And if anyone is not on the allow list,
+[10:15] the transaction will not go through.
+[10:17] And opposite is two for deny list.
+[10:20] So in a deny list, at effort transfer,
+[10:23] we will check that sender and the receiver
+[10:25] is not on the deny list,
+[10:26] otherwise the transaction will not go through.
+[10:29] And you see at the moment we're not on the allow list,
+[10:31] so we cannot receive any tokens of this example.
+[10:35] And you see also we have no tokens yet, our balance is zero.
+[10:40] And what we want to do, so first of all,
+[10:42] this website will actually request
+[10:44] a CK proof that we are part of the European Union.
+[10:48] Once we have this CK proof generated,
+[10:50] it will be sent to this client and then to the back end.
+[10:53] And it verifies that we're actually from the EU.
+[10:56] And then these three operations will be done.
+[11:00] And these three operations, they will be put in one transaction.
+[11:03] As I said, we can batch different token operation together
+[11:06] when it's a PLT.
+[11:08] What we will do is first we will add our account addresses,
+[11:11] this one.
+[11:11] We will add it to the allow list.
+[11:13] We will then mint 100 new demo tokens.
+[11:18] And then we will transfer them to our wallet.
+[11:20] So it will be like one transaction, but three operation
+[11:22] and one go.
+[11:23] And it will be atomically done.
+[11:24] So if any of them reverts, then the whole transaction reverts
+[11:27] and nothing going to happen.
+[11:29] OK, let's get started.
+[11:31] So you see the CK proof pops up.
+[11:34] We are from the EU or country.
+[11:36] These are all the countries from the European Union.
+[11:39] We can approve that.
+[11:42] It sends to the back end.
+[11:46] We can close.
+[11:49] We need to wait a little bit.
+[11:50] This error happens usually because we have currently
+[11:53] some services are not running indexes,
+[11:55] but it still works.
+[11:56] We need to wait a little bit,
+[11:57] and then later if you refresh the token balance,
+[12:00] you will see that we have some new tokens.
+[12:03] Let's see, I refresh it.
+[12:05] Now you see we have 100 token demos
+[12:08] to token demos issued to us.
+[12:11] We can see also this in our wallet.
+[12:14] It sometimes takes a while until the PLT arrives,
+[12:17] otherwise we can look into activity.
+[12:20] We see there's a PLT update transaction now.
+[12:22] You can look into it.
+[12:24] There's a transaction hash.
+[12:26] Here, you see the three operations.
+[12:28] They're a little bit maybe too close together,
+[12:32] so we can look into the block explorer.
+[12:34] I think this goes to the block explorer.
+[12:36] Here's a nice, you can either see that we
+[12:39] have done a token update transaction,
+[12:41] that's the transaction type.
+[12:42] So token update means it's a PLT token.
+[12:45] If it's a smart contract token,
+[12:46] it would be called contract update.
+[12:48] We see here are the three operations.
+[12:50] We have first edit us to the allow list,
+[12:52] We have then minted some demo tokens and we have
+[12:55] then transferred the tokens to our account.
+[12:58] There's also something which we later will look into.
+[13:01] It's like a memo. So every transaction on Concordium,
+[13:04] you can add a memo. This can be anything like any text string.
+[13:08] So for example, it can be
+[13:09] invoice number or something like that.
+[13:11] So for example, if I send something,
+[13:14] you can always put some memos here.
+[13:17] Okay. Let's see. Now we see we have actually our EU stable coin appears here.
+[13:22] You can click on it, you see also that the balance has updated.
+[13:25] You can see that this demo token,
+[13:28] it has an allow list and on this allow list,
+[13:30] it doesn't has an a die list.
+[13:31] You also see the decimals and you can see some more raw data,
+[13:35] what this token, what things are enabled.
+[13:38] So you see it's not possible,
+[13:40] it's burnable, it has no deny list,
+[13:43] but it has allow list, it's true.
+[13:46] It's also min-table, so you can see more information.
+[13:49] The governance account is like the most powerful account that's the account that can for example add
+[13:55] addresses to the allow list and deny list and
+[13:58] Usually can also pause the contract if it's not a contract like it's the stable coin
+[14:04] Okay, I hope you have an idea how these stable coins work and how to get a stable coin in your wallet
+[14:12] Let's continue
+[14:17] Okay
+[14:19] I think we already saw this in the wallet that each PLT has some specific attributes
+[14:27] or some of the features are enabled.
+[14:29] So if you look into the blog explorers, each of them has a page of the different tokens.
+[14:37] And you can see that there's some token ID.
+[14:39] This is unique across the whole chain.
+[14:41] That means, for example, if you see comes and wants to be issued, then you can issue
+[14:45] the token but there will be never another token issued with the same kind of token ID.
+[14:50] So we want to avoid that people get confused. And yep. And then you also can also go to this page
+[14:58] just then you see an overview of all the tokens that are currently on chain. So I will also show
+[15:01] you that. So if you for example here's one block explore that's the other block explore that we
+[15:07] have. Make sure that you're on testnet when we are when you want to look at testnet tokens.
+[15:11] and I think all the tokens are here.
+[15:17] So you can find our EU demo token
+[15:20] and you can find the information about this token,
+[15:22] what is enabled or what is not enabled.
+[15:35] Then sending a stable coin.
+[15:37] So I give you here an example from the web SDK
+[15:39] that we have, it's version 12.
+[15:41] If you have a TypeScript project or a JavaScript project,
+[15:45] you can import the package.
+[15:47] It's quite simple in a way.
+[15:50] You get a token instance,
+[15:52] you can create it and we have to provide
+[15:54] a gapc endpoint, the token ID,
+[15:56] which is like a string.
+[15:58] Then you have a token client and on a token client,
+[16:00] you can call different functions,
+[16:04] for example, the transfer function.
+[16:05] You specify your input token that you have,
+[16:09] the sender, the recipient,
+[16:11] the amount in air you can also have this memo that I showed you in the wallet as well.
+[16:14] It's a string that you can attach to each transaction.
+[16:18] One thing we haven't looked into it is how this is done in terms of sponsoring.
+[16:24] Because for now, it's like the person holding
+[16:27] the token will be sending the transaction on chain.
+[16:29] It also means that they have to pay the transaction fee.
+[16:32] The next chapter, we look into how sponsored transaction works.
+[16:37] So how can we do this easier for users who don't have native currencies?
+[16:40] in their wallets.
+[16:41] So the next part is about the sponsor transaction.
+[16:48] So what is sponsor transaction?
+[16:49] I mean, first of all, they exist quite recently where they added in March 2026.
+[16:56] And they exist for any transaction type.
+[16:59] So it's not just payment transactions, but any transaction that we have on-chain, for
+[17:03] example, also delegation, any kind of smart contract update transaction can be sponsored.
+[17:09] What does it mean when you sponsor a transaction?
+[17:12] It means that you have two actors.
+[17:14] So you have a sender.
+[17:15] The sender signs a transaction and authorizes an action.
+[17:18] So for example, in our example, it
+[17:21] would be like payment, some amount out of the wallet.
+[17:24] And then you have a co-signer, a second wallet,
+[17:26] also signing this transaction.
+[17:28] And they are authorizing that they
+[17:29] will pay the transaction fee for executing the transaction.
+[17:33] And what will the chain do?
+[17:35] The chain, the concurrent chain,
+[17:36] will then check that both signatures are valid.
+[17:38] and only when both of them are valid,
+[17:41] the transaction will go through.
+[17:43] So that also means that one of them
+[17:44] cannot change the transaction because then
+[17:46] the signature of the other actor will be wrong
+[17:48] and the transaction will not go through the network.
+[17:52] Maybe one note as well, we had something
+[17:54] before this was called Smart Contract Sponsor Transaction.
+[17:56] This is three standard.
+[17:57] It's an older approach.
+[18:00] I would not recommend it to do it nowadays
+[18:02] because this sponsored transaction that we have now
+[18:05] is a bit more convenient.
+[18:06] But just don't get confused.
+[18:07] I maybe can show you that we have
+[18:09] some older documentation still is there.
+[18:13] When we go to tutorials,
+[18:16] we have the sponsored one section.
+[18:17] It's the ones I will talk today about.
+[18:19] It works as any transaction type and there's also a way,
+[18:22] like it's called S3 standard,
+[18:24] which works only with smart contracts.
+[18:26] Just don't confuse these two concepts.
+[18:37] Okay, one question you might have is like who signs first?
+[18:46] It's one transaction and both is fine.
+[18:47] So you can either decide depending on your use case that the sponsor signs first and
+[18:52] then later the user signs.
+[18:54] That would be means that like the app has a wallet or the user has a wallet.
+[18:59] That means backend signs first and user signs and then submits it to the wallet, to the
+[19:04] chain.
+[19:05] another flow which we'll later show,
+[19:07] which is this X4.0 tool standard,
+[19:09] it uses this flow that means the sender signs first,
+[19:12] and it gave also a back-end,
+[19:14] the back-end is the sponsor,
+[19:15] it signs it and then it's submitted to the chain.
+[19:18] But for now, we will look into the first part and show you
+[19:21] some code examples for this if you want to go this way.
+[19:25] Here we have the back-end,
+[19:27] which is a sponsor service.
+[19:29] Again, like the sponsor service,
+[19:32] the back-end has now a private key.
+[19:33] So make sure that the Sparvit key stays secret,
+[19:37] meaning you shouldn't commit it to your GitHub repo,
+[19:40] and also shouldn't be never visible in the frontend accessible.
+[19:44] How you do it, you can import our SDK,
+[19:49] and then you would create,
+[19:50] for example, a token update transaction here.
+[19:52] Importantly, it's always that the backend should create this transaction,
+[19:56] or if it already gets the transaction from the frontend,
+[19:59] then you need to check that actually the operation is as you
+[20:02] expected to be otherwise somebody can submit
+[20:05] some malicious transaction maybe kind of train your wallet.
+[20:08] In this case, the backend creates the token after transaction.
+[20:12] It adds some metadata and the sender,
+[20:15] the user address, the sender nonce,
+[20:18] and when it should be expired the transaction,
+[20:21] and it also adds the sponsor address.
+[20:23] This is the address that will pay the fee later.
+[20:25] Once the transaction is built,
+[20:27] then we need to assign it,
+[20:27] the sponsor needs to assign it.
+[20:30] You have to provide your private key.
+[20:32] With the private key, you can sign the transaction.
+[20:35] And then we want to get the transaction to the front end.
+[20:37] So we kind of convert it to a JSON format.
+[20:42] This part is now sent to the front end.
+[20:45] So what does the front end do?
+[20:46] The front end is the actor that has the wallet.
+[20:50] So I talk about front ends and back ends.
+[20:52] But obviously, the front end can also be an agent,
+[20:54] or the back end can be an agent.
+[20:56] So there's different ways to do that.
+[20:59] Once you have the transaction, you can get it back.
+[21:02] from the JSON format, you have a transaction,
+[21:05] either your agent or your frontend signs it.
+[21:07] So you need an account that has access
+[21:09] and access to the private key of that account.
+[21:11] You have your transaction, you sign it
+[21:13] and send it to the transaction on chain.
+[21:15] Obviously then you need a wallet here
+[21:17] to be able to submit it on chain.
+[21:20] And yeah, that's the flow where you,
+[21:23] where the user kind of signs it later
+[21:25] and the sponsor will sign it first.
+[21:27] So maybe you wonder if you already have
+[21:32] some areas where you can test it out.
+[21:35] Yes, we have some sponsor services already running.
+[21:38] So I think in Workshop 1 that Peter did,
+[21:41] you have seen the agent registry.
+[21:43] I can show you that again.
+[21:45] There we already have some sponsor in action.
+[21:50] I think it was this one.
+[21:53] Let me see. This one.
+[21:55] So I think this frontend you already saw in workshop number one.
+[21:59] And when you click here on register agent,
+[22:01] you can register your agent without having any CCD in your wallet.
+[22:04] That means there's a backend running the sponsoring service and your transaction is paid for you.
+[22:12] Here also another kind of use case, the XDCAI.
+[22:16] They also like use the sponsoring feature on concordium to make the registration steps easier for users.
+[22:25] One thing maybe to know is like, especially if you run your own sponsoring service, there's
+[22:34] a few safeguards that you need to keep in mind.
+[22:36] Always make sure that you check before you sign anything, especially if the transaction
+[22:40] comes from a front end or from a agent, make sure that the payment is as you think it is,
+[22:46] not something religiously is submitted.
+[22:48] And then only sign it.
+[22:50] Protect your keys, meaning a server needs to make sure the private key is not leaked
+[22:54] and also need to rate limit if a user or agent,
+[22:56] because otherwise people could just train your wallet
+[22:59] by submitting endlessly many transactions.
+[23:03] And always watch your balance.
+[23:04] So it means also if your balance is slow,
+[23:06] then it needs to be often some kind of top up services
+[23:08] behind the scene, or you have to do it manually,
+[23:11] but it's obviously a bit usually complicated
+[23:14] if you do it manually and time consuming.
+[23:19] I will show you now a sponsored transfer
+[23:21] in real life and a demo.
+[23:24] And for that, first of all, you want to maybe see
+[23:27] where we get these wallet formats from,
+[23:29] like how you get your barbit keys out of the wallet
+[23:32] so you can use them in a sponsoring service.
+[23:35] You want to also look into like how transaction fees
+[23:37] are displayed in this new type of transaction.
+[23:40] Like we want to see that a transaction fee
+[23:42] for the user are zero,
+[23:43] but there's still some transaction fees shown somewhere
+[23:46] which are associated to the sponsor.
+[23:50] Okay, let's see this in action.
+[23:52] So maybe I go first, what do you want to do?
+[23:56] So we have the demo here too.
+[23:58] The goal is we want to create
+[23:59] a sponsor transaction on testnet.
+[24:01] How I did it, so I was creating a repo,
+[24:05] then I was installing our Concordium Web SDK,
+[24:08] and install some other packages,
+[24:10] but you can also ask your Cloud agent how to do that.
+[24:14] Then I was copying our example files.
+[24:16] So we have several example files that you can use,
+[24:19] I let Cloud codecs fix
+[24:22] broken dependencies because it's a little bit hard.
+[24:25] This is the examples that we have.
+[24:28] This is the examples files that we have for
+[24:31] doing different PLTs transactions.
+[24:33] There are also some transaction examples here.
+[24:38] This is the one that I was copying.
+[24:41] You can either clone the whole repo and then get it run,
+[24:44] it means you have to build the Web SDK yourself,
+[24:46] or you can do it as I did it.
+[24:47] I was just downloading the install package that you can get from NPM.
+[24:52] Then you can ask your Cloud agent to fix the dependencies to make this example work.
+[24:59] That's what I did. I downloaded the already built package from the NPM registry,
+[25:05] and then let Cloud fix some dependencies to make this example file work.
+[25:09] What do you want to do is we want to execute this file.
+[25:12] Now we need to specify the endpoint,
+[25:14] the sender wallet, the sponsor wallet,
+[25:15] the amount, recipient, memo,
+[25:18] and we have to specify secure, that means TLS enabled,
+[25:22] because this testnet notice behind TLS,
+[25:25] like you will see HTTPS.
+[25:28] Okay, first of all, let's look
+[25:29] where we get these wallet files from.
+[25:32] So if you are at the wallet,
+[25:35] this is obviously a testnet,
+[25:37] so I can show you how you get a private key out of the wallet.
+[25:40] If you go into accounts, this is my account.
+[25:42] If you go to a private key, you need to type in your secret again, you get a private key.
+[25:48] And if you look, if you press export, it will download this export file that you will use.
+[25:53] So that's how you get your export files.
+[25:56] It includes the private key.
+[25:59] Okay.
+[26:01] So once you have this, this, this private keys, you can run this example and we will do this now.
+[26:08] So it's the same command.
+[26:09] We run this example script and we have these kind of flags.
+[26:15] Let's run it and see what's happening.
+[26:20] Takes a while because the transaction needs to be submitted.
+[26:22] So it's submitted to on chain.
+[26:23] This is the transaction hash
+[26:25] and this is the transaction we get back.
+[26:27] So maybe one interesting thing to look into
+[26:29] the transaction cost is here zero because the user
+[26:32] the person that's submitting this transaction
+[26:34] doesn't have to pay anything.
+[26:36] So the wallets will also show zero transaction fee.
+[26:39] But you still wonder maybe where are
+[26:41] then the sponsor transaction.
+[26:45] The sponsor kind of costs and
+[26:46] you see it in this field.
+[26:49] So if you want to know what the
+[26:50] transaction actually costs,
+[26:51] you can go into like the summary
+[26:53] and the summary then go down to
+[26:55] the sponsored and into cost and
+[26:56] you will see the CCT amount if you
+[26:58] go further down into the field.
+[27:00] OK, let's look on Jane.
+[27:01] How this looks like this transaction?
+[27:04] See, so we have our block explorer here.
+[27:06] Make sure you're on test net if
+[27:08] So let's see.
+[27:12] You see this is like our transfer transaction
+[27:14] we're just executing and importantly here we see
+[27:17] this is like the symbol for sponsor transaction.
+[27:19] If you look into other transaction there,
+[27:22] you don't see it as a sponsor transaction here,
+[27:25] you'd see there's no symbol is not a sponsor transaction.
+[27:28] Also in the other log explore that we have,
+[27:31] you can see there's also a symbol for sponsor transaction.
+[27:34] So this is a symbol for sponsor transaction here.
+[27:37] If it's not a sponsored transaction,
+[27:39] you will not see this symbol.
+[27:44] I think that's all you want to show.
+[27:50] Let's go to the third topic.
+[27:56] The third topic was about
+[27:58] this X4C02 standard and it's a new standard.
+[28:03] In a way, it's not that new.
+[28:05] It was actually reserved already in 1997.
+[28:08] It's a HDP status code.
+[28:09] It was reserved at the time,
+[28:11] but it hasn't been really used until recently.
+[28:13] Until recently and when the agent came up,
+[28:15] payment required seems to be very useful way
+[28:19] to facilitate these agent payments.
+[28:21] Then people started to define what
+[28:24] this standard should exactly do and
+[28:25] how agents payment should work with this standard.
+[28:28] What did it do? First of all,
+[28:31] we need to understand that there was
+[28:33] an old way and a new way.
+[28:35] The old way works with humans,
+[28:37] like humans were going through
+[28:38] websites and doing action on the websites.
+[28:40] Now with agent, this is faster and also works very
+[28:44] differently because agents are not human and
+[28:45] can click around on websites.
+[28:47] Not as easily, it's not that naturally for them.
+[28:50] In the old way, we had often that we had sign-ups,
+[28:53] we had API keys or subscriptions,
+[28:56] and people had to input their credit card in a form, for example.
+[29:00] That's not very useful for agents and that's very naturally, but then it's much easier to pay per request.
+[29:07] Also in the old way, we often had very high card fees, especially credit card with your Visa Mastercards.
+[29:14] Nowadays, when you use transactions on a blockchain, the fees are usually much slower.
+[29:19] For example, I think this was a token update transaction that I checked.
+[29:23] And in an old way, also, we had this problem
+[29:26] that settling takes a several days.
+[29:28] It happens behind in the big banking system.
+[29:31] The banking, the banks need to kind of like settle
+[29:35] their fees depending on each other, but it balances.
+[29:39] And now we kind of do that much faster.
+[29:41] It's usually finalized the settlement in seconds
+[29:43] when the transaction is on chain.
+[29:48] And how does X4.02 works in four steps?
+[29:51] So we look into one part of it,
+[29:53] which is probably more commonly used,
+[29:55] which we look into two actors,
+[29:57] which is the agent A and the agent B.
+[30:00] Again, we have a buyer and a seller,
+[30:02] which can think about a seller API.
+[30:04] And the first steps as will happen is like first,
+[30:07] your agent A wants to get some data from agent B.
+[30:11] So it maybe request the forecast,
+[30:13] maybe it's a better forecast.
+[30:15] It requests this data from agent B.
+[30:18] Agent B, instead of giving the data straight away,
+[30:20] it says, okay, yes, I have the data,
+[30:21] but I want to get paid first.
+[30:23] So it returns with the HUTP status code for CO2.
+[30:28] And this became the price that I require
+[30:30] is like this amount of stable coins.
+[30:33] If H and A is fine with this kind of payment
+[30:35] and it can again call this endpoint,
+[30:38] but this time it provides a transaction
+[30:41] that signed with the payment that was requested.
+[30:43] And H and B can check this payment.
+[30:45] If it's fine, it will kind of sign it again
+[30:48] as a co-signer, as a sponsor transaction,
+[30:50] submits a transaction on the train,
+[30:52] wait until it's finalized, and returns the data
+[30:55] at the same time.
+[30:57] And in reality, the format is a little bit more complex.
+[31:00] I can show you how the whole format looks like.
+[31:04] But we don't go into detail.
+[31:06] So the whole format is a little bit more complex.
+[31:08] So we have talked about a client and a server.
+[31:10] And we looked into these four kind of interactions.
+[31:15] And reality, this is some other actor
+[31:17] is a facilitator and a blockchain and there's some more forwards and backwards,
+[31:20] but it's a bit behind the scene because it's some backend.
+[31:23] So I haven't gone into details,
+[31:25] but if you want to know more about it,
+[31:27] you can read that and also see exactly where
+[31:29] the blockchain comes into place where
+[31:31] these things are submitted to the blockchain.
+[31:34] As you see here, they're like three actors.
+[31:37] So we look into the three actors in more detail,
+[31:38] we have declined the server and the facilitator.
+[31:47] So let's look through them.
+[31:50] So first of all, concordim joined this kind of standard.
+[31:54] This is the X4C02 standard.
+[31:56] It is now an open standard for the Linux foundation,
+[31:59] and it was supported by Coinbase quite a lot initially,
+[32:03] and concordim joined this standard in September.
+[32:08] What we did to get into it,
+[32:10] like we built a package,
+[32:12] this X4C02 concordim package, you can install it.
+[32:16] Then depending on which actor you are,
+[32:18] you might need to install different parts of it.
+[32:20] For each actor, you need to install,
+[32:24] first of all, a part of the concordion package,
+[32:27] and also a package that's related to the original fees for CO2 standard.
+[32:32] So this for CO2 standard,
+[32:34] it's a wrapper that's for every chain or every payment service the same.
+[32:40] Then the concordion specific part is a block in.
+[32:42] So that's why you need to install both of them.
+[32:44] like the standard way to call it based on the standard.
+[32:50] And then you also need to have
+[32:51] to concord the specific functionalities installed.
+[32:56] For the client, that means what this package does,
+[32:59] so these two package together will does.
+[33:01] It builds and signs the payments for the server.
+[33:05] The server API, what it should have functionalities
+[33:08] it needs to turn our payment request to the buyer
+[33:13] and say, okay, what it actually wants to get paid for.
+[33:16] The facilitator, this is maybe a bit specific part.
+[33:20] First of all, in the standard way,
+[33:21] it checks all the payments
+[33:24] as the server requested and the client should then provide.
+[33:28] In addition, for concordment also has the sponsoring feature in it.
+[33:32] As I said, we want to make it easier for users so they don't have to
+[33:37] initially have CCT on their account balance.
+[33:41] So there's also a sponsoring service in the facilitator,
+[33:44] so the facilitator can pay on behalf of the user
+[33:46] that transaction fees.
+[33:48] So it will check the facilitator,
+[33:49] will check the payment, and pays the fee
+[33:51] and submits it to the blockchain.
+[33:55] And for now, there's no facilitator
+[33:58] that's concordium running or anyone.
+[34:00] So if you need the whole setup, you will probably
+[34:03] need to run your own facilitator,
+[34:05] or maybe in the long term, somebody running it for people,
+[34:09] if it makes sense.
+[34:11] Okay, again, as I said, this facilitator is a sponsor.
+[34:19] So it means, again, to actors, the buyer will sign the payment and the facilitator will
+[34:26] co-sign the payment to kind of pay the transaction fee.
+[34:29] So we have the first action, which is the buyer agent.
+[34:34] that authorizes that some, for example, some stablecoin tokens
+[34:39] will leave the account, but it holds no CCD.
+[34:43] The sponsor is the opposite.
+[34:45] It will authorize that the transaction fee
+[34:46] can disappear from its account.
+[34:51] And also the co-signer submits the transaction on chain.
+[34:53] So in this case, you see the buyer
+[34:57] is first signing the transaction.
+[35:00] And later, the sponsor is signing the transaction
+[35:03] in a second step.
+[35:07] And again, because both parties signed it,
+[35:08] no party can change it later.
+[35:14] Okay, we look into the three actors,
+[35:16] what they did and what kind of code they need.
+[35:18] So we had a seller here, that's the server backend.
+[35:23] It provides an endpoint, for example,
+[35:24] this forecast endpoint,
+[35:26] where you can get maybe some weather data from.
+[35:28] And this part here, this is the concordium specific one.
+[35:32] This one, this is a concordium specific part,
+[35:35] which comes from the concordium package.
+[35:37] The rest around the wrapper here,
+[35:39] it's the standard X402 code which comes from the standard package.
+[35:45] That's why you need these two parts of the packages.
+[35:47] What is specific for concordium?
+[35:50] We need to specify which network.
+[35:52] This is testnet. What this means,
+[35:54] it's like the variable CCD and then a very long string.
+[35:58] this very long string is the Genesis hash of Concordium for testnet.
+[36:02] So this standard was defined as CAIP2 standard,
+[36:08] and it defines how you specify a blockchain network.
+[36:13] For us, it's like CCD and then the Genesis hashed,
+[36:16] that's how we define testnet.
+[36:17] So if you want to have mainnet,
+[36:19] you use the Genesis hash of mainnet obviously.
+[36:21] You specify what you want to get paid.
+[36:25] So you specify the amount and then also which asset
+[36:28] It couldn't be, for example, CCD, or it can be our stable coin in this example.
+[36:33] You can also specify some USD value here, but then you need to have enabled a converter
+[36:40] who then converts the USD in some, for example, stable coins or some CCD.
+[36:45] And you also specify which account this should be paid to.
+[36:50] And yeah, this is what the backend does.
+[36:53] And this X402 standard.
+[36:56] So what does the fontend do?
+[36:57] Does?
+[36:59] Oh, now this is the facilitator again.
+[37:01] So the facilitator should check the transaction
+[37:03] and then co-sign it.
+[37:05] So again, the beginning here, it comes from the normal X4CO2
+[37:12] package.
+[37:13] And only this part is specific to concordium.
+[37:15] This comes with the concordium package.
+[37:16] And this one is again from the standard X4CO2 package.
+[37:21] And also specific to concordium, you
+[37:23] need to specify the concordium schema.
+[37:26] Again, you need to have a sponsor key
+[37:28] because you need to pay some of the transaction fees.
+[37:31] So you need to specify the key.
+[37:33] And then you can also enable the specific endpoint
+[37:35] you want to submit a transaction to.
+[37:40] For the sponsor account, also make sure
+[37:42] that you find it with enough CCT,
+[37:44] otherwise your kind of tests will fail.
+[37:49] Then for the front end, the buyer,
+[37:50] or you can think about your agent A,
+[37:53] who wants to get a service or get some,
+[37:56] like maybe a wine from our supermarket.
+[38:00] For that client, you can create a client.
+[38:02] Again, this client is like the normal X4.0.2 standard.
+[38:06] And this, only this line comes from the concordion package.
+[38:09] And this is again from the enormous X4.0.2 standard.
+[38:14] And the two lines as well.
+[38:16] So what is specific to concordion?
+[38:17] What the concordion package brings in,
+[38:19] it you register the chain,
+[38:21] which is like a CCT and a star.
+[38:23] The star means that any network is fine with you,
+[38:26] the testnet and mainnet you're fine with it,
+[38:28] and then you define the concordment schema again.
+[38:30] You need to have an account address and your signer,
+[38:32] so you can sign the transaction.
+[38:34] One specific thing is like in the X4C02 standard,
+[38:39] you can also add some spend controls.
+[38:41] These spend controls are soft mechanism
+[38:45] because they're only done as a policy that
+[38:49] your client code will check and enforce.
+[38:52] But only as long your client code is fine or your HNA is fine,
+[38:56] which means that nobody has had your HNA.
+[39:05] If in what you will do in the future is actually that
+[39:08] these kind of spend controls we want to put them on chain in the future.
+[39:14] These spend controls they will be done much
+[39:17] harder in force because the chain will check on them and you cannot
+[39:20] kind of segment them even if something gets hacked.
+[39:23] But for now, these are like soft controls, just policies that your
+[39:25] client code checks and it's good to add them, but later you can replace
+[39:29] them with locks, then it's much, much harder, your security
+[39:33] considerations because on-chain things cannot be hacked that easily.
+[39:39] Or these, yeah.
+[39:43] Again, and in this example, we have now that the buyer needs the stablecoins,
+[39:47] but it does not need to have CCD on its account
+[39:50] because the sponsor or the facilitator will pay for that.
+[39:56] What does the facilitator check before it
+[39:59] sends something on-chain?
+[40:01] First of all, there are some, I think, nine rules that we have.
+[40:04] You can check them out here.
+[40:06] And a little bit summarized, what they do
+[40:09] is the facilitator will check that it's
+[40:10] the right person that sends the transaction.
+[40:12] So it checks the sender.
+[40:13] It checks that the sponsor is its own address.
+[40:16] that it expected and if anything it's not right,
+[40:20] it will revert the same thing.
+[40:21] It will check that the price of the transaction is correctly.
+[40:24] So it means that the recipient address is what it expects.
+[40:27] The exact amount is correct,
+[40:29] that the right token was used and there's just one transfer.
+[40:33] And it also checks some kind of timing constraints.
+[40:35] So if it checks that the request has not expired,
+[40:38] what was specified and the signature is correct
+[40:41] and not like something has changed.
+[40:42] Now I will show you our roadmap because some of the features that are upcoming are related
+[40:52] to payments.
+[40:53] So where you get these, if you go to our website, I think it's our website, you go to the roadmap
+[41:01] here, there you find different parts, what gets built in the future and specific the
+[41:08] second part here.
+[41:09] a lot about payments. I will show you some stuff that is in the building, but obviously
+[41:15] that's still subject to change. So it's not clear exactly how these things will be defined
+[41:21] or how they will be implemented or if or when they will be implemented, but it's likely
+[41:25] that at least some of them will be available soonish. So first of all, in December, we
+[41:30] will have on May 8 a new stablecoin with the SMICA licensed. Then in January, there will
+[41:37] be this protocol level locks.
+[41:38] So as I said, the X4.0 2 standard,
+[41:41] it has some kind of soft controls,
+[41:43] or soft constraints at the moment.
+[41:45] But we want to get them into the protocol level,
+[41:48] then it means they're much harder enforced.
+[41:50] The funds will stay with the payer,
+[41:53] but there will be different restrictions you can add.
+[41:55] So your agents, for example,
+[41:57] is restricted to only spend
+[41:58] the amount that you have specified to it.
+[42:01] Then we will have verify and pay working together with these locks.
+[42:06] So, Fairfire Pay in some way already works now.
+[42:08] So, I will show in the next slide what I mean with Fairfire Pay,
+[42:11] but it will be expanded to work together
+[42:13] with these logs that are upcoming in January.
+[42:16] Then we also look into something that's concordium signers.
+[42:19] We want to make sure that keys stay away from agents,
+[42:23] so the agent cannot abuse some of the keys.
+[42:25] So, we do some research and some work around it,
+[42:28] like how we can do that and make it easier for people operating agents.
+[42:33] Now I want to explain to you what the verify access and verify pay, what these two features are.
+[42:39] Both of them have this verify at the beginning.
+[42:42] And verify literally means that you have a request as your knowledge proof.
+[42:46] And based on this proof, if it verifies, you do some actions.
+[42:49] So this is the first part. Verify access in both.
+[42:52] So it always links to some kind of see a knowledge book that you're asking about identity behind the wallet.
+[42:57] And for the pay, there will be an additional like a transaction on chain,
+[43:01] transaction on chain, which is usually a payment transaction.
+[43:03] For example, CCD payment, PLC payment,
+[43:06] or some smart contact payment.
+[43:08] Smart contact token.
+[43:10] So for the Fair
+[43:28] for the favor and pay, it's again you ask for a proof, but in addition you ask also for some payment.
+[43:34] And the back end, for example, then checks if the proof is valid and if the payment is specified,
+[43:40] once both of them are correct, then only then the seller will kind of, for the back end, will allow
+[43:45] you to access the resource or deliver on some kind of services. Yeah, in both cases you will have this
+[43:53] kind of CK proofs that you, for example, reveal that you're over 18 years old, but never reveal
+[43:57] your date of birth. It's the same in both of these cases.
+[44:05] And I have a few ideas for you for your hackathon, how you can integrate some of these things we have
+[44:12] talked about today. You can think about maybe how you want to pay your agents. So you can think about
+[44:18] how to integrate the X402 standard, how it would work in your use case, maybe think about how the
+[44:24] how the stablecoin should work in that flow.
+[44:28] You can think about sponsor onboarding.
+[44:30] So how can you use a sponsoring service
+[44:32] to make the first transaction of your user more fluently
+[44:35] so that the user doesn't need a CCD in their wallet.
+[44:39] You can think about age-gated agent shops.
+[44:41] There's a lot of discussion in politics,
+[44:44] maybe if we should have social media and not for younger
+[44:49] people, so how do we kind of restrict the access
+[44:51] to some of the content that you don't want people to access
+[44:55] if they are too young.
+[44:57] Also think about how you can maybe incorporate
+[44:59] verified pay together in these flows.
+[45:02] Then we have these trusted sellers.
+[45:04] So I think in the first workshop,
+[45:06] we also have seen this concordium batch.
+[45:08] So think about it maybe how you can verify by concordium,
+[45:12] how this batch can be integrated into your project.
+[45:14] Maybe it makes sense for it to show it or not.
+[45:18] And another thing is audible purchase logs.
+[45:20] So that's, I think in the next workshop,
+[45:23] we will think about it a little bit and give some more details.
+[45:26] So think about receipts, how we can audit
+[45:28] what the agent is doing, if it can be done in your use case.
+[45:34] And also do some kind of budgets, kind
+[45:37] of restriction on your agent so it cannot go on a spending
+[45:43] trip on its own.
+[45:44] So maybe think about how to have soft controls,
+[45:46] or maybe more hard controls in it.
+[45:48] And later, we can replace them with locks
+[45:49] once they become available on testnet.
+[45:52] They're not live yet.
+[45:54] I think they're definitely already live
+[45:55] or they're experimenting with it.
+[45:59] Any questions so far?
+[46:04] Let me see.
+[46:09] I think there's something in the Q&A section.
+[46:12] Okay, let me see.
+[46:14] How can builders get a small amount of USDR or UR?
+[46:18] You are on concordion mainnet for testing.
+[46:21] Is there a facet, a swap or someone on the team we can ask?
+[46:25] So on mainnet, I think there's no facet in the way
+[46:28] that you can get free money because it's like real value,
+[46:31] like these tokens.
+[46:33] I think you can reach out to us.
+[46:35] I'm not sure if you provide these tokens.
+[46:38] I'm probably not, probably we don't have access to them,
+[46:41] but at least you can ask like maybe someone else
+[46:43] and can give you some, but I would not be sure
+[46:46] if we really cannot give out these tokens
+[46:48] because we're not like issuing the tokens.
+[46:49] We're not holding like large amount of these tokens.
+[46:55] The next question is, XDC is already using
+[46:58] concordment identity for its agent
+[47:00] while settling on its own chain.
+[47:02] Long-term, do you want to be identity lay across every chain
+[47:06] or do you need agents settling on concordium?
+[47:09] I think we actually support both.
+[47:10] So you should keep your agents where you want to keep them.
+[47:13] So if you want to stay on Ethereum
+[47:14] or you want to stay on Solana, we stay there.
+[47:16] You can use the external keys that exist on these chains.
+[47:20] And like we have in sys8 standard
+[47:22] and registered this kind of key
+[47:24] and then use the added layer on top to fave.
+[47:27] Make sure the agent is like a human is behind this agent.
+[47:31] And like there's some accountability behind it.
+[47:33] So you can stay on under chains
+[47:34] if that makes sense for use case,
+[47:35] but obviously you can also build directly
+[47:38] on Concordium use FE feature that you have also on Concordium.
+[47:41] Meaning we have smart contracts.
+[47:43] We have, yeah, a lot of probably FE feature you need.
+[47:46] we have also on concolmus,
+[47:47] you don't need to be on another change,
+[47:48] but we support both, so just choose what you prefer.
+[47:53] Can we get you if we are not Europeans?
+[47:57] Yes, I mean, you want test net.
+[47:59] So I mean, I think the question is if you can get this,
+[48:04] if you can get this kind of stable coin token on test net.
+[48:09] Yes, you can get it.
+[48:10] And for that, what do you have to do?
+[48:12] Like as I said, we are on test net.
+[48:14] If you create an identity or testnet,
+[48:18] so we create a new identity here,
+[48:20] create a new identity,
+[48:22] choose the concordant testnet identity provider.
+[48:25] This is a fake identity provider which only exists on
+[48:27] testnet and it allows you to
+[48:29] create any fake identity on testnet.
+[48:30] So I'm John Doe, but it also
+[48:32] means you can have any nationality.
+[48:34] Here, it is a stand mark.
+[48:35] So if you just click through the whole floor and submit it,
+[48:38] you actually already have an account in the European Union,
+[48:42] and then you can get your stable coins
+[48:45] because you have the right kind of identity
+[48:47] behind your account.
+[48:48] So yes, anyone can get stable coins.
+[48:51] There's no need to actually have to be in your opinion
+[48:53] or have a passport from your opinion.
+[48:58] How do you handle long transaction?
+[49:00] For example, if I want to buy an AI report
+[49:03] that takes several seconds to prepare
+[49:06] and won't fit into one transaction.
+[49:09] Not exactly sure what you mean.
+[49:11] If you have a lot of data, you can always hash your data
+[49:13] and then submit the hash on chain.
+[49:15] And a hash is very small.
+[49:16] It's usually 256 bits long.
+[49:20] That should fit on a transaction.
+[49:22] So I'm not exactly sure why it shouldn't fit.
+[49:27] Yes, I think it's possible just use the hash
+[49:29] if you have a very, very large data
+[49:31] that you want to get kind of anchored on chain.
+[49:35] Use the hash and the whole, maybe your video,
+[49:37] you will not get on chain obviously.
+[49:39] What other languages do you have libraries
+[49:42] for legal compliance I can't
+[49:44] install or use any NPM package?
+[49:46] We have different packages.
+[49:48] Obviously, depending on what you want,
+[49:51] I can show you, we often,
+[49:54] let me ask the case.
+[49:55] The first class statisticism as the case that we have
+[49:58] is always JavaScript TypeScript and Rust.
+[50:02] Does search for it?
+[50:05] Maybe we find it somewhere faster.
+[50:09] We have also the Rust SDK here.
+[50:12] The Rust SDK is very well supported
+[50:15] because our chain is a lot built on Rust.
+[50:17] Then we also have this web SDKs
+[50:19] like your JavaScript TypeScript packages,
+[50:22] and we had some other Go SDKs and other packages,
+[50:26] but they are probably not so good supported.
+[50:27] So I would choose these two if you want,
+[50:30] and most of the features here should actually have
+[50:32] everything implemented in these two SDKs.
+[50:34] I hope you like Rust.
+[50:36] Otherwise, please let us know if you like other SDKs
+[50:39] so we know what to build next.
+[50:40] You also have some Python.
+[50:41] I think one of these block explorers written in Python.
+[50:44] So there should be also external people.
+[50:46] There's one who supports Python SDKs for that.
+[50:50] So yeah, look out.
+[50:51] Maybe you have some SDKs that are somewhere else supported
+[50:55] by outside people from Concordium.
+[51:01] OK, does it be also?
+[51:04] Only exact schema for 4.0.2 and code run.
+[51:08] Yes, I think in all these statements we had,
+[51:12] we used the word exact.
+[51:15] Is Concordium planning to run a public facilitator?
+[51:18] Or would you welcome community run ones?
+[51:21] Not 100% sure.
+[51:23] I mean, we always welcome community runs, obviously,
+[51:26] because we are very, very happy when
+[51:28] people from the outside supporting it.
+[51:31] It could be that we run public run ourselves,
+[51:34] but it's up to concolumetric side.
+[51:35] I'm not sure on that,
+[51:37] but I can ask if you want to know more next time.
+[51:40] The thing is, if you run a public facility,
+[51:43] it means you have to have funds and then you don't want
+[51:46] to authorize any transaction that you facilitate.
+[51:49] For example, we already run
+[51:52] a sponsor service for this agent registry.
+[51:55] In that way, we already run some sponsor transaction service.
+[51:59] But a general one that supports everything,
+[52:03] probably we don't want because other people could train the wallet for no reason.
+[52:09] Haggathorn pizza aren't revealed yet.
+[52:12] Okay, not sure what that means.
+[52:14] Not sure if there's some Haggathorn pizza around.
+[52:17] Do chess is, do chess is made in a deployment and really uses more than testnet demos?
+[52:23] I mean, I'm not one of the judge, so I can not really answer that question, I guess.
+[52:27] So go with what you feel more comfortable with, I feel.
+[52:31] I'm not sure what it just will do.
+[52:34] For long transaction, I mean clients and signed message,
+[52:39] but the server takes longer to
+[52:40] prepare the request and message till here.
+[52:43] So we will never get to charge.
+[52:47] I mean this communication between
+[52:50] front and back and agent A and agent B, so usually very fast.
+[52:54] Whenever you submit a transaction,
+[52:56] you can set expiry dates or expiry date.
+[52:59] And it's usually, for example, we set it to five minutes.
+[53:01] So there's the default value.
+[53:03] So it's usually really not a problem
+[53:05] that these whole things take too long.
+[53:08] And if you have a kind of, also it takes very long
+[53:11] and just set this transaction when it should expire
+[53:14] for a bit longer, then you have more time at the back
+[53:16] and to do whatever process you need to do
+[53:18] to make sure your transaction can still be submitted.
+[53:24] Yes, Rust is okay.
+[53:25] It's either Rust or PHP.
+[53:28] Yeah, okay.
+[53:29] I may do a PhD in Facilitator for Conorda.
+[53:32] We always welcome if people want to write their own SDKs
+[53:35] and other languages, of course, very helpful.
+[53:38] I'm setting up a company backed wallet
+[53:41] for hackathon and future production use
+[53:43] during browser extension and boarding.
+[53:45] I was not prompted to create a wallet password
+[53:47] or a safer seed phase before being directed
+[53:49] to Global Finrec Business ID verification.
+[53:52] My company verification took about 24 hours.
+[53:54] Global Finrec now shows Max Zolik,
+[53:57] I broke for email.
+[53:59] OK, it takes a very long.
+[54:01] So I guess you might have been on mainnet.
+[54:05] I'm not sure.
+[54:06] If you're on mainnet, obviously, that's a full process.
+[54:09] So the global framework will test your business really.
+[54:16] Make sure you're on testnet here.
+[54:18] So maybe we're on mainnet here.
+[54:21] You can go on testnet.
+[54:24] And I think maybe we can check if there's
+[54:26] an to create a new one.
+[54:30] I think we have a testnet here.
+[54:33] I think you can go this global Finwork
+[54:34] then you get a business ID.
+[54:36] And I think it should be probably very fast
+[54:38] similar to the other integration process on testnet.
+[54:44] But obviously if you're in Mainnet it takes longer
+[54:45] because it's about it needs to test your real
+[54:48] or like check your real submitted forms.
+[54:51] Yeah, I hope that answered the question.
+[54:54] Any more questions?
+[54:57] We went through them.
+[54:59] Looks like a list.
+[55:07] Now is the time, otherwise I can show you
+[55:08] some additional things, additional slides I have.
+[55:15] Here's some more slides, we have a few testnet kits
+[55:17] that I think will help you to get everything set up
+[55:19] on testnet if you want to just try it out on testnet.
+[55:23] Make sure you have the test identity because it's free
+[55:26] and you can decide whoever you want to be on testnet.
+[55:29] You get free test CCT, make sure you go to activity
+[55:33] and request free CCT on your wallet.
+[55:37] You get the stable coin free on testnet
+[55:40] so you can go to this facet.
+[55:43] And you can also request a test token
+[55:45] but it's still a bit of a manual process.
+[55:47] only if you actually want to be an issue and test some issue in functionality,
+[55:51] you probably need it. This is the network ID for testnet.
+[55:54] There's a developer toolkit for the different things we were talking about today.
+[55:59] We have this X4.0.2 package from one podium.
+[56:03] There's some specification that we have written,
+[56:06] and you also have the PLTs as part by web SDK or as well as Rust SDK.
+[56:12] We have sponsor services that you can check out.
+[56:15] Now, we've actually an example,
+[56:17] I think this definite sponsored transaction that you
+[56:19] can check out if it helps you.
+[56:22] Here's some scripts that you can use to test our sponsoring.
+[56:29] Obviously, we have a lot of documentation and also you can
+[56:32] add your agents and point them to that to
+[56:34] make them faster to find the relevant information.
+[56:38] There are more documentation for your agent to look at or
+[56:41] yourself can look at through it of course,
+[56:44] And some agent settlement payment, you can have a look at a lot of X4S2 documentation.
+[56:51] And then maybe one interesting thing is in the X4S2 payment, when the backend sends the request to the frontend, there's like this extra field, there you have the fee payer, this is the facilitator account.
+[57:07] That's maybe in case you wonder where this information comes from.
+[57:11] It's like part of the extra field.
+[57:17] Also some helpful errors in case you try out this facilitator.
+[57:23] The typical error codes that we see very often people run into what they mean.
+[57:27] If you want to get even more error codes,
+[57:29] they are defined in the readme.
+[57:30] So just check them out in case anything doesn't work as you expected,
+[57:35] then you will probably figure out what's the problem
+[57:36] and how to fix it.
+[57:39] Any more questions?
+[57:50] So only do testnet.
+[57:52] I was not doing testnet.
+[57:53] It was not about time.
+[57:54] It was very, very, I was trying for real use.
+[57:57] I think that's related to the global framework.
+[58:01] Yes, of course.
+[58:02] Like if you want to do mainnet,
+[58:03] We very welcome to do that as well.
+[58:06] But then of course the onboarding flow for businesses
+[58:09] takes a little bit longer because you go through
+[58:10] the real FinRAC kind of onboarding flow
+[58:13] and they will check your documents.
+[58:15] So depending how fast they are,
+[58:17] it might take a little bit more time.
+[58:20] Say your slides somewhere too please.
+[58:23] I will talk to Concordium and see if they can make them
+[58:26] online somewhere.
+[58:29] Let's see.
+[58:30] Fine.
+[58:33] Any more questions? I think we're here like on time exactly. I think one minute before
+[58:39] the end. I think yeah we're pretty pretty much on time now. That was a lot of questions.
+[58:45] I think it was like 6, 17 questions. Nice. Good to see you guys are curious. I'm wanting
+[58:51] to learn more and thank you very much Doris again for answering those where possible.
+[58:58] Yeah we've got the next workshop again on Wednesday so make sure you guys are returning
+[59:03] to that one. And then Build Week is going to be starting on the 16th, I think, as far
+[59:11] as I'm aware. It might be the week after. I'll send out reminder emails and everything.
+[59:15] Any questions, chuck them on the Discord. There is the Concordium team present there
+[59:20] so they can answer questions about anything technical and things like that, anything non-technical
+[59:24] about the platform or recap recordings or judging criteria or whatever. Anything regarding
+[59:31] that kind of things, send them my way.
+[59:33] I'm very happy to help there.
+[59:35] But thank you very much, Doris.
+[59:37] And I'll see you guys on Wednesday.
+[59:40] Yeah.
+[59:41] Thanks, everyone, for joining.
+[59:42] And see you again.
+[59:43] Bye-bye.

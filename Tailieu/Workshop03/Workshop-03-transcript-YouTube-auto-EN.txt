@@ -1,0 +1,1536 @@
+[00:00] Hello everybody. Welcome back to
+[00:02] workshop number three now of the
+[00:03] Concordium Trusted Agents Hackathon. Um
+[00:06] we have got Doris today who is um
+[00:10] blockchain security engineer at chain
+[00:12] security and was also formerly engineer
+[00:14] at Concordium. So she knows this whole
+[00:16] stack inside out. Um and there's lots to
+[00:18] be to be learned here. Um questions
+[00:21] chuck them in the Q&A chat. Um I don't
+[00:23] know if any of you guys have been at
+[00:24] DevCon recently. I know Doris is calling
+[00:26] from Mumbai which is great. Um but if
+[00:28] any of you guys have got any questions,
+[00:30] chuck them in the chat. Um and again,
+[00:32] this session will be recorded. So, um if
+[00:35] you need to drop out, um you can uh
+[00:37] re-watch it on the platform afterwards.
+[00:39] Please don't do so though because we
+[00:40] need to that's uh this is a good
+[00:41] opportunity to get some questions
+[00:42] answered live from um the minds at
+[00:45] Concordium. Um so I will hand over to
+[00:48] Doris. Um and we'll kick things off.
+[00:52] >> Yeah, thanks very much. I need to share
+[00:54] my screen. [clears throat] So I hope you
+[00:57] can see it now.
+[00:58] >> Mhm.
+[00:59] >> Yeah. Thanks everyone for coming. Um I
+[01:02] hope you have already seen the previous
+[01:04] one. So there was like two sessions
+[01:05] before this one. Uh one was last Monday
+[01:08] and one was on on Wednesday and I think
+[01:10] Peter did them. So if you're interested
+[01:12] like in the ones they were really good.
+[01:13] So I can highly recommend them but I
+[01:15] will do the the workshop today as well
+[01:17] so that you can join without having this
+[01:19] previously watched workshops. But yeah I
+[01:21] still recommend to watch them. what we
+[01:23] do today and we will look into agents
+[01:26] and we want to know how agents can can
+[01:28] get paid and how they can pay other
+[01:30] entities
+[01:32] and let's get started. Um so it's mainly
+[01:36] focused on agents obviously but it can
+[01:38] be also users or other entities. Um, and
+[01:41] we also want to make it nice for users
+[01:43] in a way that they don't see like these
+[01:45] payments prompted, especially if it's
+[01:46] related to like transaction fees because
+[01:48] it's usually a very kind of high hurdle
+[01:50] for people to get onboarded. If it's new
+[01:52] users, they they're not familiar with
+[01:54] web 3. And we will do this in three
+[01:57] sections. So we the first part, the
+[01:58] second part, the third part. The first
+[02:00] part will be we will look into what page
+[02:02] what agents can pay with. So we look
+[02:04] into stable coins, PLTs. I'll explain
+[02:06] what it is later. And then we will look
+[02:08] into the second part which is like um
+[02:10] sponsor transactions. So how can we make
+[02:12] it as easy as possible for new users
+[02:13] kind of hiding the transaction fee in
+[02:15] the complicated parts of blockchains.
+[02:17] And then we look into this new standard
+[02:19] the X402
+[02:21] which you maybe have heard and this is
+[02:23] like a new way how agent can pay each
+[02:24] other and services.
+[02:27] So let's get started. I already
+[02:29] mentioned the first three topics uh
+[02:31] parts. These are like the main things we
+[02:32] will look into today and then there will
+[02:35] be also like a look out for the future
+[02:37] like what is on the road map um what you
+[02:40] can look forward or what you can already
+[02:42] prepare your projects for to yeah be
+[02:45] prepared for the new features and any
+[02:46] new kind of interesting things that is
+[02:48] going on and obviously in the end we
+[02:51] have also a question section that you
+[02:52] can ask any questions that you have
+[02:54] during your hackathon that you already
+[02:56] want to enter into enter and we will
+[02:58] today demo everything on testn net why
+[03:00] do we do this because Test CCD is free
+[03:02] on this network. You can also um get the
+[03:04] wallets, create a test identity, meaning
+[03:06] you don't need to have a password or ID
+[03:08] card or anything for the hackathon.
+[03:12] Okay, we will show you first an example
+[03:14] and this example we will use mainly
+[03:16] throughout the talk. Um you can always
+[03:18] think about you have an agent A and
+[03:20] agent B and agent A wants to is like the
+[03:23] buyer that has a wallet and wants to pay
+[03:25] a B for some services. So you can think
+[03:28] about maybe a H&M B is like a
+[03:29] supermarket and it wants to sell wine.
+[03:31] So the first part what the agent A is
+[03:33] doing it wants to order some wine sends
+[03:35] a request to agent B. Um interesting
+[03:38] here now you can look at it is a H& A
+[03:40] has some stable coins um€ 10
+[03:44] and it has no CCD because it's like
+[03:46] always a hard part for new people to get
+[03:48] to these native currencies. Uh in
+[03:51] contrast H&B has the opposite. it
+[03:53] actually has CCD and uh will be willing
+[03:55] to sponsor like agent A. So first we
+[03:58] have ordered some wine from agent B then
+[04:01] agent A will sign the payment
+[04:02] transaction and says okay I'm willing to
+[04:05] provide some stable coins for the
+[04:06] service that I'm requesting or in this
+[04:08] case it will be like a wine and then
+[04:10] agent B will cosign this transaction and
+[04:12] some message on the on the chain. So
+[04:15] this will be just one transaction which
+[04:17] has like um two action like one is like
+[04:20] the payment which goes from agent A to
+[04:22] agent B and then also like some
+[04:23] transaction fee which it goes from agent
+[04:25] B to the chain and if this transaction
+[04:28] is finalized on chain then agent B will
+[04:31] um send the wine or the service to agent
+[04:33] A. So this is like the main um use case
+[04:35] we look into today and we will it each
+[04:38] kind of um area we look into more
+[04:39] details. So we will look into the stable
+[04:41] coins, we will look into like what
+[04:42] sponsored transactions are. Oops. And
+[04:45] yeah, then we will also like look into
+[04:47] the X402 standard.
+[04:51] Okay, the first part stable uh stable
+[04:53] coins. So what are stable coins? Um we
+[04:55] have a specific feature on Concordium
+[04:57] which are protocol level tokens. We
+[04:59] often abbreviate them as PLTS and PLTS
+[05:02] are very different to smart contract
+[05:04] transactions. So I've made a comparison
+[05:06] here PLTS. This is what just exists in
+[05:09] Concordium. Their features are very
+[05:10] unique. Some other chains might have
+[05:12] similar um protocol label tokens but
+[05:14] they have maybe different features. So
+[05:16] it's uh specific to Concordium. These
+[05:19] ones are like smart contract smart
+[05:21] contract tokens. Um on Concordium we
+[05:23] have them as well. They are called SIS 2
+[05:24] tokens. It means Concordium interability
+[05:27] standard. And if you're familiar with
+[05:29] Ethereum you will probably know ESC20
+[05:32] tokens or the Solana um tokens. These
+[05:35] are very kind of common standards and
+[05:38] maybe you can think about it in your
+[05:39] mental model.
+[05:41] Um yeah for the PSDs we have no smart
+[05:43] contract. So think about it um if you
+[05:46] have a normal token and a smart contract
+[05:49] token you have a balance table in the
+[05:51] smart contract and the contract stores
+[05:53] your balance in in in that that state
+[05:57] and pilties it's very different. It's an
+[05:59] asset that is built in into the protocol
+[06:01] layer. It's more likely like CCD also
+[06:04] some so CCD is like the native
+[06:05] currencies on Concordium. It also
+[06:08] behaves in some way similar and some of
+[06:10] the features that CCD has also PLTS
+[06:12] have. So think more about a native
+[06:14] currency how these PLTs behave and where
+[06:17] these balances are stored like they
+[06:19] always stay on your account and they
+[06:20] also stored in that kind of account
+[06:22] state. They're not stored in a balance
+[06:24] on a smart contract.
+[06:26] Then the question is who can hold um
+[06:28] these PLTs?
+[06:30] Um in normal smart contract transaction
+[06:33] or smart contract tokens um you have any
+[06:35] address that can hold this um particular
+[06:37] also smart contracts can hold these uh
+[06:39] tokens in PLTS it's so that only the
+[06:43] accounts can hold it so think about
+[06:44] maybe externally owned accounts if
+[06:46] you're familiar with the concept on
+[06:47] Ethereum and in particular on Concordium
+[06:50] these are actually identity verified
+[06:52] accounts so that means the accounts and
+[06:53] they were created there was some
+[06:55] identity provided to verify that there's
+[06:58] a real world identity behind the
+[06:59] account.
+[07:01] Okay, let's oops, I went back again.
+[07:04] [clears throat] Um, launching a token is
+[07:05] also different in a way. So, smart
+[07:08] contracts, anyone can deploy the code.
+[07:10] That also means you need to audit that
+[07:11] code. It's it could be different and
+[07:12] bugs could be in every new code that's
+[07:14] deployed. Um, PLTS it's written only
+[07:17] once by the developers and it's part of
+[07:19] the blockchain kind of core node at that
+[07:22] point. That means um the the code
+[07:25] doesn't change in a way. So, we don't
+[07:27] need to deploy new code. just uh when we
+[07:29] issue a new token and only the input
+[07:32] parameters are changed for that specific
+[07:34] new instance of um stable coin that we
+[07:36] are launching and for issuers who want
+[07:39] to get a stable coin on Concordium they
+[07:42] get goes to approval step um for testn
+[07:45] net they can fill in this um form it's a
+[07:47] manual process so someone at concordium
+[07:49] will approve it and deploy it on the
+[07:51] mainet obviously there's some concordium
+[07:53] the foundation needs to agree on it so
+[07:55] it's a bit more complex um process until
+[07:58] your PLT gets on chain. So this usually
+[08:00] like only um for like established stable
+[08:02] coins that this process is initiated
+[08:07] um for the hackathon. Now I will show
+[08:09] you a demo how you get these stable
+[08:11] coins because um maybe you want to um
+[08:13] try them out and for that we have a
+[08:16] facet and in this facet it's on test net
+[08:19] you can get uh 100 EU um demo stable
+[08:23] coins and this is the link to the facet
+[08:26] and what the what you have to do is like
+[08:28] you have to connect your wallet then you
+[08:30] have to prove that you are an EU
+[08:31] nationality is your your identity that's
+[08:34] behind the account and then you get some
+[08:37] demo EU tokens.
+[08:38] um issue to you. Um one interesting
+[08:41] thing u maybe I will show it later to
+[08:43] you is that um this is one transaction
+[08:45] this whole thing. So um um it's like one
+[08:48] transaction which does several things.
+[08:50] So several operation we look into it
+[08:52] later it will actually add you to the
+[08:53] allow list and mints tokens and then
+[08:55] sends the tokens to your account.
+[08:57] And for this to work you need to create
+[08:59] an identity on test net that's part of a
+[09:02] of the European Union. So just make sure
+[09:04] you you select a European Union country.
+[09:07] Okay, let's do this in life.
+[09:13] So, can you see this website?
+[09:19] Uh,
+[09:21] okay. I don't know. Can you see the
+[09:22] hello allow list?
+[09:24] >> Yep.
+[09:25] >> Okay, cool. So, I have my uh browser
+[09:28] wallet installed here. Uh, I need to log
+[09:31] in. So, for now, I only have CCD in it.
+[09:34] Um if you are new and have done it for
+[09:36] the first time, you can go to activity.
+[09:38] There's a button to request some test
+[09:40] net CCD in case you don't have any funds
+[09:42] in that yet. Okay, for now I only have
+[09:44] CCD and later we will create a new token
+[09:46] that appears here stable coin. So we
+[09:49] first need to connect our browser wallet
+[09:52] and we connect it and we can see now
+[09:54] that we not on the allow allow list. So
+[09:57] um stable coins on conc have different
+[10:00] lists. So there's an allow list and a
+[10:02] deny list and that can be enabled or
+[10:04] disabled. So what it means if you're on
+[10:06] allow list um when some tokens are
+[10:08] transferred then there's always check
+[10:10] that the sender and the receiver of the
+[10:12] token is on the allow list and if anyone
+[10:14] is not on the allow list the transaction
+[10:15] will not go through and opposite is uh
+[10:18] true for a deny deny list. So in a deny
+[10:21] list um at every transfer we will check
+[10:23] that the sender and the receiver is not
+[10:26] on the deny list otherwise the
+[10:27] transaction will not go through. And you
+[10:30] see we at the moment we're not on the
+[10:31] allow list. So we cannot receive any
+[10:33] tokens of this example. And you see also
+[10:36] we have no tokens yet. Our balance is
+[10:39] zero. And what we want to do so first of
+[10:42] all this website will actually request
+[10:44] um a CK proof that we are part of the
+[10:46] European Union. Once we have this uh uh
+[10:49] CK proof generated, it will be sent to
+[10:51] this client and then to the back end and
+[10:53] that verifies that we actually from the
+[10:55] EU. And then these three operations will
+[10:59] be done. And these three operations they
+[11:01] will be put in one transaction. As I
+[11:03] said we can batch different token
+[11:05] operation together when it's a PLT. What
+[11:08] we will do is first we will add our
+[11:10] account address as this one. We will add
+[11:12] it to the low list. We will then mint um
+[11:15] 100 new um demo tokens and then we will
+[11:18] transfer them to our wallet. So it will
+[11:20] be like one transaction but three
+[11:21] operation in one go and it will be
+[11:24] atomically done. So if any of them
+[11:25] reverts then the whole transaction
+[11:26] rewards and nothing going to happen.
+[11:29] Okay, let's get started.
+[11:31] So you see the CK proof pops up. Um we
+[11:34] are from the EU our country. These are
+[11:37] all the countries from the European
+[11:38] Union. We can approve that.
+[11:42] It sends to the back end.
+[11:46] We can close
+[11:49] and you need to wait a little bit. this
+[11:51] error happens uh usually because we have
+[11:52] currently some services are not running
+[11:55] uh indexes but it still works we need to
+[11:57] wait a little bit and then later if we
+[11:59] refresh the token balance you will see
+[12:01] that we have some new tokens
+[12:03] um let's see I refresh it and now you
+[12:06] see we have 100 token demos to token
+[12:09] demos yeah issued to us and we can see
+[12:11] also this in our wallet
+[12:15] sometimes takes a while until the PLT
+[12:17] arrives otherwise we can look into
+[12:19] activity You see there's a PLT update
+[12:21] transaction. Now we can look into it.
+[12:24] There's a transaction hash. Um here you
+[12:27] see the three operations. They're a
+[12:28] little bit maybe too too close together.
+[12:32] So we can look into the block explorer.
+[12:34] I think this goes to the block explorer.
+[12:37] And here's nicer. You can nicer see that
+[12:39] we have done a token update transaction.
+[12:41] That's the transaction type. So token
+[12:43] update means it's a PLT token. If it's a
+[12:46] smart contract token, it would be called
+[12:47] contract update. And we see here are the
+[12:50] three operations. We have first added us
+[12:51] to the allow list. We have then minted
+[12:53] some demo tokens and we have then
+[12:55] transferred the tokens to our account.
+[12:59] And there's also something which we we
+[13:01] later will look into. It's like a memo.
+[13:02] So every transfer transaction on concord
+[13:05] you can add a memo that can be anything
+[13:06] like any text string. So for example it
+[13:08] can be invoice number or something like
+[13:11] that. So for example if I send something
+[13:14] um you can always put some memos here.
+[13:17] Okay, let's see. Now we see we have
+[13:19] actually our EU disabled coin appears
+[13:21] here. You can click on it. You see also
+[13:23] that the balance has updated. Um you can
+[13:25] see that this um demo token. It has an
+[13:28] allow list and we are on this allow
+[13:29] list. It doesn't has an dial list. You
+[13:32] also see the decimals and you can see
+[13:34] some more raw data what this uh token
+[13:37] what kind of things are enabled. So you
+[13:39] see it's not possible. It's but it's
+[13:41] burnable. It has no deny list but it has
+[13:44] a allow list. It's true.
+[13:46] and it's also mintable so you can see
+[13:48] more information. The governance account
+[13:50] is like the most uh powerful account.
+[13:52] That's the account that can for example
+[13:54] add addresses to the allow list and deny
+[13:57] list. And usually can also pause the
+[13:59] contract if um well it's not a contract
+[14:01] like it's the stable coin.
+[14:05] Okay, I hope you have an idea how these
+[14:08] stable coins work and how to get a
+[14:10] stable coin in your wallet.
+[14:12] Um let's continue.
+[14:17] Okay.
+[14:21] Okay. I think we already saw this in the
+[14:23] wallet that each PLT has some specific
+[14:26] um attributes or like some of the
+[14:28] features are enabled. So if you look
+[14:30] into the block explorers uh each of them
+[14:34] has um a page of the different tokens
+[14:37] and you can see that there's some token
+[14:39] ID this is unique across the whole
+[14:40] chain. That means for example if USDC
+[14:43] comes and wants to be issued then we can
+[14:45] issue the token but there will be never
+[14:47] another token issued with the same kind
+[14:49] of token ID. So we want to avoid that um
+[14:52] people get confused
+[14:54] and yep and then you al can also go to
+[14:57] this pages then you see an overview of
+[14:59] all the tokens are currently on chain.
+[15:01] So I will also show you that.
+[15:04] So if you for example here's one block
+[15:06] explorer that's the other block explorer
+[15:07] that we have make sure that you're on
+[15:09] test net when we when you want to look
+[15:10] at testnet tokens
+[15:13] and yeah I think all the tokens are here
+[15:16] so you can find our EU demo token and
+[15:20] you can find the information about this
+[15:22] token what is enabled or it's not
+[15:23] enabled.
+[15:29] Okay.
+[15:35] Then sending a stable coin. So I give
+[15:37] you here an example from the web SDK
+[15:39] that we have that's version 12. Um if
+[15:42] you have a typescript project or
+[15:45] javascript project you can import the
+[15:47] package and it's quite simple in a way
+[15:50] you you get a token instance you can
+[15:52] create it and you have to provide a gc
+[15:54] end point the token ID which is like a
+[15:57] string and then you have a token client
+[15:59] and on a token client you can call
+[16:01] different um functions for example the
+[16:04] transfer function and you specify you
+[16:07] input the token that you have uh the
+[16:09] sender the recipient and the amount You
+[16:12] can also have this memo that I showed
+[16:13] you in the wallet as well as kind of a
+[16:15] string that you can attach to each
+[16:16] transaction.
+[16:18] And one thing we haven't looked into it
+[16:20] is like how this is like um done in
+[16:24] terms of sponsoring because for now it's
+[16:25] like the person holding the token will
+[16:28] be sending the transaction on chain and
+[16:30] also means that they have to pay the
+[16:31] transaction fee. And the next uh kind of
+[16:35] chapter we look into how sponsor
+[16:36] transaction works or how can we do this
+[16:38] even easier for users who don't have
+[16:39] native currencies in their wallets.
+[16:43] So next part is about the sponsor
+[16:44] transaction.
+[16:48] So what is sponsor transaction? I mean
+[16:50] first of all they exist uh they quite
+[16:53] recently were added in March 2026
+[16:56] and they exist exist for any transaction
+[16:58] type. So it's not just payment
+[17:00] transaction. So but any transaction that
+[17:02] we have on chain for example also
+[17:03] delegation
+[17:05] um any kind of smart contract update
+[17:07] transaction can be sponsored um and what
+[17:10] does it mean when you sponsor a
+[17:11] transaction it means that you have two
+[17:13] actors. So you have a sender the sender
+[17:16] signs a transaction and authorizes an
+[17:18] action. So for example in our our
+[17:20] example it would be like payment some
+[17:22] amount out of the wallet and then you
+[17:25] have you have a cosigner second wallet
+[17:26] also signing this transaction and they
+[17:28] are authorizing that they will pay the
+[17:30] transaction fee for executing the
+[17:32] transaction and what will the chain do
+[17:35] the chain conc will then check that both
+[17:37] signature are valid and only when both
+[17:40] of them are valid the transaction will
+[17:41] go through. So that also means that like
+[17:44] one of them cannot change a transaction
+[17:46] um because then the signature of the
+[17:47] other actor will be like wrong and will
+[17:49] not the transaction will not go through
+[17:50] the network. Maybe one note as well we
+[17:53] had something before this was called
+[17:54] smart contract sponsored transaction
+[17:56] that is the S3 standard. That's an older
+[17:58] approach. Um I would not recommend it to
+[18:01] do it nowadays because this um the
+[18:03] sponsored transaction that we have now
+[18:05] is a bit more convenient. Um but just
+[18:07] don't get confused. I maybe can show you
+[18:08] that that we have some some older
+[18:11] documentation still is there. Um when we
+[18:14] go to tutorials,
+[18:16] we have the sponsor transaction. It's
+[18:17] the ones I will talk today about that
+[18:20] works with every any transaction type.
+[18:21] And there's also a way like it's called
+[18:23] S3 standard which works only with smart
+[18:25] contracts. Um yeah, just don't confuse
+[18:27] these two concepts.
+[18:32] Okay, let's go.
+[18:35] Yep.
+[18:41] Okay, one question you might have is
+[18:42] like who signs first? Um, it's one and
+[18:46] transaction and both is fine. Like so
+[18:48] you can either decide depending on your
+[18:50] use case that the sponsor signs first
+[18:52] and then later the user signs. Um, that
+[18:55] would be means that like the app has a
+[18:57] wallet or the user has a wallet. Um,
+[18:59] that means back end signs first and the
+[19:00] user signs and then submits it to the
+[19:02] wallet to the chain. Then there's
+[19:05] another uh flow um which we'll later
+[19:07] show which is this x402 standard. It
+[19:10] uses this flow that means the sender
+[19:11] signs first then um it goes to a back
+[19:14] end. The back end is a sponsor. It signs
+[19:16] it and then it's submitted to the chain.
+[19:18] But for now we will look into the first
+[19:20] part and show you some code examples for
+[19:22] this if you want to go this way.
+[19:26] Um here we have the back end which is a
+[19:28] sponsor service. Um again like the
+[19:30] sponsor service the back end has now a
+[19:33] private key. So make sure that the
+[19:35] private key um stays secret meaning you
+[19:37] shouldn't uh commit it to your GitHub
+[19:39] repo and also shouldn't be never visible
+[19:41] in the front um accessible.
+[19:45] Um how you do it like um you can import
+[19:47] our SDK and then you would create a for
+[19:50] example token update transaction here
+[19:53] and importantly it's always that the
+[19:54] back end should create this transaction
+[19:56] or or if it already creates gets the
+[19:58] transaction from the front and then you
+[20:00] need to check that actually the
+[20:01] operation is as you expect it to be
+[20:03] otherwise somebody can submit some
+[20:05] malicious transaction maybe kind of
+[20:07] train your wallet. So in this case the
+[20:09] back end um creates the token update
+[20:11] transaction.
+[20:13] It's add some meta data um the sender
+[20:15] the user address the uh sender nons and
+[20:19] when it should expire the transaction
+[20:21] and it also adds the sponsor address.
+[20:23] This is the address that will pay the
+[20:24] fee later. Once the transaction is built
+[20:27] then we need to sign it. The sponsor
+[20:28] needs to sign it. So you have to provide
+[20:31] your private key. Uh with the private
+[20:33] key you can sign the transaction and
+[20:35] then we want to get the transaction to
+[20:37] the front end. So we um chase we um kind
+[20:40] of convert it to a JSON format. This
+[20:42] part is now sent to the front end.
+[20:45] So what does the front end do? Like the
+[20:46] front end is the um actor that has like
+[20:49] um the wallet. So I talk about front
+[20:51] ends and back ends. But of obviously the
+[20:53] front end can also be like an agent or
+[20:55] like the back end can be an agent. So
+[20:56] it's uh there's different ways to do
+[20:58] that. Um once you have the transaction,
+[21:01] you can get it back from the JSON
+[21:03] format. Uh you have a transaction. um
+[21:05] either your agent or your front end
+[21:07] signs it. So you need an account um that
+[21:09] has access and an access to the private
+[21:10] key of that account. You have your
+[21:12] transaction, you sign it and send it
+[21:14] transaction on chain. Obviously, then
+[21:16] you need a wallet here to be able to
+[21:18] submit it on chain.
+[21:20] And yeah, that's the flow where you
+[21:23] where the user kind of signs it later
+[21:25] and the sponsor signs it first.
+[21:29] Um so maybe you wonder if we already
+[21:32] have some um areas where you can test it
+[21:35] out. Yes, we have some sponsored
+[21:36] services already running. So I think in
+[21:39] workshop one that Peter did uh you have
+[21:41] seen the agent registry and I can show
+[21:43] you that again. There we already have
+[21:47] some sponsor in action.
+[21:50] Um I think it was this one. Let me see.
+[21:54] This was this one. So I think this front
+[21:56] end you already saw in workshop number
+[21:58] one and when you click here on register
+[22:00] agent you can register your agent
+[22:02] without having any CCD in your wallet.
+[22:04] That means there's a back end running
+[22:05] the sponsoring service um and you the
+[22:08] transaction fees paid for you.
+[22:12] We have also another kind of use case,
+[22:14] the XDC AI. They also like um use the
+[22:17] sponsoring feature on Concordium to make
+[22:20] the registration steps easier for users.
+[22:29] One thing maybe to know is like um
+[22:31] especially if you run your own
+[22:32] sponsoring service, there's a few
+[22:34] safeguards that you need to keep in
+[22:36] mind. Always make sure that you check
+[22:38] before you sign in anything, especially
+[22:39] if the transaction comes from from a
+[22:41] front end or from an agent. Make sure
+[22:43] that the payment is as you think it is,
+[22:46] not something maliciously is submitted.
+[22:48] And then only sign it. Protect your
+[22:51] keys, meaning the server needs to make
+[22:52] sure the private key is not leaked. And
+[22:54] also need to rate limit um if a user or
+[22:56] agent because otherwise people could
+[22:58] just like train your wallet by
+[22:59] submitting endlessly many transaction.
+[23:03] And always watch your balance. So it
+[23:04] means also like if your balance is low
+[23:06] there needs to be often some kind of
+[23:07] top-up services um behind the scene or
+[23:10] you have to do it manually but it's
+[23:11] obvious a bit um usually um complicated
+[23:14] if you do it manually and time consuming
+[23:18] um I will show you now a sponsor
+[23:20] transfer in real life in a demo and for
+[23:24] that uh first of all we want to maybe
+[23:26] see where we get these uh wallet formats
+[23:29] from like how you get your uh private
+[23:31] keys out of the wallet so you can use
+[23:33] them in a sponsoring service. We want to
+[23:35] also look into like how transaction fees
+[23:37] are displayed in this new type of
+[23:39] transaction. Like we want to see that
+[23:41] the transaction fee for the user are
+[23:43] zero, but there's still some transaction
+[23:45] fees shown somewhere which are
+[23:46] associated to the sponsor.
+[23:50] Okay, let's see this in action.
+[23:54] So maybe I go first what you want to do.
+[23:56] So we have the demo here too. The goal
+[23:58] is we want to create a sponsor
+[23:59] transaction on test net. And how I did
+[24:02] it? So I was creating a um repo. Then I
+[24:05] was installing our Concordium web SDK
+[24:08] and installed some other packages. Um
+[24:10] but you can also ask your cloud agent
+[24:12] how to do that. And then I was um
+[24:15] copying our example files. So we have
+[24:17] several example files um that you can
+[24:18] use and I let cloud codex kind of fix
+[24:22] broken dependencies because it's a
+[24:24] little bit hard. This is the examples
+[24:26] that we have. Wait,
+[24:29] this is the examples files that we have
+[24:30] for doing different PLT transactions.
+[24:34] And we have also some trans sponsor
+[24:36] transaction examples here. This CC
+[24:39] transfers the one that I was copying.
+[24:41] And you can either clone the whole repo
+[24:43] and then get it running. It means you
+[24:44] have to build the web SDK yourself or
+[24:46] you can do it as I did. I was just
+[24:48] downloading the the installed package
+[24:50] that you can get from npm
+[24:52] and then you can ask your code agent to
+[24:55] kind of fix the dependencies to make
+[24:56] this example work.
+[25:00] So that's what I did. I downloaded the
+[25:02] already built package uh from the npm
+[25:04] registry and then let cloud kind of fix
+[25:06] some dependencies to make this uh
+[25:08] example file work. And what we want to
+[25:10] do is like we want to execute this file.
+[25:12] We need to specify the endpoint, the
+[25:14] sender wallet, the sponsor wallet, the
+[25:15] amount, recipient, MIMO, and we have to
+[25:18] specify specify secure that means TLS
+[25:21] enabled because this test net notice
+[25:24] behind TLS like uh you will see HTTPS.
+[25:28] Okay, first of all, let's look where we
+[25:30] get these wallet files from.
+[25:32] So, if you are at the wallet, this is
+[25:36] obviously a test net. So, I can show you
+[25:37] how you get a private key out of the
+[25:39] wallet. Um, if you go into accounts,
+[25:41] this is my account. If you go to private
+[25:43] key, you need to type in your secret
+[25:47] again, you get your private key. And if
+[25:49] you look, if you press export, it will
+[25:51] download this export file that we will
+[25:53] use. So that's how you get your export
+[25:54] files. It includes the private key.
+[26:00] Okay.
+[26:01] So once you have this uh this this
+[26:04] private keys, you can run this example
+[26:05] and we will do this now. So it's the
+[26:08] same command. We run this uh example um
+[26:12] script and we have these kind of flags.
+[26:14] Let's run it and see what's happening.
+[26:20] Takes a while because the transaction
+[26:21] needs to be submitted. So it's submitted
+[26:22] to onchain. This is the transaction hash
+[26:25] and this is transaction we get back. So
+[26:27] maybe one interesting thing to look into
+[26:29] the transaction cost is here zero
+[26:31] because the user um the person that's
+[26:33] submitting this transaction doesn't have
+[26:35] to pay anything. So the wallets will
+[26:36] also show zero transaction fee. But you
+[26:39] still wonder maybe where are then the
+[26:41] sponsor transaction
+[26:45] the sponsor kind of cost and you see it
+[26:47] in this field. So if you want to know
+[26:49] what the transaction actually cost you
+[26:51] can go into like the summary then the
+[26:54] summary then go down to the sponsor then
+[26:55] into cost and you will see the CCD
+[26:57] amount if you go further down into the
+[26:59] field. Okay let's look on chain how this
+[27:01] looks like this transaction.
+[27:04] Yep. So we have our block explorer here.
+[27:06] Make sure you're on testn net if you're
+[27:08] on testn net.
+[27:11] So let's see. You see this is like our
+[27:14] transfer transaction. We're just
+[27:15] executing. And importantly here we see
+[27:17] this is like the symbol for sponsor
+[27:18] transaction.
+[27:20] And if you look into other transaction
+[27:22] there you don't see here there's
+[27:24] [clears throat] a sponsor transaction.
+[27:25] Here you see there's no symbol is not a
+[27:27] sponsor transaction. And also in the
+[27:29] other block explorer that we have you
+[27:31] can see there's also a symbol for
+[27:33] sponsor transaction. So this is the
+[27:35] symbol for sponsor transaction here.
+[27:38] And if it's not a sponsor transaction,
+[27:40] you will not see this um symbol.
+[27:44] Okay, I think that's all you want to
+[27:46] show. Yep.
+[27:51] Okay, let's go to the third topic.
+[27:57] The third topic was about this um X402
+[28:00] standard and it's a new standard. Um in
+[28:04] a way it's not that new. It was actually
+[28:05] reserved already 1997. It's a HTTP
+[28:09] status code. It was reserved at the time
+[28:11] but it hasn't been really used until
+[28:12] recently. So until recently and when the
+[28:14] agent came up um payment required seems
+[28:17] to be a very useful way to uh facilitate
+[28:20] these agent payments. So then people
+[28:22] started to define what this standard
+[28:24] should exactly do and how pay how agents
+[28:26] payment should work with this standard
+[28:29] and what they did do um first of all we
+[28:32] need to understand that there was an old
+[28:34] way and a new way. So the old way works
+[28:36] with humans like humans were going
+[28:38] through websites and doing action on the
+[28:39] websites and now with agent this is
+[28:43] faster and also works very differently
+[28:44] because agents are not human and can
+[28:45] click around on websites or not as
+[28:47] easily it's not that naturally for them.
+[28:50] So in the old way we had often that we
+[28:52] had signups um we had API key so or
+[28:55] subscriptions and people had to input
+[28:58] their credit card in a form for example
+[29:00] that's not very useful for agents or not
+[29:02] very naturally but then it's much easier
+[29:05] to pay per request
+[29:07] and also in the old way we often had
+[29:09] very high card fees um especially credit
+[29:12] card with your like Visa or Masterards
+[29:14] and nowadays when you use transactions
+[29:16] on a on a blockchain the fees are
+[29:18] usually much slower. So for example, I
+[29:20] think this was a token update
+[29:21] transaction that I checked and in the
+[29:24] old way also we had this problem that
+[29:26] settling takes us several days. It
+[29:28] happens behind uh in the big banking
+[29:30] system the banking the banking the banks
+[29:33] need to kind of um like settle their
+[29:36] their fees depending on each other with
+[29:38] the balances. And now we kind of do that
+[29:41] much faster. It's usually finalized the
+[29:42] settlement in seconds when the
+[29:44] transaction is on chain.
+[29:48] And how does X402 works in four steps?
+[29:51] So we look into one part of it which is
+[29:54] probably more commonly used which we
+[29:56] have we look into two actors which is
+[29:58] the agent A and the agent B. Again we
+[30:00] have a buyer and a seller. Let's can
+[30:03] think about a seller API. And the four
+[30:05] steps this will happen is like first
+[30:07] your agent I A wants to get some data
+[30:10] from agent B. So it maybe request the
+[30:13] forecast. Maybe it's a weather forecast.
+[30:14] It requests this data from H&B B. Um H&B
+[30:18] B instead of giving the data straight
+[30:20] away, it says okay yes I have the data
+[30:21] but I want to get paid first. So it
+[30:23] returns with the HTTP status code uh for
+[30:27] 02 and say okay the price that I require
+[30:30] is like this amount of stable coins. If
+[30:33] a is fine with this kind of payment then
+[30:36] this uh it can again call this endpoint
+[30:38] but this time it provides a transaction
+[30:40] that's signed with the payment that was
+[30:42] requested. Um the H&B can check this
+[30:45] payment. If it's fine, it will kind of
+[30:47] sign it again as a co-signer as a
+[30:49] sponsored transaction. Um so makes a
+[30:51] transaction on train wait until it's
+[30:53] finalized and returns the data at the
+[30:55] same time.
+[30:57] And in reality the format is a little
+[30:59] bit more complex. I can show you how the
+[31:02] um whole format look like but we don't
+[31:05] go into detail. So the whole format is a
+[31:07] little bit more complex. So we have
+[31:08] talked about a client and a server and
+[31:10] we looked into these four kind of uh
+[31:13] interactions and in reality there are
+[31:16] some other um actors a facilitator and a
+[31:18] blockchain and there's some more
+[31:19] forwards and backwards but it's a bit in
+[31:21] behind the scene because it's some back
+[31:23] end so I haven't gone into details but
+[31:25] if you want to know more about it you
+[31:27] can read that and also see exactly where
+[31:29] the blockchain comes into place where
+[31:30] the things are submitted to the trans to
+[31:33] the blockchain
+[31:35] and as you see here there like three
+[31:36] actors. So we look into the three actors
+[31:38] in more detail. We have the client, the
+[31:39] server and the facilitator.
+[31:48] So let's look through them. So first of
+[31:51] all um concatium joined this kind of a
+[31:54] standard. This is the X402 standard. It
+[31:56] is now an open standard for the Linux
+[31:58] foundation and it would was uh like
+[32:01] supported by Coinbase quite a lot and
+[32:03] initially and Concordium joined this
+[32:05] standard on Septe in September and what
+[32:08] we did to get into it like we built a um
+[32:12] package this X402 Concordium package you
+[32:15] can install it and then depending on
+[32:17] which actor you are you might need to
+[32:19] install different parts of it. So for
+[32:21] each um kind of actor you need to
+[32:24] install first of all a part of the
+[32:26] concordium package and also um a package
+[32:28] that's related to the to the original FS
+[32:31] 42 standard. So this 402 standard it's
+[32:35] um kind of a wpper that's uh for every
+[32:37] chain or every payment um service the
+[32:39] same and then like the concordium
+[32:41] specific part is a plug-in. So that's
+[32:43] why you need to install both of them
+[32:44] like the standard way to call it b b b b
+[32:47] b b b b b b b b b b b b b b b b b b b b
+[32:47] b b b b b b b b b b b b b b b b based on
+[32:47] the the the um the standard and then you
+[32:50] also need to have the concordance
+[32:52] specific um um functionalities installed
+[32:56] for the client. That means um what this
+[32:58] package does or these two package
+[32:59] together will does um it builds and
+[33:02] signs the payments for the server um the
+[33:06] server API what it should have
+[33:08] functionality is it needs to require
+[33:10] return a payment request to the to the
+[33:13] buyer and say okay what it actually
+[33:15] wants to get paid for and the
+[33:17] facilitator this is like maybe a bit
+[33:19] specific part um first of all in the
+[33:21] standard way it checks um all the
+[33:24] payments as um the server request tested
+[33:26] and the client should then provide. In
+[33:28] addition for Concordium, it also has the
+[33:30] sponsoring feature in it. Um, as I said,
+[33:33] like we want it make it to make it
+[33:35] easier for users. So, they don't have to
+[33:37] initially have CCT on their uh on their
+[33:40] account balance. So, there's also a
+[33:42] sponsoring service in the facilitator.
+[33:44] So, the facilitator can pay on behalf of
+[33:46] the user the transaction fees. So, it
+[33:48] will check the facilitator will check
+[33:50] the payment and pays the fee and submits
+[33:52] it to the blockchain.
+[33:56] And for now there's no facilitator um
+[33:58] that's concord running or anyone. So if
+[34:00] you need the whole setup you will
+[34:02] probably need to run your own um
+[34:04] facilitator or maybe in the long term
+[34:06] somebody running it for people if it
+[34:09] makes sense.
+[34:15] Okay. Again as I said this facilitator
+[34:17] is a is a sponsor. So that means um
+[34:20] there again two actions or two actors.
+[34:22] Um the buyer will sign the payment and
+[34:24] the facilitator will cosign the payment
+[34:27] to kind of pay the transaction fee. So
+[34:30] we have um the first action which is the
+[34:33] buyer agent it authorizes that some um
+[34:36] for example some some stable coin tokens
+[34:39] um will leave the account but it holds
+[34:42] no CCD the sponsor is opposite it will
+[34:45] authorize the transaction fee can appear
+[34:48] that can disappear from its account
+[34:51] and also the cosigner submits
+[34:53] transaction on chain. So in this case
+[34:54] you see the designer is first the buyer
+[34:57] is first signing the the transaction and
+[35:00] later the sponsor is signing the
+[35:03] transaction in a second step
+[35:06] and again because both parties signed it
+[35:08] no party can change it um later.
+[35:14] Okay we look into the three um actors
+[35:16] what they did and what kind of code they
+[35:18] need. So we are the seller here that's
+[35:20] the um the server back end it provides
+[35:23] an endpoint for example this forecast
+[35:25] endpoint where you can get maybe some
+[35:27] weather data from and this part here
+[35:30] this is the concordium specific one oop
+[35:33] this one this is the concordium specific
+[35:35] part which comes from the concordium
+[35:37] package and the rest around the wpper
+[35:39] here it's the kind of standard x402
+[35:43] um code which comes from the standard
+[35:44] package that's why you need these two
+[35:46] parts of the packages and what is
+[35:48] specifically for concordium you need to
+[35:50] specify which nets work this is test net
+[35:53] so what this means uh it's like the
+[35:55] variable CCD and then like a very long
+[35:58] string this very long string is the
+[36:00] genesis hash of concordium for test net
+[36:03] so this this standard was defined as
+[36:05] like a c a p2 standard and it's defines
+[36:09] like um how you specify a blockchain
+[36:12] network and for us it's like CCD and
+[36:14] then the tennis is hashed that's how we
+[36:16] define test net So if you want to have
+[36:18] mainet use the changes hash of mainet
+[36:20] obviously
+[36:22] and you specify what you want to get
+[36:24] paid so you specify the amount and then
+[36:27] also which asset it could be for example
+[36:29] CCD or it can be uh our stable coin in
+[36:32] this example. You can also specify um
+[36:35] some USD value here, but then you need
+[36:37] to have um enabled an a converter who
+[36:40] then converts the USD in some for
+[36:42] example stable coins or some CCD. And
+[36:45] you also specify which account this
+[36:48] should be paid to. And yeah, this is
+[36:51] what the back end does and this X40
+[36:54] standard.
+[36:56] So what does the front end do does? Um
+[36:59] oh no, this is the facilitator again. So
+[37:01] the facilitator should check um the
+[37:03] transaction and then cosign it. So again
+[37:06] the beginning here it comes from the
+[37:08] normal X40
+[37:10] 42 um package and only this part is
+[37:14] specific to Concordium. This comes from
+[37:15] the Concordium package and this one is
+[37:17] again from the the standard X402
+[37:20] package. This is specific to Concordium.
+[37:22] Um you need to specify the Concordium
+[37:25] schema. Um, again you need to have a
+[37:28] sponsor key because you need to pay some
+[37:30] some of the transaction fees. So they
+[37:31] need to specify the key and then you can
+[37:34] also enable the specific endpoint you
+[37:36] want to submit a transaction to.
+[37:40] For the sponsor account also make sure
+[37:42] like that you're funded with enough CCD
+[37:44] otherwise your kind of test will fail.
+[37:49] Then for the front end, the buyer or you
+[37:51] can think about it your agent A who
+[37:53] wants to get an service or get some um
+[37:56] like maybe a wine from a supermarket.
+[38:00] For that client uh you can create a
+[38:02] client. Again this client is like the
+[38:03] normal X402 standard and this only this
+[38:07] line is comes from the Concordium
+[38:08] package and this is again from the
+[38:12] normal X402 standard and the two lines
+[38:15] as well. So what is specific to
+[38:17] Concordium? What the conccominant
+[38:18] package brings in it you register the
+[38:20] the chain which is like a CCD and a star
+[38:23] the star means that any network is uh
+[38:25] fine with you the test net and mainet
+[38:27] you're fine with it and then you define
+[38:29] a concum schema again you need to have
+[38:31] an account address and the assigner so
+[38:33] you can sign the transaction one
+[38:35] specific thing is like in the X402
+[38:39] standard you can also um add some spend
+[38:41] controls these spend controls um are
+[38:44] kind of soft mechanism because they're
+[38:47] done is a kind of a policy that your
+[38:49] client code client code will check and
+[38:51] enforce but only as long your client
+[38:54] code is fine or your agent A is fine
+[39:03] which means that nobody has hacked your
+[39:04] agent Agent A if in what we will do in
+[39:07] the future is actually that these kind
+[39:09] of spend
+[39:11] controls we want to put them on chain in
+[39:13] the future and these uh spend controls
+[39:16] they will then much harder enforce
+[39:18] because the chain will like check on
+[39:20] them and you cannot kind of segment them
+[39:21] even if something gets hacked. But for
+[39:23] now these are like soft controls just
+[39:25] policies that your client code checks
+[39:27] and it's good to add them but later you
+[39:29] can replace them with locks then it's
+[39:30] much much hardener your your security
+[39:33] considerations because um onchain things
+[39:36] cannot be hacked that easily
+[39:39] or these these yeah
+[39:43] again and in this example we have now
+[39:45] that the buyer needs the stable coins
+[39:47] but it doesn't does not need to have CCD
+[39:49] on its account because the sponsor the
+[39:51] facilitator will pay for that.
+[39:56] Um, what does the facilit facilitator
+[39:58] check before it sends something on
+[39:59] chain?
+[40:01] First of all, there like some like I
+[40:03] think nine rules that we have. You can
+[40:04] check them out here and a little bit
+[40:07] summarized what they they do is like the
+[40:09] facilitator will check it's the right
+[40:11] person that sends the transaction. So,
+[40:12] it checks the sender, it checks that the
+[40:14] sponsor is um its own address that it
+[40:17] expected and if anything it's not right,
+[40:20] it will revert the same thing. It will
+[40:22] check that the price of the transaction
+[40:23] is correctly. So it means that the
+[40:25] recipient address is what it what it
+[40:26] expects. The exact amount is correct,
+[40:29] that the right token was used and there
+[40:31] just one transfer. And it also checks
+[40:34] some kind of timing constraint. So if it
+[40:36] checks that the request is not expired,
+[40:38] what was specified and the sender
+[40:40] signature is correct and not like
+[40:41] something has changed.
+[40:46] And now I will show you our road map
+[40:49] because some of the features that are
+[40:50] upcoming uh are related to payments. So
+[40:54] uh where you get uh these um if you go
+[40:57] to our website I think that's our
+[40:59] website um you go to the road map here
+[41:02] there you find different
+[41:05] parts what get what gets built in the
+[41:07] future and specific the second part
+[41:09] here. So a lot about payments. I will
+[41:11] show you some stuff that is in the
+[41:14] building, but obviously that's still
+[41:16] subject to change. So it's not clear
+[41:19] exactly how these things will be defined
+[41:21] or how they will be implemented or if or
+[41:23] when they will be implemented, but it's
+[41:25] likely that at least some of them will
+[41:26] be available soonish. So first of all in
+[41:29] December we will have uh on mainet a new
+[41:33] stable coin which is Mika licensed. Um
+[41:36] then in January there will be this
+[41:38] protocol level locks. So as I said the
+[41:40] X402 standard it has some kind of soft
+[41:43] control so soft constraints at the
+[41:45] moment but we want to get them into the
+[41:47] protocol level then it means they're
+[41:48] much harder enforced.
+[41:50] Um the funds will stay with the payer
+[41:53] but there will be different restriction
+[41:55] you can add and so your agents for
+[41:56] example is restricted to only spend the
+[41:59] amount that you have specified to it and
+[42:02] then we will have fifi and pay working
+[42:04] together with these um locks. So fifi
+[42:07] and pay in some way already works now.
+[42:08] So I will show in the next slide what I
+[42:10] mean with verify and pay but it will be
+[42:12] kind of expanded to work together with
+[42:14] these locks that are upcoming January.
+[42:17] And then we also look into something
+[42:18] that's concordium signers. Uh we want to
+[42:20] make sure that keys stay away from from
+[42:22] the agent so the agent cannot like abuse
+[42:24] some of the keys. So we do some research
+[42:27] and some work around it like how we can
+[42:29] do that and make it easier for people
+[42:31] operating agents.
+[42:34] Okay. Now I want to explain you what a
+[42:35] fifi access and fayfi pay what these two
+[42:38] features are. Um both of them have this
+[42:41] fifi at the beginning and fifi literally
+[42:44] means that you have a request as your
+[42:46] knowledge proof and based on this proof
+[42:48] if it verifies you do some action. So
+[42:50] this is the first part verify exists in
+[42:52] both. So it always links to some kind of
+[42:54] your knowledge proof that you're asking
+[42:55] about the identity behind the wallet.
+[42:58] And for the pay there will be an
+[43:00] addition like a transaction on chain
+[43:01] which is usually a payment transaction
+[43:03] for example CCD payment, PLT payment or
+[43:06] some smart contract payment smart
+[43:09] contract token. So for the verify and
+[43:11] access this uh kind of flow you have
+[43:13] already seen in workshop one. I think
+[43:14] Peter gave a very good overview of that
+[43:16] how it works. It has like two steps. You
+[43:19] request a verification for example that
+[43:20] you are older than 18 years old and you
+[43:23] then grant access when this CK proof
+[43:26] comes back and is valid.
+[43:28] And for the favor and pay it's again you
+[43:30] ask for a proof but in addition you ask
+[43:32] also for some payment and the back end
+[43:35] for example then checks if the proof is
+[43:37] valid and if the payment is as specified
+[43:40] once both of them are correct then only
+[43:42] then the seller will kind of or the back
+[43:44] end will allow you to access the
+[43:46] resource or deliver on um some kind of
+[43:48] services
+[43:50] and yeah in both cases you will have
+[43:52] this kind of CK proof that you for
+[43:55] example reveal that you're older than 18
+[43:56] years old but never reveal your date of
+[43:58] birth. It's the same in both of these
+[44:00] cases.
+[44:04] So, and I have a few ideas for you for
+[44:08] your hackathon, how you can integrated
+[44:11] some of the things we have talked about
+[44:12] today. Um, you can think about maybe uh
+[44:16] how you want to pay your agent. So, you
+[44:18] can think about how to integrate the
+[44:19] X402
+[44:20] standard, how it would work in your um
+[44:23] use case. Maybe think about how the
+[44:24] stable coin should work in that that
+[44:26] flow. Um you can think about sponsor on
+[44:29] onboarding. So how can you use a
+[44:31] sponsoring service um to make the first
+[44:33] transaction of your user more fluently
+[44:35] so that the user doesn't need a CCD in
+[44:37] their wallet. You can think about
+[44:40] agegated agent shops. There's a lot of
+[44:42] um discussion in politics maybe if we
+[44:44] should um have social media and not for
+[44:48] younger people. Also, how do we kind of
+[44:50] restrict the access to some of uh
+[44:52] content that we don't want people to
+[44:54] access if they are too young? Also think
+[44:57] about how you can maybe incorporate
+[44:58] verify and pay together in these flows.
+[45:02] Then we have this is trusted sellers. So
+[45:04] uh and think in the first uh workshop
+[45:06] you also have seen this concordium
+[45:07] batch. So think about it maybe how you
+[45:10] can fify by concordium how this batch
+[45:12] can be integrated into your project.
+[45:14] Maybe it makes sense for it to show it
+[45:16] or not. And another thing is auditable
+[45:20] purchase logs. So that's uh I think in
+[45:22] in the next workshop we will think about
+[45:24] it a little bit and give some more
+[45:25] details. So think about receipts how we
+[45:28] can audit what the agent is doing um if
+[45:31] that can be done in your use case
+[45:34] and then also do some kind of budgets um
+[45:36] kind of restriction on your agent so it
+[45:38] cannot spend or go um go on a spending
+[45:43] trip on its own. So maybe think about
+[45:45] how to have soft controls or maybe more
+[45:47] hard controls in it and later we can
+[45:48] replace them with locks once they become
+[45:50] available on test net. They're not live
+[45:52] yet. I think definitely already live or
+[45:55] they're experimenting with it
+[45:59] any questions so far.
+[46:04] Let me see.
+[46:09] >> I think there are Yeah, in the Q&A
+[46:10] section.
+[46:12] Okay, let me see. How can builders get a
+[46:15] small amount of use USDR or UR
+[46:19] concordium mainet for testing? Is there
+[46:21] a facet a swap or someone on the team?
+[46:23] We can ask. So on mainet I think there's
+[46:27] no facet in that way that you can get
+[46:28] free money because it's like real real
+[46:31] value like these these tokens. Um I
+[46:33] think you can reach out to us. Um I'm
+[46:35] not sure if you provide these um these
+[46:38] tokens. um probably not probably we
+[46:40] don't have access to them but at least
+[46:41] you can ask like maybe someone has and
+[46:43] can give you some but I would not be
+[46:46] sure if you really cannot give out these
+[46:48] tokens because we not like issuing the
+[46:49] tokens we not holding like large amount
+[46:51] of these tokens
+[46:54] um the next question is XDC is already
+[46:58] using concord identity for its agent
+[47:00] while settling on its own chain
+[47:02] long-term do you want to be um the
+[47:05] identity lay across every chain or do
+[47:06] you need agents settling on Concordium.
+[47:09] I think we actually support both. So you
+[47:11] should keep your agents where you want
+[47:12] to keep them. So if you want to stay on
+[47:14] Ethereum or you want to stay on Solana,
+[47:16] we stay there. You can use the external
+[47:18] keys um that exist on these chains and
+[47:20] like an SIS 8 standard and register the
+[47:23] this kind of key and then use the
+[47:25] identity layer on top to fify make sure
+[47:28] the agent is like a human is behind this
+[47:30] agent and like there's some
+[47:31] accountability behind it. So you can
+[47:33] stay on under chains if that's makes
+[47:35] sense for your use case. But obviously
+[47:36] you can also build directly um on
+[47:38] Concordium use um every feature that you
+[47:40] have also on Concordium meaning we have
+[47:42] smart contracts we have um yeah a lot of
+[47:45] probably every feature you need we have
+[47:46] also on concer
+[47:53] can we get euro if we are not Europeans
+[47:56] um yes I mean we you want testn net so I
+[47:59] mean I think the question is if you can
+[48:01] get this um
+[48:04] if you can get this
+[48:06] um kind of stable coin token on test
+[48:09] net. Yes, you can uh get it. And for
+[48:11] that what you have to do like as I said
+[48:13] we on test net
+[48:16] if you create an identity on test net.
+[48:18] So we create a new identity here. Create
+[48:21] a new identity. Choose the concord test
+[48:23] net uh identity provider. This is a fake
+[48:26] identity provider which only exists on
+[48:27] test net and it allows you to create any
+[48:29] fake identity on test net. So I'm John
+[48:31] Doe. But it also means you can have any
+[48:33] nationality. Here it is a standard. So
+[48:35] if you just click through the whole flow
+[48:37] and submit it, you actually already uh
+[48:40] have an account in the European Union
+[48:42] and then you can get your stable coins
+[48:45] because you have the right kind of
+[48:46] identity behind your account. So yes,
+[48:48] anyone can create and get stable coins.
+[48:51] There's no need. You actually have to be
+[48:52] in the European Union and have a
+[48:54] passport from the European Union.
+[48:58] How do you handle long transaction? For
+[49:00] example, if I want to buy an AI report
+[49:03] that takes several seconds to prepare
+[49:05] and won't fit into one transaction.
+[49:08] Um, not exactly sure what you mean. You
+[49:11] can if you have a lot of data, you can
+[49:12] always hash your data and then submit
+[49:14] the hash on chain and a hash is very
+[49:16] small. It's usually yeah 256 uh bits
+[49:19] long that should um fit on a on a
+[49:22] transaction. So, I'm not exactly sure
+[49:24] why it shouldn't fit. Um
+[49:27] yes I think it's possible just use the
+[49:29] hash if you have a very very large data
+[49:31] that you want to get kind of um yeah
+[49:34] anchor on chain use the hash and the
+[49:36] whole maybe your video you will not get
+[49:38] on chain obviously
+[49:40] what other languages do you have
+[49:41] libraries for legal compliance I can't
+[49:44] install or use any npm package so we
+[49:47] have different packages uh obviously
+[49:49] depending on what you want um I can show
+[49:52] you we often SDKs
+[49:55] So the kind of first class SD case that
+[49:58] we have is um kind of JavaScript,
+[50:00] TypeScript and Rust.
+[50:02] Okay, does search for it.
+[50:06] Um maybe find it somewhere faster.
+[50:10] So we have also the RS SDK here. H the R
+[50:13] SDK is uh very well supported because
+[50:15] our chain is a lot built on Rust. Uh
+[50:18] then we also have this web SDKs like uh
+[50:20] your JavaScript typescript packages and
+[50:22] we had some other go SDKs and other
+[50:25] packages but they probably not so good
+[50:27] supported. So I would choose these two
+[50:29] if you want and most of the features you
+[50:31] should actually have everything
+[50:32] implement in these two SDKs. I hope you
+[50:35] like Rust otherwise please let us know
+[50:37] if you like other SDK so we know what to
+[50:39] build next. We also have some Python I
+[50:42] think some one of these block explorers
+[50:43] written in Python so there should be
+[50:44] also external people. Um there's one who
+[50:47] supports Python SDKs for that. So yeah,
+[50:50] look out. Maybe you have some SDKs that
+[50:53] are somewhere else supported by outside
+[50:56] people from Concordium.
+[50:58] Um
+[51:01] okay, the browser
+[51:04] only exact schema for 42 and confirm.
+[51:08] Yes, I think we in all these uh
+[51:11] statements we had we used the word
+[51:12] exact.
+[51:15] Uh, is Concordium planning to run a
+[51:17] public facilitator or would you welcome
+[51:19] community run ones? Um, not 100% sure. I
+[51:23] mean, we all always welcome community
+[51:25] runs obviously because like we very very
+[51:28] happy when people from outside
+[51:30] supporting it. It could be that we run a
+[51:33] public one ourselves but it's up to
+[51:35] side. I'm not 100% sure on that but I
+[51:37] can ask if you want to know more next
+[51:39] time.
+[51:41] The thing is if you run a public
+[51:42] facility it means like you have to have
+[51:44] funds and then you don't want to
+[51:46] authorize any any kind of transaction
+[51:48] that you facilitate. So for example we
+[51:51] already run um kind of sponsor service
+[51:53] for this agent registry on um so in that
+[51:56] way we already run some sponsor
+[51:58] transaction service but like a general
+[52:01] one that supports everything probably we
+[52:03] don't want because otherwise people
+[52:06] could train the wallet for no reason.
+[52:09] Hackathon pizza aren't revealed yet.
+[52:12] Okay. Not sure what that means. Not sure
+[52:14] if there's some hackathon pizza around.
+[52:17] Does do just wait mainet deployment and
+[52:20] reuses more than test net demos. I mean
+[52:23] I'm not one of the judge so I can not
+[52:25] really answer that question I guess. So
+[52:28] go with what you feel more comfortable
+[52:30] with. I feel um not sure what the judges
+[52:33] will do
+[52:35] for long transaction. I mean clients
+[52:37] send a signed message but the server
+[52:40] takes longer to prepare the request than
+[52:42] message TLTL. So we will never get the
+[52:46] to charge. Um I mean this uh
+[52:49] communication between um front end back
+[52:52] end or agent A and agent B. So usually
+[52:54] very fast whenever you submit a
+[52:55] transaction you can set expiry dates or
+[52:58] or expiry date and it's usually for
+[53:00] example we set it to 5 minutes. So this
+[53:02] the default value. So it's usually
+[53:04] really not a problem that these whole
+[53:05] things take too long. Um and if you have
+[53:09] a kind of um process that takes very
+[53:11] long then just set this transaction when
+[53:13] it should expire a bit longer. Then you
+[53:15] have more time at the back end to do
+[53:16] whatever process you need to do to make
+[53:18] sure your transaction can still be
+[53:20] submitted.
+[53:23] Um yes Rust is okay is either Rust or
+[53:27] PHP. Yeah. Okay. I may do a PhD
+[53:31] facilitator for controller. Yeah. They
+[53:32] always welcome if people want to write
+[53:33] their own SDKs and other languages. Of
+[53:36] course, very helpful.
+[53:38] I'm setting up a companybacked wallet
+[53:41] for hackathon and future production use
+[53:43] during browser extension on boarding. I
+[53:45] was not prompted to create a wallet
+[53:47] password or save a seat phase before
+[53:48] being directed to global finre business
+[53:50] ID verification. My comication took
+[53:53] about 24 hours. Global Finrich now shows
+[53:56] max proof in the approval email.
+[53:59] Okay, that takes a very long. So I guess
+[54:01] you might have been on um on mainet. I'm
+[54:05] not 100% sure. If you're on mainet
+[54:07] obviously that's a a full process. So
+[54:09] there's the global fin will test your um
+[54:13] your kind of business uh business
+[54:16] really. So make sure you're on test net
+[54:18] here. So maybe we're mainet here. You
+[54:21] can check you can go on test net and I
+[54:24] think maybe we can check if there's an
+[54:29] create a new one. I think we have a test
+[54:31] net
+[54:32] here. I think you can go this global
+[54:34] finick then you get a business ID. Um
+[54:36] and I think it should be probably very s
+[54:38] very fast similar to the um yeah the
+[54:41] other identity creation process and test
+[54:44] it but obviously if you're mainet it
+[54:45] takes longer because it's somebody who
+[54:47] needs to re test your real or like check
+[54:48] your real submitted forms. Yeah.
+[54:53] Hope that answered the question. Any
+[54:54] more questions?
+[54:57] We went through them.
+[54:59] Oops, I got lost.
+[55:07] Now is the time otherwise I can show you
+[55:09] some additional things uh additional
+[55:10] slides I have.
+[55:12] Um
+[55:15] we have some more slides. We have a few
+[55:16] test net kits that I think will help you
+[55:18] to get everything set up on test net.
+[55:20] Um, if you want to just try it out on
+[55:22] test net, you make sure you have the
+[55:23] test net identity. Um, because it's free
+[55:26] and you can decide what whoever you want
+[55:28] to be on testn net. You get free test
+[55:30] CCD and make sure you go to activity and
+[55:33] request free CCD on your wallet. You get
+[55:37] the stable coin free on testn net. So
+[55:40] you can go to this facet. Um, and you
+[55:43] can also request a test token, but it's
+[55:46] still a bit of a manual process. So only
+[55:48] if you actually want to be an issuer and
+[55:49] test some issuing functionality, you
+[55:51] probably need it. And this is like the
+[55:52] network ID for test net.
+[55:55] There's some uh developer toolkit uh for
+[55:58] the different things we were talking
+[55:59] about today. We have this x402 package
+[56:01] from
+[56:03] there some specification that uh we
+[56:05] written and um we also have the PLTs are
+[56:08] supported by web SDK or as well as RS
+[56:11] SDK. Um we have sponsor services um that
+[56:14] you can check out. And we have actually
+[56:17] example I think this definite sponsored
+[56:19] transaction that you can check out if it
+[56:21] helps you. Um and here's some um scripts
+[56:24] and um that you can use to test out
+[56:28] sponsoring and obviously we have a lot
+[56:30] of documentation and also you can add
+[56:32] your agents and point them to that to
+[56:34] make them faster to find the relevant
+[56:36] information.
+[56:39] Yeah, more documentation for your agent
+[56:41] to look at or yourself can look at
+[56:42] through it. Of course,
+[56:45] um there's some agent settlement
+[56:46] payment. You can have a look at a lot of
+[56:49] X4002
+[56:50] documentation.
+[56:54] And then maybe one interesting thing is
+[56:57] in the X402 payment when the back end
+[57:01] sends the request to the front end,
+[57:03] there's like this extra field. Uh there
+[57:05] you have the fee payer. This the
+[57:06] facilitator account. That's maybe in
+[57:08] case you wonder where this information
+[57:10] comes from. It's like part of the extra
+[57:12] field
+[57:17] and also some helpful
+[57:20] um errors in case you try out this
+[57:21] facilitator. Um the typical error codes
+[57:24] that we see very often people run into
+[57:26] what they mean and if you want to get
+[57:28] even more error codes they are defined
+[57:30] in the readme. So just yeah check them
+[57:32] out in case anything doesn't work as you
+[57:34] expected then you will probably figure
+[57:35] out what's the problem and how to fix it
+[57:39] any more questions
+[57:43] is there any
+[57:50] so only do test net I was not doing test
+[57:53] net it was not about time it was fi I
+[57:55] was trying for real use I think that's
+[57:58] related to
+[58:00] the global fin. Yes, of course. Like if
+[58:02] you want to do mainet, um we very
+[58:04] welcome to that as well. But then of
+[58:06] course the onboarding flow for
+[58:08] businesses takes a little bit longer
+[58:10] because you go through the real finre um
+[58:12] [clears throat] kind of onboarding flow
+[58:13] and they will check your documents. So
+[58:15] depending how fast they are, it might
+[58:17] take a little bit more time.
+[58:20] Save your slides somewhere too please.
+[58:23] Uh I will talk to Concordium and uh see
+[58:26] if they can make them online somewhere.
+[58:28] Let's see.
+[58:30] Fine.
+[58:35] Any more questions? I think we're here
+[58:36] like on time exactly. I think one minute
+[58:39] before the end,
+[58:40] >> I think. Yeah, we're pretty pretty much
+[58:43] on time there. That was a a lot of
+[58:45] questions. Like six 17 questions. Nice.
+[58:49] Um, good to see you guys are are curious
+[58:51] and wanting to learn more. Um, and thank
+[58:53] you very much, Doris, again for uh for
+[58:55] answering those where where possible. Um
+[58:58] yeah, we got the next workshop again on
+[59:01] Wednesday. So make sure you guys are
+[59:03] returning to that one. Um and then build
+[59:06] week is going to be starting
+[59:08] um on the 16th I think as far as I'm
+[59:11] aware. Um it might be the week week
+[59:13] after I'll send out uh reminder emails
+[59:15] and everything. Any questions chuck them
+[59:16] on the discord. Um there is the
+[59:19] Concordian team present there so they
+[59:20] can ask question answer questions about
+[59:22] anything technical and things like that.
+[59:23] anything non-technical about the
+[59:25] platform or recap recordings or um
+[59:29] judging criteria, whatever. Anything
+[59:30] anything regarding that kind of things,
+[59:32] send them my way. Um I'm very happy to
+[59:34] help there. Um but thank you very much,
+[59:36] Doris. Um and uh I'll see you guys on
+[59:39] Wednesday.
+[59:40] >> Yeah, thanks everyone for joining and
+[59:42] see you again. Bye-bye.
