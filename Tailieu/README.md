@@ -2,7 +2,8 @@
 
 | Đường dẫn | Nội dung |
 |---|---|
-| [Tong-hop-sau-W3.md](Tong-hop-sau-W3.md) | ⭐ **Đọc file này trước (bản mới nhất, 10/11).** Tổng hợp tiến độ, kiến thức W1–W3, hướng đã chốt (C-lite bản kết hợp 4 lớp), điểm còn mở, kế hoạch, rủi ro |
+| [Tong-hop-sau-W3-v2.md](Tong-hop-sau-W3-v2.md) | ⭐ **Đọc file này trước (bản mới nhất, v2, 11/11).** Giữ hướng C-lite kết hợp; thêm 5 câu hỏi xác minh độc lập, Approval Binding, request chống replay, thu hồi work order, audit tách quyết định/thực thi, mục Security & Trust Model, kết quả đối chiếu tài liệu Concordium, kế hoạch spike có điều kiện hoàn thành |
+| [Tong-hop-sau-W3.md](Tong-hop-sau-W3.md) | Bản v1 (10/11), giữ để đối chiếu. Tổng hợp tiến độ, kiến thức W1–W3, hướng đã chốt (C-lite bản kết hợp 4 lớp), điểm còn mở, kế hoạch, rủi ro |
 | [Tong-hop-Workshop01-va-Hackathon.md](Tong-hop-Workshop01-va-Hackathon.md) | Tổng hợp thể lệ, lịch, bài nộp, kiến thức Workshop 01, kiểm chứng research |
 | [Bao-cao-Workshop01.md](Bao-cao-Workshop01.md) | Báo cáo chi tiết Workshop 01 (đã hiệu đính theo slide): thể lệ, giải thưởng, công nghệ, Q&A, rủi ro và 3 hướng dự án |
 | [Bao-cao-Workshop02.md](Bao-cao-Workshop02.md) | **Báo cáo Workshop 02 (04/11)**: Agent Registry, CIS-8/CIS-8004, badge, 3 loại key, Agent IDP, demo MCP, Q&A về tiêu chí chấm, phân tích chat |
