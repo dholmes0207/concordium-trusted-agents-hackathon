@@ -21,6 +21,8 @@
 | [Workshop02/Workshop-02-transcript-EN.txt](Workshop02/Workshop-02-transcript-EN.txt) | Bản chép lời Workshop 02 (67 phút, Whisper) |
 | [Workshop03/slides/](Workshop03/slides/) | 36 ảnh slide và màn hình demo Workshop 03 (1080p), cắt tự động từ video rồi lọc tay |
 | [Workshop03/](Workshop03/) | Transcript Workshop 03 (60 phút): bản Whisper `Workshop-03-transcript-EN.txt` và bản phụ đề tự động YouTube `Workshop-03-transcript-YouTube-auto-EN.txt` |
+| [Workshop04/slides/](Workshop04/slides/) | 54 ảnh từ video Workshop 04 (11/11, 1080p): `01–30` bộ slide chính (Protocol-Level Locks, EU AI Act Article 12, anchor log, CertiK audit, có xen màn hình demo), `31–54` bộ slide phụ của Doris về các lỗi trong CertiK Grey Box audit |
+| [Workshop04/Workshop-04-transcript-EN.txt](Workshop04/Workshop-04-transcript-EN.txt) | Bản chép lời Workshop 04 (58 phút, Whisper) |
 
-Video gốc **không đưa lên GitHub** (đã đưa vào `.gitignore`, vượt giới hạn 100 MB): Workshop 01 (`.mkv` 2 GB, `.mp4` 380 MB) và Workshop 02 (`.mp4` 250 MB) lưu ở máy local; Workshop 03 (`.mp4` 168 MB) lưu trên Google Drive của bạn.
+Video gốc **không đưa lên GitHub** (đã đưa vào `.gitignore`, vượt giới hạn 100 MB): Workshop 01 (`.mkv` 2 GB, `.mp4` 380 MB) và Workshop 02 (`.mp4` 250 MB) lưu ở máy local; Workshop 03 (`.mp4` 168 MB) lưu trên Google Drive của bạn; Workshop 04 (`.mp4` 162 MB) lưu ở máy local.
 Bản ghi chính thức của các workshop có trên trang programme của Encode.
