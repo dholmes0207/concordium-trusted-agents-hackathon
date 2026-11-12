@@ -1,0 +1,1008 @@
+[00:00] Hello everyone. Welcome back to workshop number four now for the Concordium series. We are going to be covering a bit more about keeping your agents inside the rails here and inside the law.
+[00:15] And we'll be joined by Doris once again, who I will just invite up to be a panelist.
+[00:25] So yeah, today we'll be learning a bit more keeping your agents inside the rails inside the law and you'll be learning a little bit more about knowing about protocol level locks and how these will bound on agents spending once you guys begin to ship with these.
+[00:45] And then we'll do how this is we'll learn about how this is all integrated with an audit trail built as for within the EU AI act record keeping system.
+[00:56] Hello Doris. Thank you for joining us again today. For those of you that weren't here for the session on Monday.
+[01:05] Doris is blockchain security engineer at chain security and was formerly an engineer at Concordium. So she's very well placed to be talking about all of those things and knows the stack inside out.
+[01:18] So Doris, if it all is good, I'll hand over to you.
+[01:23] Yeah, thanks everyone for joining and for introduction. I hope you can see my screen.
+[01:29] Yep.
+[01:30] Cool. So today's session.
+[01:34] So the topic what we want to talk today is about how we keep our agents inside rails and inside the law.
+[01:40] So you want to make sure how we can operate agent safely and making sure they don't spend unlimited you get you get too much risk on your funds.
+[01:49] So it's mainly obviously about like if the agent have access to funds how we can kind of restrict or limit these accesses and how can we prove it later if you maybe need to monitor what your agent did or need to figure out like if something went wrong like where did the funds go something like it.
+[02:03] And I had like three sections that top ones we will talk about. So we will first look into if you use protocol level logs, how this allows us to limit the agent's capability to do stuff with the funds but still your agent is able to access it in a way it should do.
+[02:22] And then you will look into some laws and legislation that's especially the EU AI act. So we mainly focus on this region and off the earth. Obviously I'm not not a lawyer so I'm it's not a legal advice, but I will try to give you as much information that I am aware of and that other people talking about so you can do your own research and maybe need to ask no lawyer if you have something very specific.
+[02:44] And in the end we will also talk about the security audit it's surjected on the recording chain to see what they have found and how we have fixed the things.
+[02:52] Okay.
+[02:53] So the first part is like let's think about what the agent so far has access to if that's good and if you maybe think that's too much. So for now, the agent has actually only one very hard enforced kind of restriction when it spends and this is like the first row.
+[03:08] So only if you give the agent like access to a wallet and this wallet has a very low balance then your agent in some way isn't this kind of on the chain it's enforced that obviously your agent can never spend more than what is on this balance.
+[03:20] And this is like really a hard limit it's a change in forces any other of these kind of controls that's not not not things that the chain controls is more like soft or policies soft and controls and policies.
+[03:31] So maybe last time like on Monday we talked about x for us here for zero to standard.
+[03:37] And there was something you could do like spend controls I can show you this again.
+[03:40] And we were here last time.
+[03:45] This one.
+[03:46] And if you remember there was when you use the standard there was a way in the code you could set spend controls and kind of specify the allowed asset allowed amount of the agent has access to.
+[03:57] But these are just like soft controls what it means is if in any case like for example your client gets hacked or the key gets leaked of the agent.
+[04:06] It can still access and like use all the funds that on this address so it's not like something controlled by the chain or enforced by the chain it's really just the code and the kind of client code is doing that.
+[04:20] And other things that we have kind of controls is like these tokens allowed in Alice you can also think about white and blacklist and pausing.
+[04:27] And these tokens is that is protocol level tokens that we talked on Monday.
+[04:30] These things can be kind of invoked by an issuer and an issue will do this to protect their own tokens and their own kind of budget.
+[04:38] It has nothing to do with yourself so it's very hard probably for you to get an issuer to and kind of do any of these operation based on what happens to your agent.
+[04:48] So don't kind of rely on these kind of protection.
+[04:50] This is like an issuer safeguarded issue will do whenever they feel it's necessary but not particular if you think it's necessary.
+[04:58] There's another thing these if you think about this X402 standard we use sponsoring and there's also like the sponsor service in some way can also safeguard a little bit.
+[05:08] So if it refuses to cosine it's an off-chain policy then maybe your agents also get saved in a way that your funds don't leave the chain but it's don't leave your wallet.
+[05:19] But only depends on like if the sponsor do some checking and also enforces some specific policies so there's no way that you can kind of influence it yourself.
+[05:27] So again like the only hardcore enforcement is like the top one and we want to look into like how or what we built that would in the future allow you much more control and much more enforcement on chain in case you don't trust your agent because nowadays they're still not like too much trustworthy because you do.
+[05:44] So let's go on a spend spending spree.
+[05:47] So okay what do we do and we have something that's called protocol level locks there that are currently built so it's not like that they are already on test net there is a kind of definite available.
+[05:57] And on this definite we can already kind of try out the simple locks but the simple locks they should be kind of available on test net or main net in January 2027.
+[06:09] And then there will be a even better version of that we call them enhanced locks they will be available in March.
+[06:15] But again this is like kind of that's the roadmap but at times can still change it's like not set in stone I would say and also the features.
+[06:24] We will look into the simple locks for the next slides so I represent them how they are today but it can still be changed so their subject changes.
+[06:32] So don't nail us down if something like some small adjustments have to be done.
+[06:37] And we have like these two types we have the simple locks and we have these enhanced locks what's the difference.
+[06:43] So for the fixed fixed locks and we have fixed role rules.
+[06:48] And that means somebody or specifies who may receive the tokens so where they should go to which tokens are in the lock.
+[06:56] So it's not all of the tokens and until when they can be spent and how much is locked.
+[07:01] So there's like some predefined settings that you can do.
+[07:05] The enhanced locks they are a bit more flexible so later there will be some smart contracts available that you can code and based off what the smart contract answers on each of the actions.
+[07:14] If the answers are yes no then some spending limits can be enforced daily allowances as much more flexibility and you can write your own time conditions how these locks should behave.
+[07:24] In both kind of locks it's always the case that the funds stay on the owners account so they don't leave and hold on a smart contract.
+[07:33] So how do these simple locks work. So again we have the owner account here and the funds they stay in the owner account so they're not moving to a smart contract.
+[07:42] So the protocol level locks and they're part of the account and you specify for example that some of your PLTs and our case last time we talked about you demo tokens.
+[07:52] They should be locked and you then also specify which recipients are those that can these funds go to so maybe say only one one address so the seller be should only receive them.
+[08:01] When the lock should be expired and then you give an agent a specific grant so an agent means like one address on chain you give a specific grant so he only they can actually execute this this lock and release the funds to the seller be.
+[08:13] So what the agent and has like agent has just this small grant and some small permission away to kind of call this lock and say okay now release the funds and give it to the seller be cannot the agent can specifically not send the funds anywhere else it cannot.
+[08:28] Move more of the funds that only the ones that you've locked in this lock and it can also not send the funds if the expiry has expired.
+[08:36] And that's the code how it is on protocol 11 and definite already like that.
+[08:43] Okay let's now look into a bit more details how these locks work and what kind of fields they have.
+[08:49] So the four fields here that they are the most important ones and these ones are more optional ones or like default where it is already set.
+[08:56] So you can specify the lock you can specify recipients that means in the simple locks and some accounts you can specify and only the funds will go to these addresses.
+[09:06] Then you can specify the tokens here we talk about protocol level tokens so it's not just two smart contract tokens that you can specify it's only these protocol level tokens.
+[09:15] And you can also specify the expiry and obviously if you want to not expire it and you can set a time that's very very high so then you look technically doesn't expire.
+[09:26] And then you have these crowns so you can give them give different accounts specific kind of allowances actions that you can operate and we call them crowns.
+[09:34] And then as some optional data so keep alive it just means you can set it by default set to no.
+[09:41] Yeah if you want to keep the lock and reuse it then you can set it to true.
+[09:45] And this kind of additional data you can add by the optional so you don't need to fill these fields.
+[09:50] Okay what are the five lock operation that can happen so like the five are great as one fund send release and cancel these are the five operations we have.
+[10:02] And under each of these operation and there's a brownish specified who is able to actually execute this action.
+[10:12] So only in the great far phrase as when you create a new lock only then anyone can do that so anyone is allowed on chain if you have an address to create such a lock.
+[10:21] And when you create such a lock you specify which recipients should create create these funds when when the lock gets released or where the lock gets actually sent the funds.
+[10:31] You specify the tokens and expiry date and also you specify who has which grants and you don't need to set some grants or group it at some of these grants are actually not said that nobody has these capabilities.
+[10:43] Then someone you at least need to set the fund grant because somebody needs get funds into the lock so if you have the fund grant on your account means you're allowed to set some of your tokens that you have PLT is you set into this lock and then it will be kind of locked until someone else operates on on the lock.
+[11:01] Again here we have to send operation that means it will only be sent to the listed recipients from the create action and we have two ways to kind of get back where all kind of release the things so when you want to.
+[11:14] So if you have to release grant you can send release operate on the release and it means like some of the funds go back to the original funder.
+[11:24] So for example if your agent hasn't used everything that you initially thought it would use and there's some special things so if for example some of these keys get lost there's like this cancer operation.
+[11:35] If somebody has a cancer grant it can execute a cancer grant and all of the funds get back to the original funder.
+[11:41] But if some keys get lost at some point and there's also this kind of expiry so if you're after the expiry then anyone can call the cancer and the lock just disappears and funds go back to the original owners.
+[11:52] Yeah and maybe one thing to remember is like if you're actually beyond this expiry date and funds sent and release doesn't work anymore so they reject.
+[12:02] So cancer will always work so we shouldn't be able to like lose funds or like lose our money if anything goes wrong.
+[12:08] In the worst case you have to wait until the expiry date and then cancel.
+[12:11] There may be three more rules you can remember because they might be good to know.
+[12:18] One rule is that a send is a token transfer so that means everything the PLT's did before they still do it.
+[12:26] So if your protocol level token has a pause action allow list or denialist these things are checked.
+[12:31] That means like the send a recipient needs to be on the allow list on a denialist or not on the denialist if you want to actually execute a send operation.
+[12:39] And again if your contract is paused it's not a contract but if your PLT is paused then yeah it will not the sense will not be done.
+[12:49] You cannot after you have created a lock you cannot change anything so anything like the recipients expiry date the grants are sent to you.
+[12:56] If something is wrongly kind of specified you can always kind of release or cancel the lock and then kind of specify new lock but you cannot update already existing lock.
+[13:06] And owner can't spend either so it's like whatever you have locked into the lock means it's literally locked there until the next operation has been done.
+[13:15] It can be like either send or like use cancel or release to get the funds back to the original funder.
+[13:21] But often it's like the owner who has locked the funds or the funder we call it in that case is not able to access their funds anymore until some other actions has been done on the lock.
+[13:29] And here I also give you a comparison between locks on the ERC-20 approve function because they operate in a way similar but in a way also very different for mental model.
+[13:42] So this ERC-20 approve it's from Ethereum so if you're familiar with that.
+[13:46] So we have the Ethereum case here and our simple locks here on Concordium so how they differ.
+[13:51] We have tokens held in both cases they actually hold on the owner's accounts in both cases if you call approve or create a simple lock.
+[13:58] Both times the tokens are staying on the owner's account but then there's some quite differences so who can receive addresses.
+[14:06] So who can receive the funds in the approve case and ERC-20 it's like the spender can send the funds to any address.
+[14:14] In our case you can actually very fine grained say which recipient should be there or like you can also specify any if you want.
+[14:21] Then the approve doesn't have any expiry at all so it means that you have to do an action on-chain like to call approve 0 to the spender only then as kind of your approval be worked.
+[14:32] In our case this expiry is automatically if the time passes then you cannot kind of send anymore.
+[14:39] Reserved for this use so what happens then in the ERC-20 approval it's the funds are still in the owner account and owner can still spend them.
+[14:48] And it means that if the spender at some point comes that you wish that actually is an allowance might not be able to actually pull the funds because the funds are not on the account anymore because the owner still has free access to them.
+[14:59] So it means it's not really a strong enforcement in that way.
+[15:03] For the locks opposite it's really the dialogue that means the owner or the funder cannot access the funds until some operation on the lock has been done.
+[15:14] And who may do what each spender that you have approved some allowances to here can transfer the funds up to the limit you're given.
+[15:22] It's in similar way but it's different access here that you have given grants different addresses and each of these addresses maybe funds and release or cancel action allowed on the lock.
+[15:34] And in first how it's enforced the token smart contract code enforces here it's different for every kind of ERC-20 token if you're into a kind of audit how they work.
+[15:44] And here it's in the protocol so it's the same kind of code for every PLT token.
+[15:51] And maybe we can look into the life cycle of a lock when we want to use it with an agent.
+[15:56] So for an agent what I would recommend is that you have these two operations done by the owner and the last one by the owner and only the middle grant is done by the agent.
+[16:04] So the owner should be creating these logs and specifying these rail guards that you want to give to your agent to make sure it cannot spend in an unexpected way the funds.
+[16:13] And the owner then funds the lock then you give the agent this send grant so it can only operate in the kind of safeguard limits you gave him.
+[16:22] And then later the owner can release if some funds are kind of left over.
+[16:30] And so what should you do for the HECA zone so what you can do if you operate for a test net or main it is because some of the code's locks will not be ready yet.
+[16:38] And you can but already create your purging away so it can be easily replaced by locks.
+[16:43] So what I mean is that for example the agent can has its own account and its own key and this agent will have only a small balance.
+[16:49] So later this will be replaced by a lock actually but for now it can be like just a separate account.
+[16:56] You can set the spend limits that you have in this X4-02 kind of standard and later the spend limits can be controlled can be kind of replaced by the locks that we have on chain.
+[17:07] And you can also think about if you already have some kind of list where you have counterparties and have rate list of some addresses that you only to them want to send the funds.
+[17:16] And then if you have code kind of enforces these then later this can be also very easily replaced and you can use locks with recipients instead.
+[17:26] Okay now we get a second part of the talk so we talked a lot about like locks how locks prevents unexpected spending of your agent.
+[17:34] But now there's something else you might want to do and this is like locking what your agent is doing because you want to maybe prove actually what has happened on chain or what has happened.
+[17:43] If something goes wrong like kind of auditing or maybe sometimes you need to do it because of legal legislation.
+[17:48] And also if something goes wrong you want to kind of be able to monitor go back and say okay what can I do better but you need to know what actually has happened to make sure you understand what has been gone wrong.
+[18:00] So you want to look into locks and how to lock something on chain.
+[18:04] And for that we go first into some legislation so we have this EU AI Act Article 12.
+[18:10] So again I'm not a lawyer so I just give you some some kind of legal text and what they mean but obviously if you need a very strict legal advice you need to ask a lawyer.
+[18:21] So what this kind of article says it says high risk AI system shall technically allow for the automatic recording of events which we call engineering usually locks over the lifetime of the system.
+[18:34] So what does mean so who are high risk systems so high risk systems they have given some example I think hiring grading scoring or critical infrastructure is obviously high risk.
+[18:44] So when does this locking has to be enforced it should be by December.
+[18:49] 2027.
+[18:51] And there's also some specification that other AI products which fall under this EU safety law should be doing similar locking by 2028 but they have a little bit more time.
+[19:01] And this means usually machines or medical devices they have given example but there's probably some more more kind of use cases with that fall under this kind of category.
+[19:11] And locking should be the locking should be available for at least six months so we can prove that things has happened or not happened.
+[19:19] And the providers responsible deployers were sponsored for these locks.
+[19:23] So it's already probably good to like think about how you want to do locking and it's a good practice in general and software engineering so think about it.
+[19:32] So what you can look as for your agent these are really such suggestions so you think about it in your in your hacker temperature if some of them make sense for your use case.
+[19:40] So obviously maybe you can have something like when which agent or which model you're using.
+[19:45] You can look the task or who gave this task to the agent which authorizes specific action.
+[19:51] You can also talk think if you can if you call something or some decisions to make if it should be locked and anything related to payments are usually very kind of critical so they should be some audit rate should be available so which lock has been used amount recipients or transaction has
+[20:06] been used amount recipients or cash where the payment has gone through anything that goes wrong.
+[20:10] Obviously it's also very nice to have some kind of monitoring around that so if errors refuse to happen for human override some kind of permissions then if you have an audit trail that's good.
+[20:23] Then we maybe talk a bit about versus personal data and what what the laws about it says the personal data usually should stay off chain and what it means is like if you have your lock from your agent and there's likely some personal data in it could be like
+[20:37] results, or some people are involved, they should stay off-chain.
+[20:42] And usually you add also like a random none to it.
+[20:44] And that way you make sure that you can't lead a log and you can still kind of control
+[20:51] who has access to the information.
+[20:53] Because in the EU, you have this data protection laws that need to still apply.
+[20:57] But how do we then kind of anchor it on chain, make sure we kind of prove that these
+[21:03] logs has happened at a time?
+[21:05] What you usually do is like you hash the kind of data that you have.
+[21:08] And because there's a really random none in it, there's no way that people can
+[21:12] kind of put forth later the data and figure out like what was the original log
+[21:15] that was put on chain.
+[21:18] And there's also this like GDPR statement, which says like you have
+[21:22] the right to be forgotten.
+[21:23] And that's why we always keep our kind of personal data off-chain usually.
+[21:28] Because it allows you to kind of delete the off-chain data and the random
+[21:32] none.
+[21:32] And once it's completely deleted, it means nobody can, even if you
+[21:36] have access to the hash, because hash stays on-chain.
+[21:38] There's no one who can delete the hash on-chain.
+[21:41] But there's no way to get back to like what was the original log in a way
+[21:44] if you have completely deleted the random none and the logs.
+[21:49] And now we go to the demo and want to actually do such a log.
+[21:53] So today we do this with the Rust SDK because on Monday we did it with the NPM,
+[21:58] with the JavaScript, the TypeScript SDK.
+[22:00] So today we do Rust SDK, so we have the other example.
+[22:04] So I will run a script.
+[22:05] And the script you can get from our example.
+[22:07] We'll show it in a bit.
+[22:09] And what you have to do, you have to specify the node that you submit a transaction
+[22:13] to, you specify your agent account.
+[22:15] So remember agent export was the private key that we exported from the browser
+[22:21] wallet.
+[22:22] So it just excludes the private key so you can send the funds on-chain or
+[22:26] send the transaction on-chain.
+[22:28] And then we have the agent log and I generated a transaction of that.
+[22:32] So I show you that.
+[22:34] So what I did.
+[22:35] So the demo we want to anchor some hash on-chain and we do it on test.
+[22:40] With the Rust SDK.
+[22:40] So what I did, I copied this example.
+[22:45] So we have our examples as probably this one.
+[22:48] Yeah, this I think, no.
+[22:53] Maybe we need to copy it.
+[22:54] Okay.
+[22:56] So these are all our example scripts that we have and they are available so
+[22:59] you can at any time use them.
+[23:03] So if a lot of examples to the Rust SDK and one of them means
+[23:06] that it's a specific transaction type that allows you to put some bytes on chain.
+[23:11] So I've copied this file and then I let Claude codex kind of create a
+[23:17] Rust repository post structure around it so it's not that difficult for them.
+[23:20] And then you can execute this.
+[23:23] I put the private key of my agent here and also input a random hash.
+[23:27] I think I even calculated it.
+[23:29] You can look into it.
+[23:30] The project now it has the agent log.
+[23:32] I just put in some random data.
+[23:34] I generate the hash and then now we can put this hash on chain.
+[23:41] So we run the script.
+[23:45] Yeah, and have our agent export file as a private key and our hash.
+[23:52] So we get a transaction.
+[23:53] We can look on chain.
+[23:56] Dude, it has been on.
+[23:58] We can also here we get the output.
+[24:00] So you have the account address here and you hear here of the bytes which
+[24:03] are the hash that we have registered on chain.
+[24:05] But you can also look it into the blog explorer.
+[24:08] This is a blog explorer.
+[24:11] Check that we are in test.
+[24:12] Not yeah, think we are.
+[24:14] This is a transaction.
+[24:15] You see this data was registered, which includes the hash.
+[24:19] Okay, we have a second demo I can show you.
+[24:21] This was like with a script.
+[24:23] And there's another demo I can show you which has a front end.
+[24:26] It runs the same way.
+[24:29] And what you want to do, we connect the wallet.
+[24:31] We then input some late data on the front end.
+[24:34] It will hash it and then put the hash on chain.
+[24:36] So if you want it, you can play around with this front end.
+[24:42] It's really just basic.
+[24:43] You can have your browser wallet, you connect it.
+[24:50] And again here, you would usually have like for example,
+[24:53] a more complex field says you're non-statured.
+[24:56] It should be really random.
+[24:57] So it's a really not really random number,
+[24:59] but you should use a number that's random.
+[25:01] And then your real locking data.
+[25:03] So time stamp, also one, two, three.
+[25:07] And then some actions that your kind of agent
+[25:11] that maybe send some funds.
+[25:13] And the final one will then hash this data.
+[25:15] So this is the hash.
+[25:17] I mean, technically it's only this is the hash.
+[25:18] And that's the length of the hash.
+[25:23] So remember it was six to F4, the end of the hash.
+[25:29] So okay, we don't put on chain.
+[25:35] We can maybe look if the blocker's bar
+[25:37] has already picked it up.
+[25:38] It takes a bit, the fastest.
+[25:41] Still refreshing.
+[25:49] Maybe try the other one.
+[25:50] Should after a while pick it up.
+[25:52] Okay, it has already picked up.
+[25:54] You can see it's the hash was registered six to F4.
+[25:58] Reach work now.
+[26:01] No, okay, still takes a bit.
+[26:03] Okay, that's how you can register some data on chain.
+[26:07] If you want to also try,
+[26:08] I think the front end also allows you
+[26:10] to kind of get the data back by querying here.
+[26:18] Maybe takes also a bit of time.
+[26:20] Let's go back.
+[26:31] Okay.
+[26:32] So we had these two demos
+[26:33] how you can register some data on chain.
+[26:36] There's actually already in flow
+[26:38] where we register something on chain.
+[26:40] And this is like this very fine access flow.
+[26:42] So maybe we remember that from the workshop one
+[26:45] that Peter gave in this flow,
+[26:47] he wanted to do what we asked us the wallet
+[26:50] to create a CK booth of some of about the account
+[26:54] that's in there.
+[26:55] And once the CK booth goes back, you can verify it.
+[26:57] And during this whole process,
+[26:58] there are also like two transaction put on chain.
+[27:01] They also use this rest of the data transaction
+[27:02] that we have just looked into in the demo.
+[27:05] And there are two of them.
+[27:06] So like when before the wallet actually shows the CK booth
+[27:10] where we put this verification request anchor on chain,
+[27:14] it makes sure that the request is fresh
+[27:16] because like the wallet will check
+[27:17] that this anchor has not been done too much in the past.
+[27:21] And it also puts like a lot of like a hash
+[27:23] of a lot of information on chain.
+[27:25] So the wallet can later prove that things are like correct.
+[27:28] So for example, that is statement is as expected.
+[27:31] And there's another kind of anchor we put on chain.
+[27:33] So when you later in the back end,
+[27:35] you verify the proof you can put this verification
+[27:38] audit anchor on chain.
+[27:39] So they are called CCD VAR.
+[27:42] And here CCD VRA.
+[27:45] So it's just the abbreviation,
+[27:46] verification, R is for request and A is for anchor.
+[27:50] And CCD means like our native currency.
+[27:53] So it's a specification of concordium.
+[27:57] Yeah, these two happen whenever you generate a proof
+[28:00] with the verify an access flow and we can look into them.
+[28:03] So I've given you here two examples, they are on chain.
+[28:07] So this is really this is data registered transaction.
+[28:09] It is puts these bytes on chain.
+[28:12] And if you decode them, they are CBO encoded.
+[28:15] If you decode them, then you see this hash.
+[28:17] And then also like the specification
+[28:19] that we use version one.
+[28:20] And then also the type, this type is like a VRA.
+[28:23] So it's like the verification request anchor.
+[28:26] And here's the verification audit anchor.
+[28:28] And we can look into them.
+[28:30] I showed them also on chain.
+[28:33] These are these two transaction here.
+[28:36] So here you see it's like VRA.
+[28:39] And here's VAA.
+[28:42] And they both belong together.
+[28:44] You can see that there's the same sender.
+[28:46] It's just a few seconds later.
+[28:48] So that's why we kind of can be sure
+[28:52] that there's very likely how it belong together.
+[28:58] Okay, let's continue.
+[29:05] I hope you have some ideas how you can lock your kind
+[29:08] of agents actions on chain for monitoring.
+[29:13] Let's go through the next section, which was security.
+[29:17] So what Concordium did in December of 2025 to May,
+[29:22] 2026, there was some kind of security auditing done
+[29:25] by Sertek on the chain.
+[29:26] And it was like a gray box testing.
+[29:29] And they were trying to find like vulnerabilities
+[29:31] on chain so we can fix them.
+[29:33] So what they did, they tested the chain itself.
+[29:35] So specifically, they focused on a node,
+[29:38] the consensus algorithm and not working.
+[29:40] And they did it on a live copy of the network.
+[29:42] Obviously they were not like trying
+[29:44] to attack the real network.
+[29:46] And how, so what they thought they thought
+[29:48] about different attacks in areas and threats
+[29:50] and then trying to kind of execute them.
+[29:52] So for example, transaction flooding,
+[29:54] broken messages or network splits they were trying to create.
+[29:57] And they were also testing some hostile contracts
+[29:59] if they can in a way impact the nodes in the network.
+[30:02] And yeah, I noticed about it.
+[30:04] It was like most audits, it was like time box.
+[30:07] It was taking specific attacks scenarios.
+[30:09] So this, you can know about 100% sure
+[30:12] because like you don't spend an entity
+[30:15] a lot of time on these kind of audits.
+[30:18] And it was also like a manual review every line of course,
+[30:21] but it was like trying to go through these attacks scenarios.
+[30:26] And you can look into this audit report
+[30:27] and what they're finding.
+[30:29] So this is from Sertek.
+[30:31] If you go to Concordium here, you get the report.
+[30:34] So on this, you find the gray box chain auditing.
+[30:37] We did another one, which is about wallets and IDIP.
+[30:40] There's there soon to be fixed all of them.
+[30:43] And for the ones that are already completed,
+[30:45] you can get the PDF of the audit here.
+[30:49] And then you can look into what they have found.
+[30:52] But obviously all of them are fixed by now.
+[30:54] So it's the chain, the main net is not vulnerable
+[30:57] to anything of that anymore.
+[30:59] So you can have the findings here.
+[31:03] Okay, what findings we had.
+[31:10] So I just highlighted a few things and just as a summary.
+[31:13] So we had 13 findings by severity.
+[31:16] We had of two critical, some highest, medium, low
+[31:19] and most of them we have fixed.
+[31:20] And there's something we called acknowledged.
+[31:22] So what means acknowledged?
+[31:24] It means that you deliberately decide
+[31:27] that you don't change it,
+[31:28] but you usually give a feedback to them
+[31:29] and they also check that if it makes sense.
+[31:32] So not always you fix everything.
+[31:33] Sometimes it's also, you keep it aware.
+[31:36] You're aware that there's something
+[31:37] but it might not be needed for,
+[31:39] you might not need to fix it in a way.
+[31:42] Any questions so far?
+[31:43] Otherwise for the rest of the talk,
+[31:47] I would also go into some of these findings in more detail
+[31:50] because some of them are actually quite interesting.
+[31:52] But for now, I will probably check first
+[31:53] if there's any questions about the previous topics.
+[31:58] Let me check.
+[32:00] Any questions so far?
+[32:03] Okay, it's already quite empty still.
+[32:06] So if you have any questions about the topics,
+[32:08] feel free to drop them.
+[32:12] Otherwise I go so security findings
+[32:16] and more into like how an auditor,
+[32:19] what auditors do and what finding we found
+[32:23] and how we fix them.
+[32:27] Okay, then I will continue with findings.
+[32:31] You can think about questions so far.
+[32:34] Maybe need a bit more time.
+[32:37] Okay, we can go through the findings
+[32:38] from the security audit.
+[32:43] Okay, again, this is like was this security auditing
+[32:46] from certic that has been done.
+[32:49] And exactly, so what was it?
+[32:53] It was like a gray box testing.
+[32:54] So maybe if people are unfamiliar with this,
+[32:56] there's something which we call black box
+[32:58] and something we call white box.
+[32:59] So black box mean you don't know the source code
+[33:01] so you don't have access to it.
+[33:02] You only have like, you know the end points.
+[33:04] So usually you have this GIPC in our case
+[33:08] or in Ethereum, it's a JSON LPC endpoint.
+[33:10] You have the peer to peer communication layer.
+[33:13] You know the end points of that.
+[33:15] Or you also can send transactions to the chain
+[33:17] as a user.
+[33:19] And you judge on how these behave.
+[33:21] You try to manipulate them and see if you can
+[33:23] in a way kind of create some unexpected behavior
+[33:26] in the chain.
+[33:27] This is like black box testing
+[33:29] where you don't know anything about the chain
+[33:31] or the source code itself.
+[33:33] White box testing is like the opposite.
+[33:34] You literally have everything of the source code,
+[33:36] everything available you read it.
+[33:37] And you try to reason based on the code
+[33:38] to find some kind of test cases
+[33:41] that you think would be bad in a way
+[33:44] or you try to find some code pass
+[33:46] that can be abused in a way.
+[33:48] Gray box is kind of combining these both things
+[33:50] which means that they had access to the source code
+[33:52] and everything that we gave them that they needed.
+[33:56] But obviously they cannot go through line by line
+[33:58] to every line because the time is not enough.
+[34:00] And they also used a lot of observing
+[34:02] the other experiences other networks.
+[34:04] So they observed a lot of the behavior
+[34:05] and made some reasoning out of about of that,
+[34:07] like what kind of things to test or not to test.
+[34:11] And three kind of findings I pick out
+[34:13] because I found them the most interesting ones.
+[34:15] They also usually more critical higher ones.
+[34:19] One thing to highlight it was all these bugs
+[34:21] were related to availability.
+[34:23] That means like the network stopped producing blocks usually.
+[34:26] They were not in any way harmful in a way
+[34:28] that like funds got stolen from users
+[34:30] that the chain did like malicious accounting or something.
+[34:34] Like it was always around them
+[34:36] that a chain kind of stopped pursuing
+[34:38] or that their notes produced, didn't work anymore.
+[34:42] So one was like a critical finding.
+[34:43] There was a way that a peer could flood the network
+[34:46] with catch up requests and cause other notes
+[34:49] to stop finalizing.
+[34:51] So and we look into this one first.
+[34:54] So it's about the peer to peer layer
+[34:55] in the blockchain network.
+[34:57] And it was about our incoming and outgoing cues of the notes.
+[35:02] So I first tried to explain what is the happy case
+[35:04] or how should things happen or how should things behave.
+[35:07] And everyone is kind of good behaving.
+[35:11] So you have your note A which is new.
+[35:13] So it hasn't, it's not, it's just joining the network.
+[35:17] And you have your valid data.
+[35:18] Your valid data is already synced.
+[35:19] So it means it's already on top of the chain.
+[35:22] And your note just starts from scratch.
+[35:23] That means it's like at the moment at block hide one
+[35:25] and it needs to catch up.
+[35:26] It needs to get to the top of the chain
+[35:27] before it can contribute to the network
+[35:29] or can has the data availability needs.
+[35:32] So what does the note do usually when it chains,
+[35:34] joins a network for the first time?
+[35:36] It sends some catch up requests out
+[35:38] to some other notes that it finds.
+[35:40] So it will say something like
+[35:41] my last finalized block is one, do you have more blocks?
+[35:45] So I can learn from you.
+[35:47] The valid data is good behaving.
+[35:48] So it sends the next 60 blocks.
+[35:50] And the note A needs to process these 60 blocks.
+[35:53] So it needs some time.
+[35:54] And then once it's done,
+[35:56] then of course it sends the next catch up request message.
+[35:58] So this, this goes a while until the note A
+[36:01] actually has caught up.
+[36:03] So that's how things happen if things are well behaved.
+[36:07] And the particular thing is that note A
+[36:10] has to possess these blocks.
+[36:11] So it cannot send too many catch up request messages
+[36:14] because it needs to actually do some work on their,
+[36:17] on its own side.
+[36:18] But what is if note A actually becomes malicious?
+[36:21] So that guy, so if the note A is malicious
+[36:24] and just sent a lot of catch up request message
+[36:26] to validator, it can overwhelm the validator.
+[36:29] Then the validator is unable to process
+[36:31] kind of finalization messages for the consensus
+[36:33] and we look into that in the next case.
+[36:35] So what has happened?
+[36:36] This was what has happened when they were testing it.
+[36:39] So again, we have our validator on the right side
+[36:42] and it is this incoming queue of messages.
+[36:44] It gets from the other peers that it's connected to
+[36:46] and it's connected to three peers
+[36:47] and one of the peer is flooding it
+[36:49] with catch up request messages.
+[36:51] It's like a malicious peer.
+[36:53] And what the normal validator was doing around Robin.
+[36:56] So it was reading messages from all the peers in a cycle.
+[37:00] And so what happens is incoming queue got caught up
+[37:03] with a lot of catch up malicious.
+[37:05] The red ones are the malicious ones.
+[37:07] A lot of catch up request messages
+[37:08] from the malicious node here.
+[37:11] And only once in a while,
+[37:12] there was like the finalization message.
+[37:14] It's a message from the consensus algorithm
+[37:16] from the other peers, which are still behaving normally.
+[37:20] And this caused that the consensus kind of
+[37:22] start in there, the node was not able to catch up
+[37:24] and then noted some point fell behind
+[37:27] and we don't want it.
+[37:28] So we had to change that.
+[37:29] It was a finding of CERTEK.
+[37:31] So what did we do?
+[37:32] So this is the change here.
+[37:34] So we would be changed.
+[37:35] Yes, we did some peer, peer back pressuring here.
+[37:39] So our mechanism that first of all,
+[37:42] we split up the queues into different priorities.
+[37:45] So there's some high priority queues
+[37:47] which include anything related to the consensus
+[37:50] because the consensus algorithm
+[37:51] is the most important thing to keep up.
+[37:53] So finalization message, catch up answers messages
+[37:56] are in this queue.
+[37:57] Then there's a low queue which are the user transactions.
+[38:00] So if you cannot process some of the user's transaction
+[38:02] it's not the worst thing.
+[38:04] You can, some other nodes can like put
+[38:06] in the transaction into a block.
+[38:07] So it's not the most important thing to focus on.
+[38:10] And there's also these background messages
+[38:11] which we put the catch up request in now
+[38:14] because they can be flooded.
+[38:16] Like if a malicious node wants to flood you,
+[38:18] they can flood the background queue
+[38:20] but not the high queue, the high priority queue.
+[38:24] And what it also means like that the background queue
+[38:26] can fill up now if there's a malicious node
+[38:30] but the finalization messages will still be processed in time.
+[38:34] So we thought we had done, you know,
+[38:35] we were happy our network was working well
+[38:37] and we were not able to spam our network anymore
+[38:40] with catch up request messages.
+[38:43] But there was another problem.
+[38:44] Like you fixed one problem, we caused another problem.
+[38:46] So again, if our node B reaches the validator,
+[38:50] now we think the other way around,
+[38:51] what is if our node B, the validator is malicious?
+[38:54] So we had this incoming queue
+[38:57] and you can think about it if your node B
+[38:59] is actually maliciously slow
+[39:01] and the queue gets filled up here, the incoming queue,
+[39:04] then it means actually that the outgoing queue from node A
+[39:07] now cannot send messages anymore
+[39:10] and this queue starts to be queued up as well.
+[39:12] So we fixed one queue, but we caused another problem
+[39:15] in the outgoing queue in the node A
+[39:16] which kind of switched around now the node A is fine
+[39:19] but the node B is malicious.
+[39:21] So we also had to kind of think about
+[39:22] what we do in the outbound queues.
+[39:24] So we did also like a similar kind of mechanism
+[39:27] where we split the queue.
+[39:28] So each node now has different outbound queues
+[39:31] for different peers.
+[39:33] And if one peer is maliciously and like throttling
+[39:35] on purpose very, very strongly,
+[39:39] we also have a cap and say, okay,
+[39:41] we only keep a few messages in the queue
+[39:44] at some point we drop them
+[39:45] because we cannot force the other peer to process them.
+[39:48] So to make sure that we are not queuing up
+[39:51] too many messages in the outbound queues.
+[39:55] So that's how we fixed this one as well.
+[39:56] So now both queues are kind of safeguarded
+[39:58] to not grow indefinitely.
+[40:04] Okay, another finding we had.
+[40:06] Maybe I look if you have any questions by now.
+[40:09] Still no questions, okay.
+[40:12] Then I continue the another finding we had.
+[40:19] This is about the two ends of the blockchain.
+[40:23] So we have an endpoint which we called
+[40:25] get winning Baker X epoch
+[40:26] and then we put in a block number.
+[40:28] So it's not so important what this endpoint does.
+[40:30] It's something related to consensus algorithm again.
+[40:32] But important is that you put in a block number here.
+[40:35] And what they found out with fuzzing
+[40:37] is when you put in a very specific block,
+[40:39] especially the chances block,
+[40:41] if you put it in here,
+[40:42] then you were able to kind of crash the node.
+[40:45] And why was this kind of, why this happened
+[40:48] is like this code inside the function,
+[40:50] it's kind of going back,
+[40:52] it tries to find the parent block.
+[40:54] And because the chances block has no parent block,
+[40:56] this kind of crashes this logic
+[40:58] and it's why the node crashes.
+[41:00] So what we have learned from that is that
+[41:01] we should always test the two ends of a blockchain.
+[41:04] A blockchain is like has two edge cases,
+[41:07] like the top of the chain
+[41:08] and the consensus block is always very specific.
+[41:11] So make sure you test these things.
+[41:13] And at the top of the chain is even more complex
+[41:15] because there you have the top of the chain block,
+[41:19] but you maybe has a not finalized block,
+[41:21] you have some blocks that already some other chains have
+[41:24] on top, but you're not on your top.
+[41:25] So there's even more complex at top of the chain.
+[41:27] I would say that there are some specific blocks
+[41:29] that you should probably test.
+[41:31] So that we have learned that what you always should do,
+[41:35] testing every kind of edge cases that you have
+[41:38] and also try out fuzzing on your endpoints
+[41:40] to make sure not any weird input parameter
+[41:43] could cause some unexpected coding pass.
+[41:48] Another thing the CERDIC people found
+[41:51] was something related to length fields
+[41:53] and memory allocation and locking.
+[41:55] So this is also a bit more complex,
+[41:56] but also very interesting one.
+[41:58] So the happy pass again, what should happen?
+[42:00] So how should the things behave?
+[42:01] So this problem was in the peer discovery gossip protocol.
+[42:06] And we have a node A and we have a node B.
+[42:09] And when you operate a node, you usually say,
+[42:12] okay, I want to have maybe say eight peers.
+[42:15] It's the magic number I try to achieve.
+[42:17] So you don't want to have too many peers
+[42:19] because if you have too many connect to too many peers
+[42:21] then your node is too busy talking to all these nodes
+[42:23] and too much tit-shading.
+[42:25] But you also don't want to have just one, two nodes
+[42:27] because it means that you really rely on your connecting peers
+[42:29] but if they have some problems,
+[42:30] if they go down, your node also goes down.
+[42:32] So you want to have some redundancy.
+[42:34] So some people set it to five, 10,
+[42:36] so what's the number of kind of desired peer connections?
+[42:42] So if you have this node A, it wants eight peers.
+[42:44] So that's like it's configured to try to get eight peers,
+[42:48] but currently it only has three peers.
+[42:50] So what does it do?
+[42:52] So it sends a get peers request
+[42:54] to any of the other nodes that is connected.
+[42:56] And if node B is well behaving,
+[42:57] it will return a short list of peer lists
+[43:00] and say, okay, I have actually five other nodes
+[43:02] that you don't have for now.
+[43:05] Yeah, if you want to try to connect to these peers.
+[43:07] This is a short list if there are node B is well behaving
+[43:10] and node A, what it will do,
+[43:12] it will then actually try to connect you
+[43:13] send kind of an IP address with this list
+[43:16] and it tries to call this IP address and say,
+[43:18] okay, can I connect?
+[43:19] Can I connect?
+[43:20] And usually it works because these are like
+[43:21] well behaving peers.
+[43:23] So this kind of behavior relies on that
+[43:27] like these IP addresses you could return
+[43:30] are kind of real ad heap addresses
+[43:32] and the nodes response on it.
+[43:34] So what happens now if node B is kind of malicious
+[43:37] or dishonored, there could be several things happening.
+[43:40] So node E, node B could like give you
+[43:42] a very, very long list.
+[43:43] So what it means like you give a lot of work to node E A
+[43:46] that it hasn't expected.
+[43:47] So what you can do, you can for example,
+[43:48] give a lot of fake IP addresses back in
+[43:51] or say that a peer list is like one million entries long.
+[43:54] And this was exactly the problem
+[43:57] because like if we look at the peer list,
+[43:59] so this is the malicious peer list
+[44:00] that's coming back from node B.
+[44:03] And what node A then do was doing it was like
+[44:06] trying to allocate memory and say, okay,
+[44:08] I need memory for all the peers that I'm getting.
+[44:10] So it was using or reading this peers length list parameter.
+[44:14] But of course it can be like one million
+[44:16] can be very large if the node B is malicious.
+[44:19] So that was a problem.
+[44:20] We should not do this allocation of memory based on some output
+[44:23] or some input coming from the outside.
+[44:26] We were shuffling the list.
+[44:27] It's obviously not good if the list is actually very long.
+[44:30] And then you were also trying to reach to all these IP
+[44:33] addresses that the other node specifies
+[44:35] and we're looking some data.
+[44:37] And yeah, that was also causing some problems
+[44:39] because it was very heavy on input output of the node.
+[44:43] If like this, if it was just trying to connect
+[44:46] but it was actually not real peers.
+[44:48] So we will look into these two parts like this one.
+[44:51] It's part two and look into this one.
+[44:52] That's part one, what the problem was.
+[44:57] So the more looking the better.
+[44:58] So what the problem is or what I find interesting
+[45:00] is like usually as a developer you learn
+[45:01] like the more looking the better.
+[45:04] And especially if you have some problems
+[45:06] with your system goes down at night,
+[45:07] you're actually very happy
+[45:08] if there was a lot of looking in the system.
+[45:11] And what we figured out was like a sort of kind of
+[45:14] gave this information back.
+[45:16] Yeah, okay, if we had this looking in place,
+[45:18] we were able to kind of flush the system
+[45:20] and the node was looking too much and causing problems.
+[45:24] So what was the problem when we had debug here
+[45:27] and the node tried to connect
+[45:29] then it was saying could not connect
+[45:30] to discovered peer if the IP address was maliciously
+[45:33] and not existing in some way.
+[45:35] So how we fix it, we kind of used the tracing now.
+[45:38] So we use down credited to a lower level of looking.
+[45:42] So in normal operating nodes, like if you run your own node
+[45:45] you usually have like debug locking
+[45:49] because even that's often not enabled.
+[45:50] So you're sure you have a higher level
+[45:52] only lock errors or warnings
+[45:54] and usually you should not have any problems
+[45:55] if someone sends to like a list of not existing IP
+[45:59] addresses back to the length field.
+[46:02] This is another problem.
+[46:04] So what happens if you actually,
+[46:06] so this is like the node A here
+[46:08] it got these very long peer list from malicious node B
+[46:13] and it was reading the length here
+[46:14] and it tried to allocate memory
+[46:15] but obviously if the memory is too much
+[46:18] then it crashes.
+[46:20] So the problem is that you should not trust this value
+[46:22] because it comes from the outside.
+[46:25] And what we do now, so this was the old way.
+[46:27] So you never do this if you have an input
+[46:29] the end and it's untrusted
+[46:30] you should do something like that
+[46:31] make sure you limited set a user like that
+[46:35] or you kind of process every item one by one
+[46:39] and then at some point you stop
+[46:40] if you have enough peers connected to.
+[46:43] So that's what you should do.
+[46:45] And it was a very funny thing
+[46:46] because we had actually the same kind of bug or problem before
+[46:50] but in a different parser.
+[46:52] So a few weeks before
+[46:54] we were doing some C war development in Concordium
+[46:58] and why we didn't need C war development.
+[47:00] So it's not so important what C was
+[47:01] a specific type of encoding.
+[47:04] So we have transactions on chain.
+[47:06] So the normal transaction you have the firm fields
+[47:08] to fields and signatures.
+[47:13] And there's a specific area
+[47:15] in our Concordium transaction they are C war encoded.
+[47:18] So it's not so important what it is
+[47:19] it allows us to be more flexible in the PLT transaction
+[47:22] to specify several operations.
+[47:25] But the thing is like if the party here are C war encoded
+[47:27] it means like we had to have in a note something
+[47:29] like a parser of C war.
+[47:30] It means it reads the data here
+[47:32] and then tries to allocate memory
+[47:34] and tries to transform the data here
+[47:36] into some velocity it can read.
+[47:40] And here again it was like we have in Rust
+[47:43] something like we call collections
+[47:45] so vectors are collections,
+[47:46] mappings are collection and bytes are collection.
+[47:48] They can be arbitrary long.
+[47:51] So like if somebody like a user
+[47:53] puts something the C war payload
+[47:55] and just pretends this vector is millions
+[47:57] or billions of entries long.
+[48:00] And we do this, we did this in a note
+[48:02] it was like the malicious code
+[48:05] that the code didn't behave as we expected.
+[48:07] So if you do it like that
+[48:08] your note would allocate too much memory
+[48:11] and would then crash.
+[48:12] So that was like initially the code we had here.
+[48:15] And it caused problems.
+[48:17] And later we fixed it.
+[48:18] That's a thing we actually found before
+[48:20] even somebody ordered our code
+[48:21] we found it ourselves.
+[48:23] And now we do this, we have this function
+[48:25] before we use any untrusted input.
+[48:27] So before we use the untrusted input from the user
+[48:31] we run it through the cap capacity function
+[48:33] or does this cap capacity function do?
+[48:37] Again, it sets a limit.
+[48:38] So we have some limit
+[48:40] and we check that we like the type that we are locating
+[48:45] we use it kind of divided by how much
+[48:49] max size you want to allocate it
+[48:50] and make sure that we only use a couple of entries
+[48:53] and then we kind of stop allocating memory
+[48:55] because you say we don't need that much memory
+[48:57] that must be something maliciously in the payload anyway
+[48:59] if somebody uses and specifies one million of
+[49:03] say vector elements that can never happen
+[49:05] there's something wrong already.
+[49:07] So that's what we do.
+[49:08] And yeah, it was just funny
+[49:09] because very similar problem that we had before
+[49:12] that you should not trust links
+[49:14] or sizes of collections if they come from the outside
+[49:18] and if you have to possess them
+[49:19] always make sure that you limit the amount of memory
+[49:22] or process based on some kind of hardcore values
+[49:25] in our case we use this one
+[49:26] or I think Peelist we set it to some, yeah, 1000 peers.
+[49:31] I don't know if that's the final way
+[49:32] or just any questions so far let's check me.
+[49:37] One more, still no question, oh there's some.
+[49:41] So good explanation by someone who is mastered
+[49:43] in security that there are no questions coming up.
+[49:46] Okay, I'm happy that you understand everything.
+[49:50] There's no black, white list for peers in the network.
+[49:53] So malicious node can be dropped out after some time.
+[49:56] Yeah, that's actually true.
+[49:58] Like we have no black and white list.
+[50:00] What we have is something we can soft at hard ban peers.
+[50:04] So if a peer is very badly behaving
+[50:07] a node will at some point drop your connection
+[50:10] and soft ban you or like also even hard ban you
+[50:13] if you do like very malicious kind of communications.
+[50:17] But obviously we also don't want to be too strict
+[50:20] because at first of all there are sometimes nodes
+[50:22] which are just not malicious but just bad.
+[50:27] So sometimes when you run a node on some network
+[50:30] or some kind of on a for example laptop
+[50:32] that's not very resource it's actually slow
+[50:34] and it's not malicious but it just looks
+[50:36] to the other PSS being kind of malicious
+[50:37] because it's too slow in processing messages.
+[50:40] So it's very hard to kind of set the boundaries.
+[50:43] At one point like a node is malicious
+[50:44] and at one point the node is just bad in processing messages
+[50:48] because it's not set up in a good way.
+[50:50] It's not a death ops node that's set up
+[50:52] on very fast machines and good processing machines.
+[50:57] Okay, another high door is just wanted to say
+[50:59] thank you for a couple of enlightenment presentation.
+[51:01] They have motivated us to build on confining your work.
+[51:04] Okay, I'm happy that people are happy.
+[51:11] Any more questions that you have?
+[51:21] I still stay here.
+[51:22] So if you have anything else, feel free.
+[51:36] I just had chat maybe there's something in there.
+[51:39] Two, how will protocol level locks
+[51:42] actually prevent an AI agent from overspending?
+[51:45] And what happens if the agent tries
+[51:48] to exceed its spending limit?
+[51:51] So the protocol level locks are there
+[51:54] to kind of set the limits.
+[51:55] So if you're not sure and you don't trust your agent
+[51:58] you can set very low limits say,
+[52:00] okay, it's only maybe allowed to spend the 10
+[52:03] your e-demo token that you have.
+[52:06] That way you're branded from spending more funds
+[52:08] that you maybe have on your other accounts.
+[52:11] And if it actually reaches the limit
+[52:14] the chain will not allow the agent
+[52:16] to get more access to the funds.
+[52:18] So you can have like your hot wallet with a lot of funds
+[52:22] and then have like very small locks
+[52:23] on different agents to give it to it.
+[52:25] And maybe also like if a new kind of locks
+[52:27] if you few hours when they need a new funds.
+[52:31] So yes, like the spending limits are enforced on chain
+[52:37] it allows you to give the agents very small amounts
+[52:39] if you want to.
+[52:39] And also everything is clear.
+[52:41] There was excellent presentation.
+[52:43] So by help for a series about agents,
+[52:45] please help here.
+[52:46] I want to know how does the audit trail help
+[52:49] companies comply with the EU AI Act
+[52:52] and what information does it actually record?
+[52:55] It's up to you what you want to record.
+[52:57] Like I would recommend to use these registered data
+[52:59] transaction because these type of transaction
+[53:01] is a specific type that we call registered data transactions.
+[53:04] They were created exactly for the kind of use case
+[53:07] that you can put in some on a bytes on chain
+[53:09] and they're very cheap.
+[53:11] And yeah, as we think these EU AI Act
+[53:17] requires that you do some locking
+[53:18] and you could do this with these transactions.
+[53:21] Definitely excited to implement much of what's been discussed
+[53:25] here and in the last presentation.
+[53:26] Thank you so much, Doris.
+[53:27] Okay, thank you.
+[53:43] Okay, thank you.
+[53:44] So how does Concordium actually stop an AI agent
+[53:47] from spending more than it's supposed to?
+[53:49] Or no limit on this bit.
+[53:52] It's exactly like the lock you specify in the lock
+[53:55] how much funds you put into the lock.
+[53:57] So if you put in 10 EU demo tokens
+[54:00] and the agent that has the sent grant on this lock
+[54:03] can only send that much of funds away
+[54:05] and can only send the funds to this specified recipients
+[54:08] than only when it's not expired.
+[54:10] So in a way you have a lot of safeguards around it
+[54:12] you can make sure that not funds disappear from your wallet
+[54:16] like a lot of funds or not after a specific time has passed.
+[54:21] Does that make sense?
+[54:34] How will protocol level locks actually prevent an AI agent?
+[54:37] Wasp and I think there's the same question in here.
+[54:38] Okay, I hope I answered the question.
+[54:43] If not, then feel free to like ask again.
+[54:52] Thanks one more.
+[54:53] Okay, one more question I guess.
+[55:04] Could you build an AI agent on Concordium
+[55:06] without knowing much about blockchain
+[55:07] or what you need quite a technical background?
+[55:09] I don't have much background.
+[55:12] I think nowadays actually Claude and coding are quite good.
+[55:15] So it will definitely help you to build some kind of prototype.
+[55:18] So I think for the Hackathon it's definitely possible.
+[55:21] There's a lot of the good things
+[55:22] that Concordium builds in the open
+[55:24] meaning it's GitHub profile is open.
+[55:26] So the AI agents will find actually a lot of code
+[55:29] that it can I guess reason about
+[55:31] and then find a way to build things and get it working.
+[55:35] But obviously if you want to go into production
+[55:37] I still recommend you to learn how blockchains work
+[55:39] and how Concordium specific logic and features work
+[55:42] because in the end, if you run it in production
+[55:46] and things go wrong, then people will ask you
+[55:48] like why you haven't thought about it
+[55:49] or don't have considered a specific thing.
+[55:51] So I still recommend if you have my production system
+[55:54] to have some like software engineers
+[55:57] or blockchain engineers involved
+[55:58] to make sure things work for my technical perspective.
+[56:05] Okay, cool.
+[56:06] I think hopefully that might be all the questions answered.
+[56:11] I think we had some coming in at the end.
+[56:12] So thanks guys for asking the questions.
+[56:15] It is the best time to ask these questions
+[56:17] when we get live feedback from Doris
+[56:20] and with the Concordium team
+[56:21] but has a lot of information about Concordium.
+[56:23] So it's the right person to ask these questions too.
+[56:26] Thank you very much Doris for today's workshop.
+[56:28] Fantastic.
+[56:29] I hope you guys have learned some things
+[56:30] about keeping agents inside the rails
+[56:34] a bit more inside the law as well.
+[56:36] The next workshop we have workshop number five
+[56:38] is gonna be on Monday
+[56:40] and this is a bit more about shipping
+[56:44] from like sort of zero to production
+[56:47] without using crypto.
+[56:49] And obviously this will be all native
+[56:51] to Concordium as well.
+[56:51] So we'll be learning about ship to production,
+[56:54] adopting blockchain without any crypto.
+[56:56] And hopefully you'll be able to leave
+[56:58] with a route to production
+[57:00] that your users can then take
+[57:02] without ever touching any sort of crypto there.
+[57:04] So join us again on Monday, same time on Monday.
+[57:08] We have, that'll be the penultimate workshop
+[57:09] then we have one next Wednesday as well.
+[57:11] And then we will be into the build week
+[57:13] where you guys can take what you've learned
+[57:15] these last two weeks and these sessions
+[57:19] and start building something
+[57:20] and then we can go on to the prizes as well
+[57:24] which I do have an update as well about the prizes.
+[57:27] There's gonna be some CCD on offer
+[57:30] for some nice token rewards
+[57:33] for the top three places as well.
+[57:35] And then there's also the,
+[57:37] we're gonna maintain the grant legibility
+[57:39] for probably the top place.
+[57:41] I will confirm this all.
+[57:42] I will put an announcement on the Discord channel as well
+[57:44] and it'll be included in the next week's weekly update
+[57:47] but the prizes are slowly being confirmed
+[57:49] and hopefully there should be some,
+[57:52] something of interest to you guys.
+[57:53] So get excited about that.
+[57:56] Yeah, thank you very much Doris for today
+[57:57] and I'll see you guys all on Monday.
+[58:00] See you everyone and keep building.
