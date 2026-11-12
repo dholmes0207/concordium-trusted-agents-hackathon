@@ -33,7 +33,7 @@
 | G1.3 (AB2) | Account credential và credential nhân viên có chứng minh được là cùng một người không? | Spike S3b; dự phòng: commitment chứa cả hai định danh |
 | G1.4 | Phê duyệt gắn đúng hành động; người duyệt có thấy đúng nội dung không? | Spike S3a |
 | G2 | Proof lộ định danh nào? | Spike S2, S3a |
-| GF | Global FinReg trên testnet | W5 (16/11), Discord |
+| GF | Global FinReg trên testnet | Thu hẹp nhờ Discord (Piotr 11/11): Concordium IdP không có thuộc tính công ty; muốn ZK thông tin công ty phải KYB thật qua Global FinReg testnet. Chờ W5 (16/11) xem có đường nhanh hơn không |
 | DA | Agent nền nào? (ứng viên: HolmesGPT, agent nói MCP + MCP server cho Kubernetes) | **Bạn quyết trước 15/11** |
 | A2A | Gateway là MCP server hay HTTP proxy | W6 (18/11) |
 
@@ -52,7 +52,8 @@
 | 19/11 → 09/12 | Build L1 → L2 → L4 → L3b → L3a; mốc cắt 30/11 |
 | **Trước 06:59 T5 10/12** | Nộp bài (repo phải public) |
 
-Chưa xác nhận đã làm: tạo project trên Encode, đăng câu hỏi Discord, chạy demo `ccd-ui-sdk`, cài Node.js.
+Discord: đã đăng Q1 (12/11 22:33), chưa có trả lời; Q6 không cần đăng (xem mục 3–4 của `Cau-hoi-Discord.md`).
+Chưa xác nhận đã làm: tạo project trên Encode, chạy demo `ccd-ui-sdk`, cài Node.js.
 
 ## 5. Quy trình đã dùng
 

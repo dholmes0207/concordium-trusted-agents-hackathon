@@ -108,14 +108,52 @@ Mở: **GF**.
 
 | Lượt | Mã | Ngày hỏi | Trạng thái | Câu trả lời tóm tắt | Điểm mở được đóng | Việc kéo theo |
 |---|---|---|---|---|---|---|
-| 1 | Q1 | 12/11 | ⏳ Đang hỏi | | G1.3 | |
+| 1 | Q1 | 12/11 22:33 | ⏳ Đang hỏi (đã đăng ở #general, tag Piotr) | Chưa có (tính đến 12/11 22:33) | G1.3 | Chờ trả lời rồi mới đăng Q7 |
 | 2 | Q7 | | ⬜ Chưa hỏi | | G1.3 / AB2 | |
 | 3 | Q3 | | ⬜ Chưa hỏi | | G1.4 | |
 | 4 | Q2 | | ⬜ Chưa hỏi | | G1.4, MVP-C/T | |
 | 5 | Q4 | | ⬜ Chưa hỏi | | G2 | |
 | 6 | Q5 | | ⬜ Chưa hỏi | | G1.1, G1.2 | |
-| 7 | Q6 | | ⬜ Chưa hỏi | | GF | |
+| 7 | Q6 | | ➖ Không cần đăng (trả lời một phần ở nơi khác) | Piotr (11/11, trả lời KinganLogicLogan): trên testnet dùng IdP nào cũng được. Concordium IdP cấp ngay, tự điền thuộc tính, nhưng **chưa có thuộc tính công ty**. Muốn ZK trên thông tin công ty thì phải qua **Global FinReg testnet** như bình thường. Phần "có công ty/tài khoản test không" đã có Arome hỏi (10/11), chưa ai trả lời | GF (một phần) | Theo dõi thread của Arome và W5 (16/11); không đăng câu trùng |
 
 **Trạng thái:** ⬜ chưa hỏi · ⏳ đang hỏi · ✅ đã có câu trả lời · ➖ bỏ (đã được trả lời ở nơi khác)
 
 Nếu câu trả lời trước đã trả lời luôn câu sau, đánh dấu câu sau là ➖ và ghi nguồn.
+
+---
+
+## 4. Thông tin rút ra từ kênh #general (đến 12/11 22:33)
+
+Nguồn: bản xuất toàn bộ kênh, lưu ở [Discord/general-den-2026-11-12.md](Discord/general-den-2026-11-12.md) (59 tin, giờ UTC+7).
+
+### 4.1. Liên quan trực tiếp tới dự án
+
+| Thông tin | Nguồn | Tác động |
+|---|---|---|
+| Global FinReg testnet: Concordium IdP không có thuộc tính công ty; muốn chứng minh thông tin công ty bằng ZK thì phải KYB qua Global FinReg testnet (Arome cho biết cần giấy tờ thật và khoảng 1 ngày duyệt tay) | Piotr 11/11; Arome 10/11 | **GF:** giữ phương án dự phòng "account cá nhân đóng vai công ty A" (`Tong-hop-sau-W4.md` dòng 640). Chỉ thử KYB thật nếu W5 không đưa ra cách nhanh hơn |
+| Cập nhật Agent Card / `setAgentURI` cho agent đã đăng ký: kết nối ví vào agentcards.site để kiểm hash và cập nhật | Piotr 06/11 | **L1:** có công cụ chính thức được khuyên dùng để ghim hash Agent Card. MCP hosted chỉ dựng payload, không ký |
+| Ví mobile qua WalletConnect báo "Unsupported method" khi ký `setAgentURI`; dùng **browser wallet** | Frits (x402 Doctor) 04/11 | Dùng Browser Wallet cho mọi thao tác ký trong demo |
+| Hosted MCP trên testnet có 2 lỗi, ID App có 1 lỗi chặn (chi tiết gửi riêng cho Piotr, không công khai) | assymetricthinker 06/11 | Spike S0/S1: nếu MCP trả kết quả lạ, nghi lỗi phía MCP trước; ghi lại để hỏi |
+| Không thấy nút xin test CCD → ví chưa ở testnet | Arome 10/11 | Ghi chú cho checklist ví |
+| Build chính thức từ tuần 4 (19/11) | Giles 02/11 | Spike trước 19/11 vẫn ổn; code nộp bài nên có commit từ 19/11 trở đi |
+
+### 4.2. Dự án khác có phần chồng lấn (để làm rõ điểm khác biệt)
+
+| Dự án | Làm gì | Chồng lấn với mình |
+|---|---|---|
+| **ProofPath** (Rik) | Middleware "evidence assurance": gom bằng chứng về danh tính và thẩm quyền agent, thanh toán, settlement thành manifest di động; có nhắc truy vết theo EU AI Act | **L4 audit** và phần "thẩm quyền". Điểm khác của mình: phê duyệt gắn đúng hành động (L3, Approval Binding) và gateway fail-closed, không chỉ thu thập bằng chứng sau sự việc |
+| **x402 Doctor** (Frits, mainnet agent #5120) | Trước khi agent trả tiền x402, kiểm badge Concordium của bên bán và xem `payTo` có đúng của agent đó không | Ít chồng lấn (mảng thanh toán). Có trang ghim Agent Card, nhưng nên ưu tiên agentcards.site do Concordium giới thiệu |
+| **TrustAuto AI** (Sams01) | Trợ lý chẩn đoán xe, định gắn danh tính agent | Không chồng lấn |
+| Tool Offer / FAHCE (KinganLogicLogan), merchant agent (Arome), supplier agent CIS-3 (xoxoubaibe) | Agent thương mại cần danh tính doanh nghiệp | Cùng vướng Global FinReg; câu trả lời cho họ cũng áp dụng cho mình |
+
+### 4.3. Câu hỏi của người khác đang chờ trả lời (theo dõi giúp, không cần hỏi lại)
+
+- Có công ty / tài khoản test Global FinReg cho hackathon không (Arome, 10/11) → liên quan **GF**.
+- Concordium có xác minh được quyền của agent hành động thay mặt công ty mà không lộ dữ liệu không (Marwan, 02/11) → liên quan **L2/L3** của mình. Nếu có trả lời, đọc kỹ.
+- Agent ký CIS-3 tự động, backend tự sponsor tx, Concordium có facilitator x402 dùng chung không (xoxoubaibe, 10/11).
+- Ngày phát hành Agent Kit beta (xoxoubaibe, 10/11).
+
+### 4.4. Cảnh báo
+
+- Tin của Tareq ngày 12/11 ("$50.00 reward" + link agentrouter.org) có dấu hiệu spam / lừa đảo. **Không bấm.**
+- Chỉ ký giao dịch trên trang do Concordium giới thiệu (agentcards.site, registry chính thức) và chỉ dùng ví testnet.
