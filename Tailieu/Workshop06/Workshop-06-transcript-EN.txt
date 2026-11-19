@@ -1,0 +1,1232 @@
+[00:00] I just want to say hi to everyone. Welcome to workshop six.
+[00:04] This will be the final workshop of the Concordium trusted agents hackathon.
+[00:10] I just wanted to say hello to everyone.
+[00:14] This is of course going to be recorded so it's accessible.
+[00:17] Just an important one because it's
+[00:19] final one we're going to be starting with checkpoints, etc.
+[00:22] The first one should be on Sunday.
+[00:26] I just want to let everyone know and then turn over to Doris.
+[00:31] So it's an answer to that.
+[00:33] Okay. Thanks everyone for joining.
+[00:36] Let's share my screen.
+[00:38] Yeah. I think you should be able to see it.
+[00:43] Yeah. Today's like the final workshop.
+[00:45] So what you will talk about and look into is how you can plug
+[00:49] into your agent stack to Concordium.
+[00:53] But you should use the agent stack that you're familiar with or
+[00:56] like even other chains and we don't need to do like
+[00:59] any big adjustments I guess.
+[01:03] I'm interested.
+[01:06] So there are some areas we will look into.
+[01:11] I think the most important is the MCP protocol and
+[01:14] the agentation protocol.
+[01:17] There are three areas.
+[01:20] The model context protocol,
+[01:22] the first part will probably take the longest.
+[01:24] Then later we look into these agent cards that you already
+[01:27] seen I think in workshop one.
+[01:29] Then there's a recap on how to use the agents,
+[01:32] like how to discover them, verify them,
+[01:34] how to use them with payments on Concordium.
+[01:39] Okay. First let's try to understand what
+[01:42] these different things that we have talked about,
+[01:44] what they are for agents.
+[01:45] So they are different interfaces and your agents,
+[01:48] when the agent wants to interact with tools,
+[01:50] you use this model context protocol, this MCP.
+[01:54] When you want to do something with another agents,
+[01:57] you do these agents to agent protocol.
+[01:59] There's a different standard and it's used for
+[02:01] different purposes.
+[02:03] Then we have these other standard which is X402,
+[02:06] which is used when you want to have some payment.
+[02:08] It could be an agent can be,
+[02:10] it's usually like an agent to a server
+[02:13] that interacts with these kind of protocol.
+[02:17] What does the MCP protocol do?
+[02:19] It's for agents that call Concordium's tools.
+[02:23] It could be for example, you look up an agent,
+[02:25] you check the batch to read the chain or build transactions.
+[02:28] And for this particular, it's mainly the agent cards.
+[02:31] These are the two tokens that are in tokens on chain,
+[02:36] which have these agent cards kind of stored.
+[02:40] And here we have talked about the stable coins,
+[02:42] the PLTs, the protocol level tokens in workshop three.
+[02:48] Okay, let's look into the first thing, this MCP,
+[02:50] because it's the biggest part.
+[02:51] It's the model context protocol.
+[02:53] So this is like a standard, so it was developed
+[02:56] and when agents came up and why we needed it,
+[03:00] what does it do?
+[03:01] So if you don't have a standard,
+[03:02] so this is an example when you don't have a standard,
+[03:04] how it will maybe work.
+[03:06] And then you have a lot of agents,
+[03:07] so you have your agents or you have the familiar ones
+[03:09] like Claude, Corsa, Codex.
+[03:12] A lot of these agents, they want to interact
+[03:13] with different tools and also like maybe your databases
+[03:19] or whatever they need to do tasks.
+[03:21] And if it's like that, it would be like
+[03:23] every kind of agent needs to kind of have
+[03:25] a kind of specific integration to each of the cases
+[03:29] on the other side.
+[03:31] And it would be just too much.
+[03:32] So like the more agents we have
+[03:34] and the more kind of areas for tools,
+[03:37] it gets very complex and like people don't want to
+[03:39] like code these interactions and integrations.
+[03:44] So what people came up with this model context protocol,
+[03:47] you can think about it in the real world
+[03:48] is a little bit like the USB-C adapter.
+[03:52] Just for AI, so USB-C adapter was developed
+[03:55] so like there may be Android and iOS devices
+[03:58] and can all use the same kind of charging ports.
+[04:05] And MCPs are a little bit like that.
+[04:07] So like if you have your agents on the one side
+[04:09] and you have the different areas where they should do tools,
+[04:12] where they can look for tools or can do tasks,
+[04:15] then MCPs in between and it defines like
+[04:17] how your agent can call the site
+[04:19] and how the other site exposes what it is
+[04:24] that you can change on that side.
+[04:25] So for example, which tool it has
+[04:27] so like which parts in the database you're allowed to change
+[04:30] as an agent.
+[04:32] And there's this part here, like it's called server,
+[04:37] but what this server is, it can be so local.
+[04:39] So like we will show you some local MCP server
+[04:42] and it's literally run on your machine.
+[04:45] And then there's another one we have one that's remote.
+[04:47] So this means it's just an URL
+[04:48] they can use and you can add it to your agent
+[04:51] and then they will have all the available tools.
+[04:54] In color-based exactly also these two areas
+[04:56] I will also explain why maybe for some areas
+[04:59] it's better to use local and for other areas
+[05:01] it's easier to use the remote one
+[05:02] why we don't have everything put into the remote MCP server.
+[05:09] And I give you now also an example
+[05:11] how the whole flow works when you actually interact
+[05:16] with your agent and where this MCP comes into play.
+[05:20] So obviously you do brumps.
+[05:23] So like if you're here, you send some kind of brumps
+[05:26] to your cloud code.
+[05:28] Like I use cloud code as an agent as an example.
+[05:31] But before you usually start your cloud agent
+[05:33] you have like your custom setup
+[05:35] and what we do and we'll later show it
+[05:38] that we will add the concordium agent
+[05:40] that you see the MCP and it's like remote one.
+[05:43] So you'll just execute and command to edit.
+[05:46] And it means like the cloud code will then ask this MCP
+[05:49] the server and say, okay, give me a list
+[05:51] of tools that you have.
+[05:53] And the MCP will return back and say, okay,
+[05:56] I have 41 tools.
+[05:57] This is a name description inputs.
+[05:58] It's roughly what it will do.
+[06:01] Just keep it in your memory in case you need it at some point.
+[06:04] If you have another actor that's the model here
+[06:06] that's like the server behind cloud code.
+[06:08] So for example, like Anthropic or other companies
+[06:11] like OpenAI if you have a different agent.
+[06:14] So now this was the setup.
+[06:16] Like this is what you do at the beginning once
+[06:17] and then you don't have to do it anymore.
+[06:20] And then it's your normal coding tasks now.
+[06:22] So your normal day starts
+[06:23] when you do some kind of inputs into the prompt.
+[06:26] So for example, can ask Jack Badge
+[06:29] and then this is like the, this is the token.
+[06:31] Like think about like each agent on Concordium has a name
+[06:36] and this is like this token ID or you can call it Badge.
+[06:39] And you ask Jack Badge this number on testnet
+[06:43] if it's like valid or like real
+[06:45] if it's actually in registered agent on Concordium.
+[06:49] So this question will then go to cloud code.
+[06:51] So cloud code will send the question to its model
+[06:54] and also the tools it has available when it knows about.
+[06:58] And the model will figure out and say, okay
+[07:00] actually there's some tool or some endpoint
+[07:02] from the MPC server, MCP server.
+[07:06] It's called Jack Badge.
+[07:07] If you input the token here and say it's in testnet
+[07:12] it likely should give you the answer
+[07:13] that we are wanting based on the description
+[07:16] of the tool that it has.
+[07:18] It gives it back to cloud code
+[07:20] and then cloud code calls then the MCP server
+[07:23] and waits for it gets back.
+[07:24] So it will get some kind of values back.
+[07:26] So maybe it says it's valid, it's active.
+[07:28] That's the agent card was unchained on chain
+[07:32] and this information cloud code gets back
+[07:35] and then it sends it usually back to the model
+[07:37] and make it into a more human readable answer.
+[07:41] Depending on how complex these responses are.
+[07:44] So in the end what you get then back in your prompt
+[07:46] is like something like the Badge token
+[07:49] number 43 on testnet is valid.
+[07:52] And specifically in concording what means valid
+[07:54] and to repeat it is agents that are registered on chain
+[07:57] they can be active or they're supposed to be active
+[08:00] but you can revoke your agents
+[08:02] say okay now I'm not operating it anymore
+[08:04] than it's revoked and not active anymore.
+[08:07] So make sure agents are active
+[08:08] because that means usually it's valid.
+[08:11] Then these agent cards are usually stored off chain
+[08:13] so like each agent has a URL
+[08:16] and then you can look it up the agent card
+[08:17] where there's some additional information
+[08:20] it's like a public description
+[08:21] and usually it also says then points
+[08:23] and what you can do with the agent.
+[08:26] And then you can also register in hash
+[08:28] in the smart contract.
+[08:30] And the hash is supposed to be the hash of this agent card
+[08:33] so it allows you to make sure to check
+[08:36] that the off chain agent card hasn't been changed.
+[08:38] If you check that the hash is still the same
+[08:40] than the refue hash the agent card compared these hashes.
+[08:46] And yeah we can look into the dashboard
+[08:48] for now I think you already noted
+[08:50] but maybe just repeat that.
+[08:53] So this was this dashboard you can explore
+[08:57] all the different agents that are on chain.
+[08:59] In case you haven't seen the first workshops.
+[09:06] Okay let's continue I think not in there.
+[09:14] Okay like we have two MCP servers on Concordium.
+[09:20] So I will now look into the one which is the remote one
+[09:22] which is the one that's hosted by Concordium in a server.
+[09:26] And it holds no key so that's important thing.
+[09:29] Concordium doesn't want to be responsible for any keys
+[09:31] and that way this server is restricted
+[09:36] in the capabilities that it has
+[09:38] only things that it doesn't need to sign anything.
+[09:41] So what it can for example do
+[09:43] can look up something from the chain
+[09:44] it can create bytes that later be signed
+[09:47] so they can create transactions
+[09:50] but it cannot sign the transaction
+[09:51] so it doesn't have the keys.
+[09:53] You will later see like this endpoint
+[09:56] has like exposes 41 tools with the MCP protocol.
+[10:00] And mainly for looking up very fine buildings things
+[10:03] like building the transactions.
+[10:06] And what it means it needs nothing
+[10:07] so you don't need an API key
+[10:09] you need to know account and address it just the agent
+[10:12] and you can point it to it.
+[10:13] It's very limited by IP address
+[10:16] so nobody can like completely
+[10:18] like the server needs to be protected in a way.
+[10:23] What it returns it returns data and payloads
+[10:25] and then your agent can make use of that
+[10:27] and like yeah use it.
+[10:31] And also it cannot return like sign ready bytes
+[10:33] depending on if you ask it to generate a transaction.
+[10:36] But later of course like your wallet
+[10:38] which is locally needs to then sign it
+[10:39] before you can send it on chain.
+[10:43] Another big advantage what this MCP server has
+[10:45] but the local one doesn't has
+[10:48] is that it has an indexer.
+[10:50] So it has indexed the chain from Genesis to now.
+[10:55] So it knows which agents are already registered on chain
+[10:59] so you can search it and list them.
+[11:06] And this gives the advantage
+[11:07] that you don't need to run your own indexer
+[11:09] if you have a local MCP server
+[11:12] you want to have the same queries
+[11:13] you would need to run your own indexer.
+[11:15] And indexer running an index is very complex
+[11:18] and usually also very time consuming
+[11:20] because you need to wait like from under its
+[11:22] has index from the beginning of the chain until now.
+[11:25] So that's why we put index in the remote one
+[11:27] so people don't have to deal with it.
+[11:31] And there's also like a rest train
+[11:33] and we look into this one as well.
+[11:35] So that will help you to understand maybe how this works.
+[11:44] So this is the URL and then we have also the docs one.
+[11:50] So like this is this record train
+[11:57] Okay, what can you do here?
+[11:58] Like we can maybe query a few of the endpoints
+[12:00] and see what it returns.
+[12:02] So we look up one of the agent.
+[12:05] So say this one.
+[12:07] We need the batch or the token ID, it's this one.
+[12:13] And if you like all of these end,
+[12:15] this parameter that you have to put in here token address ID
+[12:20] token addresses or this batch that you get from each agent.
+[12:25] So let's check one.
+[12:26] We can put this here, execute and then you get the data back.
+[12:31] So what did we do?
+[12:32] We wanted to check that this batch is valid
+[12:34] from this agent.
+[12:41] And yeah, here's you see the answers like status is active,
+[12:44] what it has checked and what is like valid
+[12:46] to all of them are true, true, true.
+[12:48] I don't see anything false.
+[12:58] You can just assess it well.
+[13:02] Yeah, and you hear you get also data back
+[13:04] and can exploit or to use of it.
+[13:14] Yeah, I think there you need to input more,
+[13:16] more data so it's more complex.
+[13:19] Okay, let's go back.
+[13:27] Okay, what does this server expose?
+[13:29] As I said, it has 41 tools and then different groups.
+[13:34] So a few of them needs an index.
+[13:36] So they are like discovery, discovery endpoints.
+[13:39] So for example, listing agents, searching agents
+[13:42] and seeing like agent history,
+[13:44] you need to look back in the chain.
+[13:47] Then their own chain looks up.
+[13:48] So that means it calls directly to a smart contract.
+[13:50] It would not need the indexer for that.
+[13:53] Then points are for example, agent of agent by owner.
+[13:56] And then a few builders.
+[13:57] So like these are the two standards we had
+[13:59] for the agents and each of them,
+[14:04] sometimes you need to send transaction on chain
+[14:06] and the MCP server can build these transaction
+[14:10] for you and return it by so you can sign them.
+[14:12] So these are typical, yeah, transactions to be built.
+[14:16] And it has some utilities as well.
+[14:18] So for example, we checked them.
+[14:20] I think check batch we checked for example.
+[14:22] And yeah, some other ones you can call
+[14:25] and we'll help you like to interact with some of them
+[14:27] and some of the things.
+[14:30] And one thing maybe to remember is always pass a network.
+[14:32] So make sure you use main and test net
+[14:34] and depending on which net you interact.
+[14:36] I think the default one will probably be remain it.
+[14:38] So if you don't tell it,
+[14:40] you get maybe the wrong information
+[14:41] because you expect to be on test net
+[14:43] but it's using main and whatever.
+[14:48] Okay, let's continue.
+[14:50] We still stay here.
+[14:55] Okay, now we go into some demos.
+[14:57] And for that, you want to add this MCP server,
+[15:00] the remote one to our cloud.
+[15:02] And it's our coding agent.
+[15:04] And there are some other agents you might have.
+[15:06] So like if you don't want to use cloud,
+[15:08] there's a codex cloud connector
+[15:10] you can go to your whatever tool you're using
+[15:13] and look up how they add MCP servers.
+[15:17] And I will show it with cloud
+[15:18] because I liked it the most.
+[15:21] And yeah, what is the plan?
+[15:23] So we first want to add the MCP server.
+[15:25] That's the demo first.
+[15:28] So here I am at empty place.
+[15:31] So when I call MCP,
+[15:34] oops, MCP,
+[15:38] I have to start cloud, sorry.
+[15:43] Model context protocol.
+[15:45] You see there's no model context protocol yet loaded.
+[15:56] So reloaded.
+[16:09] So it's added.
+[16:11] And now if you call it the same thing,
+[16:12] you see maybe something weird cause
+[16:15] it still says it hasn't, the one loaded.
+[16:18] So the things that you should have to restart cloud,
+[16:22] they lost the new configuration.
+[16:28] Now you see it has got a registry.
+[16:34] It has the registry in there.
+[16:36] So there's like the local one
+[16:37] but the local one, we don't have it.
+[16:41] And because we haven't registered anything yet,
+[16:43] but we have the remote one with the concording registry.
+[16:47] So we can look into that.
+[16:48] So I go into it.
+[16:50] And here it could be an concording registry.
+[16:52] We have called it like that.
+[16:53] Maybe.
+[16:55] And you can look into what else it has.
+[16:56] Like for example, here's some few tools, look into that.
+[16:59] And here you have to get the 41 tools.
+[17:04] So we can pick one.
+[17:06] And then you get like the full name,
+[17:08] the description, what it can do,
+[17:10] what it can does.
+[17:12] And which parameter it needs.
+[17:17] And here they build once,
+[17:18] it's the ones where it creates the bytes for transactions
+[17:21] that then you can later sign.
+[17:23] And there's also which standard it belongs to here.
+[17:27] Also the parameter it needs.
+[17:30] And then also these verify in points at the bottom.
+[17:33] There are some, and they get also information
+[17:35] what it verifies.
+[17:39] Okay, now we have an NPC server added the remote one.
+[17:44] Let's see what we can do.
+[17:46] So we can ask them this check batch on testnet.
+[18:03] And you see it now calls the concording registry.
+[18:06] So it does not look in the internet.
+[18:08] It already understands, yeah,
+[18:10] this information it gets through this MCP.
+[18:13] There's a tool available for it to get to the result.
+[18:17] And the one says like the batch is valid on testnet.
+[18:21] Get more information, it's active.
+[18:23] Yeah, other checks it has done.
+[18:25] The batch is well formed to address its own
+[18:27] and chain conducts all match.
+[18:30] And then some like warnings that can look through it.
+[18:32] We can also look into I think one agent I have,
+[18:34] that's not valid.
+[18:38] It could be that somebody updates it has updated.
+[18:41] So it's sometimes not always still the case
+[18:44] when you check these things later,
+[18:45] but let's see if it's still not valid.
+[18:58] So it says it's not valid on testnet.
+[18:59] Maybe it gives you even the error.
+[19:01] What's the problem?
+[19:02] Media data hash don't change the data hash is empty.
+[19:05] So the card, the card not be matched against it.
+[19:08] So somebody has just registered a card,
+[19:10] but hasn't registered the hash likely.
+[19:13] Missing token address,
+[19:14] the batch card has no token address field.
+[19:16] So it's also even the card has some missing information.
+[19:20] And then it's also even mismatch of something
+[19:22] in the card probably.
+[19:23] So it's quite a lot of,
+[19:25] I was that somebody would need to have fixed before.
+[19:28] It's completely valid.
+[19:30] So how you can also test,
+[19:31] like if you create your own agent, your own batch,
+[19:34] you can then check if everything is fine
+[19:36] or like what needs to be fixed exactly.
+[19:41] You can also check some other things.
+[19:46] More complex questions.
+[19:47] So we want to know which agent,
+[19:49] which owner and agents belongs to together
+[19:54] and how many active agents there are for the owners.
+[19:57] This question is a bit more complex.
+[19:58] It needs the indexer.
+[19:59] It needs to go through the history.
+[20:09] And you also need to then later kind of filter
+[20:11] because some of them are active,
+[20:12] some of them might not be active like we worked.
+[20:15] So it's actually several steps that has to do.
+[20:19] So when it came back, okay,
+[20:20] we had this owner has active ones,
+[20:22] it has some worked ones
+[20:25] and then even some invalid and missing UI, I think.
+[20:30] Yeah.
+[20:32] Okay.
+[20:35] Okay, we can also ask this question
+[20:37] then we can compare it with the front end.
+[20:40] I think it also gives a value.
+[20:43] Let's see.
+[20:43] The front end here, if you go back,
+[20:47] gives you the total, here we are on testnet, I think.
+[20:52] He can change, no, we are in mainnet,
+[20:53] can change the networks here.
+[20:56] So let's see.
+[20:57] I get roughly the same numbers.
+[20:58] Yeah, it even did both tests in mainnet.
+[21:03] Okay, let's continue.
+[21:09] Yeah.
+[21:10] And it might be interesting if you look at the history,
+[21:13] you can always see like which kind of tools it used.
+[21:15] Sometimes you can click on it and see
+[21:18] what it actually asked the MPC server.
+[21:22] So it asked a lot list agents
+[21:23] or used a lot of this tool
+[21:25] in case it's interesting for you.
+[21:34] Okay.
+[21:36] Then yeah, we use this MCP server and it took lot,
+[21:40] but I mean, most agents support this MCP protocol.
+[21:45] So there's like different commands,
+[21:47] how you would add it to other areas.
+[21:50] So like, I mean, long chain
+[21:51] or like how to add it to open AI or Python.
+[21:53] So if you want to have kind of scripts
+[21:56] to be added the MCP server.
+[21:58] So I give you some examples,
+[22:00] but you probably will find more adapters
+[22:02] and how to make use of them
+[22:03] if you set up a little bit different
+[22:05] that you're not manually interacting
+[22:06] with the server via cloud or command line.
+[22:13] Okay, a few things you should maybe know
+[22:16] or which helps you that you are trying
+[22:17] to enter so many arrows is pick a network.
+[22:20] So always specify which network you are using
+[22:23] if you want to have the information from testnet, mainnet.
+[22:25] Otherwise you might get the mainnet data back
+[22:27] and don't even realize because you were expecting
+[22:30] or doing your work on testnet.
+[22:33] There's some protocol versions
+[22:34] so it still works with most clients
+[22:35] and once this gets told, I think we will update it,
+[22:38] but if there's a mismatch, then maybe check the versions.
+[22:43] Cloud desktop also works.
+[22:45] You can add remote servers there.
+[22:48] I think Pete did this on Monday.
+[22:49] So if you're interested how the Cli
+[22:52] or how the desktop version works
+[22:54] then watch the workshop on Monday.
+[22:57] Like Monday, the first workshop, I think was it.
+[23:01] And then we have this rate limiting
+[23:03] meaning that it's per IP address
+[23:05] and that protects the server
+[23:07] so you cannot completely like and DDoS the server.
+[23:12] And always make sure you have a new session.
+[23:14] Like often if you add something
+[23:15] or change some configuration
+[23:17] and Cloud doesn't pick it up,
+[23:18] then maybe restart your Cloud
+[23:20] and your MCP tools are loaded.
+[23:22] Otherwise, you might be wondering where they are.
+[23:29] As I said, we had like these two different MCP server.
+[23:35] We have the one that's hosted, it's the remote one
+[23:38] and the one that's local.
+[23:39] So later I'll show you the local one as well.
+[23:41] For now we have just looked into the hosted one.
+[23:44] And the hosted one, you can find check agents.
+[23:46] The local one is more for like if you use your own keys
+[23:49] I want to sign and the transaction and automate this
+[23:52] because like your keys should always stay with you
+[23:54] so nobody can get access to your funds.
+[23:58] So what's the difference between these two versions?
+[24:01] Yeah, where you run it, like the Concordia server
+[24:02] is on a URL, you can access this.
+[24:05] The one here is like on your machine and has your keys.
+[24:09] Yeah, you can read like agents, batches, agent cards.
+[24:14] And you can read even much more
+[24:16] but it doesn't have access to indexes or index data.
+[24:19] It doesn't have, cannot query.
+[24:22] And it can hear the rights.
+[24:25] The remote one can only prepare transaction,
+[24:27] cannot sign them.
+[24:29] Here it can prepare them, build them, sign them,
+[24:31] submit in transaction, even on chain.
+[24:34] And when to use it, this one you will use it
+[24:36] when you want to find something or check an agent.
+[24:38] And here you can use it if you want to even pay,
+[24:41] sign and send the transactions.
+[24:44] For the setup here you need nothing to install.
+[24:47] Here I need to build it from source
+[24:49] but you have a GitHub repo available
+[24:50] so you can get it from there or like don't know the tar file.
+[24:55] So what you want to remember why it's split,
+[24:57] like the main thing is like hosted,
+[24:58] it has the shared indexes so it makes it easier
+[25:01] if you want to have index data
+[25:03] and you need nothing to install, so it's much easier.
+[25:06] Local one you need to kind of build things a bit,
+[25:07] you need to add your keys and understand a bit
+[25:10] of how this works or let your agent do it for you.
+[25:13] And yeah, it makes it more complex
+[25:15] but then you have things available for signing.
+[25:20] Let's look into the repo, the CCD agent kit.
+[25:25] So this is the repo, I think, no, this one says.
+[25:31] And yeah, it's public so you can access it
+[25:34] and it describes like how you can install it
+[25:38] either globally or like even I think
+[25:40] that some tar files are available to download it eventually.
+[25:43] And maybe important to know it has different packages
+[25:47] and later we will look into two specific ones,
+[25:49] we look into CCD chain client, this one
+[25:52] we will use also the CCD signer.
+[25:54] There's some additional ones,
+[25:55] so the config manager you also needed initially
+[26:00] to kind of add your keys.
+[26:02] I will not show that too much
+[26:03] because it's like one time setup
+[26:04] and I think if you ask Claude or your coding agent
+[26:07] they will be able to do that for you.
+[26:09] Interesting thing as well as it works with UP keys
+[26:11] so you can either give it the private key directly
+[26:15] by downloading the private key from your browser wallet
+[26:18] or other wallets and putting it
+[26:20] or you can even protect it with UP keys and use them.
+[26:24] And yeah, there's some additional skills you can use
+[26:26] but for the demo we will look into these two packages many.
+[26:38] Okay, what we will do with the CCD agent kit
+[26:40] so the goal for this workshop is
+[26:42] you will do one signed transaction
+[26:44] that is a middle and chain
+[26:46] and that the two areas we will interact with
+[26:49] so first we need the chain client
+[26:50] this was this one module
+[26:52] and later we use the chain client again
+[26:53] and in the middle we use the signer.
+[26:55] So what is the chain client responsible for?
+[26:59] It should build a transaction
+[27:01] so it reads your balance on chain
+[27:02] the tokens that you have
+[27:04] and once the transaction is there
+[27:10] and it's the bytes you have
+[27:12] then you can send it to this second module to sign them
+[27:15] and it has only this kind of module
+[27:17] has access to your keys, no other module has
+[27:20] and you can sign the bytes that you give it to it
+[27:23] and specifically human needs to unlock the keys
+[27:26] so like the keys are initially not available
+[27:28] in a way to be signed with.
+[27:31] And once you have done the transaction signed
+[27:33] you can submit it on chain
+[27:34] and therefore you need a chain client again
+[27:36] so the chain client is the one that actually knows
+[27:38] where the taste net node is or the main node is.
+[27:43] And yeah, we will do this.
+[27:45] That's how you add the local MCB server
+[27:48] so it's very similar to the command
+[27:50] in terms that you saw before
+[27:52] and we also specify that we use the test net already
+[27:55] and we give it the endpoint, the test net node
+[27:59] and this is the package that we don't know that before
+[28:03] from the GitHub repo.
+[28:05] And yeah, we need two packages
+[28:07] so that's how you add the chain client package here
+[28:10] and here how you add the sign up.
+[28:13] And again remember to like we start your cloud
+[28:15] that the MCB kind of the new tools available.
+[28:18] So I will show you that.
+[28:21] I already did it here
+[28:25] and I think I can show you.
+[28:26] So when I call MCP now,
+[28:29] yeah, you see now there's like the local MCPs,
+[28:32] they are PNR and you see the two packages,
+[28:34] the CCD chain client and the CCD sign
+[28:37] and we will need both of them later.
+[28:40] And we can also go into them like to explore them
+[28:42] and they look very similar to the ones that were remote.
+[28:45] So we have fewer tools
+[28:47] and then you have a lot of these tools available
+[28:50] and you can explore them.
+[28:52] Okay, similar transactions and then it describes
+[28:55] how to do it and what it needs to do it.
+[28:59] Now it can be called.
+[29:01] Okay.
+[29:05] Oops, disappeared.
+[29:11] Okay, we have already looked into MCP now
+[29:14] which token exists on test.
+[29:15] So we tested it works.
+[29:17] Oops.
+[29:32] So tokens are the protocol level tokens I think.
+[29:35] Okay, maybe it takes too long.
+[29:37] We can already read what we next want to do.
+[29:40] Okay, you can try this for yourself
+[29:41] but the next thing we want to do,
+[29:43] you want to actually send a trend
+[29:45] or we want to create a transaction.
+[29:47] So here it says don't sign it or submit it.
+[29:49] So it's just like creating the bytes.
+[29:51] Okay, it came back with the tokens that we have on.
+[29:55] Probably we haven't asked, probably made it
+[29:56] if you haven't said anything.
+[29:59] If you're on testnet.
+[30:02] Okay, it should.
+[30:04] I mean we're on testnet because we started it
+[30:06] with the testnet node.
+[30:09] Yeah, so it should create a transaction
+[30:12] and you see here the unsigned transaction,
+[30:13] the bytes that needs to be signed.
+[30:16] And you want to do this now.
+[30:17] And for that we asked, okay, which sign is available?
+[30:21] So I've already added one signer.
+[30:23] What it means, adding a signer,
+[30:25] I can show you this as well.
+[30:28] I was downloading the private keys
+[30:33] and you can do this as well.
+[30:34] Okay, I need to be on testnet.
+[30:41] Now I switched to testnet.
+[30:42] When you're in accounts, then you can export your private keys.
+[30:46] So this file that you can export there,
+[30:47] I then gave it to the agents that I get it to.
+[30:52] So it's available.
+[30:53] And it says here we have a signer available.
+[30:55] This account that we have,
+[30:58] the sender of the transfer has just built.
+[31:00] So it has a signer available.
+[31:03] Usually it also will say it's still locked.
+[31:05] So what we have to do to unlock it,
+[31:07] that's only what you have to do once.
+[31:11] Let me show this in the next slide.
+[31:13] So you have to do like unlocking
+[31:16] and we will do this once.
+[31:18] And we will check first what instances we have.
+[31:21] And it needs to be in a different kind of field.
+[31:26] So what it says is unlocked,
+[31:27] but if you do it the first time, it's not unlocked yet.
+[31:29] So if you do it the first time,
+[31:31] you will have to unlock it.
+[31:33] And that's where we need this other package,
+[31:36] the config manager, but you only do this once.
+[31:39] And then you unlock this instance
+[31:42] and then you have the key available.
+[31:50] Yeah, and that was again unlocked
+[31:52] and then you can use it for signing transactions.
+[31:56] Okay, now we want to sign the transaction.
+[31:57] So like we give the command sign the transaction above.
+[32:09] You'll see if it figures out how to do that.
+[32:15] So we get a sender signature.
+[32:16] Now we can say send and on chain.
+[32:21] And chain and give us the transaction hash.
+[32:26] If it figures out.
+[32:33] Another interesting thing is maybe in Concordium
+[32:35] like transactions expire.
+[32:37] So like there's a field you can say
+[32:39] how long the transaction should be valid,
+[32:41] which is a nice way because you can make sure
+[32:43] that people cannot indefinitely use the transaction
+[32:46] if it may be forward or reason it doesn't go through.
+[32:49] And if you really want to have a very long lift,
+[32:50] the transaction can also send a very long time in the future.
+[32:53] So it's not a problem.
+[32:56] Okay, let's look if the transaction actually worked.
+[32:59] We got one on test.net.
+[33:02] So okay, we are in mainnet here for,
+[33:06] it usually takes a very long time
+[33:07] until the indexes picks it up.
+[33:10] We try to get testnet here.
+[33:13] See if we get it here.
+[33:15] Yes, here the transaction is already.
+[33:16] It's a very basic transfer from maybe small amount
+[33:19] from one account to another one.
+[33:21] So it worked.
+[33:22] Our agent has signed something.
+[33:25] Okay, let's go back.
+[33:33] Okay, I give you some other areas
+[33:34] where you can make it easier
+[33:36] for your agents in the Actors Concordium.
+[33:38] So we have the docs, we have this text file.
+[33:42] I can show you this as well.
+[33:44] This is, I think, let's see.
+[33:54] Okay, no, I don't have it open.
+[33:56] And a moment.
+[33:58] Okay, like you have a text file
+[33:59] that helps the agent understand what's on our website.
+[34:03] We also have this skill file here.
+[34:04] So like if you go to this URL,
+[34:06] you can download the skill file
+[34:08] that allows you to interact with Concordium easier.
+[34:11] And the agent will understand
+[34:12] how it should learn the concepts that we have.
+[34:16] And then the MCP protocol
+[34:17] that we already talked about,
+[34:18] the server that we have,
+[34:19] where the tools are available.
+[34:22] And, okay, now we talk about the second thing,
+[34:29] the agent to agent protocol.
+[34:31] So the agent to agent protocol,
+[34:32] it's meant that you have an agent card from one agent
+[34:35] and this is kind of you find it
+[34:37] and then another agent reads it
+[34:39] and says, okay, I want to use their services.
+[34:41] So I send a message to one of the endpoint
+[34:43] that this agent card exposes as it's available.
+[34:46] And the other agent is doing the job for you
+[34:48] and giving some results back
+[34:50] and then your agent is reading the results
+[34:52] and making use of the output.
+[34:55] This is also an open standard
+[34:56] and the Concordium agent cards,
+[35:00] they are following the standard.
+[35:04] So how does this cards look like?
+[35:06] So this is like a very basic example one.
+[35:09] So the main important things
+[35:10] maybe there's a name, description, capabilities.
+[35:13] What it can do skills
+[35:15] and usually there's also registrations here.
+[35:17] So it's on where the endpoints are.
+[35:20] And what is the difference
+[35:21] to what the Concordium agent cards are?
+[35:22] We will look into one in a bit.
+[35:25] The one additional thing that we can add
+[35:27] or that we have defined
+[35:28] is that in the extensions,
+[35:30] you can add this batch
+[35:32] with some information how to verify the batch,
+[35:34] which batch is like this token address,
+[35:36] which is on chain.
+[35:37] And yeah, and people can verify that
+[35:40] this agent was registered correctly
+[35:44] and this valid on Concordium.
+[35:47] And we can look into a real one
+[35:49] and I think I have some example.
+[35:55] Yeah, I think this is an example.
+[35:56] So how do I get to this one?
+[35:58] So I looked one agent up,
+[36:00] I used it here and then inside the agent,
+[36:04] there's this URL and if you follow it along,
+[36:07] it's like an off chain URL usually.
+[36:09] And then you get this card that somebody hosting
+[36:12] on some kind of server.
+[36:14] And there's a lot of information,
+[36:15] but as I said,
+[36:16] this part is like the Concordium specific one,
+[36:19] which describes the batch that then can be verified.
+[36:23] And as a batch can also be shown at the front
+[36:25] and there's like this Concordium batch
+[36:28] that you can show based on
+[36:29] if this information is here valid.
+[36:34] Okay.
+[36:42] Okay, now we can actually do this.
+[36:43] Like we want to look up agent six, zero one,
+[36:46] and we kind of did it already.
+[36:48] And then we looked up the agent card that we had
+[36:50] and then we saw that the batch is valid, true.
+[36:53] So like let's check this.
+[36:57] So we can also do,
+[36:58] if you go to the endpoint, check batch
+[37:01] and input the batch number,
+[37:02] so you find it here.
+[37:03] I think the batch number is somewhere here as well.
+[37:10] Yeah, I don't know.
+[37:11] Somewhere you find the batch numbers.
+[37:14] Maybe it's somewhere here.
+[37:15] Yeah, here it is.
+[37:17] So you can then look it up
+[37:18] and then here you get also the information
+[37:20] that everything is true.
+[37:21] This one is valid.
+[37:26] This was correctly registered on chain.
+[37:32] Okay, now we go into like a kind of recap
+[37:34] what you can do with your agent.
+[37:36] So mainly like how to discover it,
+[37:38] how to verify that it's a valid one,
+[37:39] meaning it's registered on Concordium correctly
+[37:42] and how to pay it.
+[37:43] The main features that we had.
+[37:45] So finding agents is easy.
+[37:47] We have these many agents already registered
+[37:49] in the smart contract.
+[37:51] But one notice of course
+[37:52] that maybe not all of them are valid.
+[37:53] So I think that was one example I tested.
+[37:56] Four out of 148, maybe some of that distance.
+[37:59] Kind of testing there.
+[38:01] Only one, like only four were valid.
+[38:02] So make sure you test it if you interact with them.
+[38:06] And we can actually do some of them to execute some of them
+[38:10] to make sure we can find some of them.
+[38:13] So like the search agent might be some interesting.
+[38:15] So we want to discover what agents are available.
+[38:19] And we go back into our MPC.
+[38:21] I think this one.
+[38:24] It's the word.
+[38:26] And you can put in any kind of string
+[38:28] and say like, you search agents on chain
+[38:31] that has something to do with pay.
+[38:32] Let's see if we find some of them.
+[38:37] I think we still don't test that
+[38:38] and see if any one of them have something described.
+[38:41] Yeah, we have found two agents in the name
+[38:44] that have something that's called pay.
+[38:46] So maybe there's something related to payment.
+[38:51] Another thing is maybe agent history
+[38:54] to look into that.
+[38:57] So you can look up agent history with the badge again.
+[39:05] Do we have a badge?
+[39:12] Yeah, we have the badge.
+[39:18] And we get all the history,
+[39:19] meaning all the transaction related to that agent specifically.
+[39:33] Yeah, I see there were four transactions related to that agent.
+[39:36] So there was some UI updates and it was registered.
+[39:39] And then the token was minted.
+[39:43] Okay.
+[39:44] So the things you should check
+[39:48] because not all of the agents that we have,
+[39:51] the address are actually valid.
+[39:53] So a few things you should always check
+[39:54] is like the trusted address to use.
+[39:57] So make sure the smart contact is the one that you expect.
+[39:59] Like either it's your own deployed one
+[40:01] or the one maybe that's promoted
+[40:03] and that other people are also trusting.
+[40:06] Make sure the agent is active.
+[40:08] It's not reworked by the owner.
+[40:10] Make sure the URL that the agent is promoting
+[40:12] maybe through the agent to agent protocol.
+[40:16] The URL you look up,
+[40:17] that's the one that's also registered on chain
+[40:19] or not they have changed.
+[40:21] And then also make sure that if there's a hash on chain
+[40:24] registered with the card that it's the hash is still the
+[40:27] same so it hasn't been changed,
+[40:29] changed the off chain data.
+[40:31] And also check the owners.
+[40:32] So the owner on the card should be on that's also on chain
+[40:35] and not a different one.
+[40:37] But it's also like the basic checks.
+[40:39] And then depending on your use case,
+[40:40] you will add additional rules
+[40:42] of maybe you have your own allow list and say,
+[40:44] okay, I only want to interact with owners
+[40:46] that you have already kind of interacted with before
+[40:48] that we have by listed.
+[40:51] Maybe you only want to interact with agents
+[40:53] that have recently changed.
+[40:55] So maybe they're still kind of you see the active
+[40:57] or in a way or in the opposite,
+[41:00] you want to not the act with agent that are currently
+[41:03] changing because it may be not clear what
+[41:05] to what they are changing or how they're behaving afterwards.
+[41:08] And always make sure that you recheck
+[41:10] because status can change.
+[41:11] So it might be that now the agent is valid
+[41:13] but somebody sends a transaction on chain updates the UI
+[41:16] or like the hashes and then things are not valid anymore.
+[41:21] Then step three payment.
+[41:24] They are the main thing you can do with your agents
+[41:26] like this X402 standard as kind of a recap
+[41:30] from I think workshop three we did it.
+[41:32] It's the standard.
+[41:34] And it allows you when an agent calls an endpoint
+[41:38] to request some payment before it gets access to data
+[41:41] for example.
+[41:43] It's usually done in combination with PLT
+[41:45] as stable coins for example.
+[41:48] And it could also be combined with CK proof.
+[41:50] So like can maybe ask for CK proofs
+[41:52] and only then give people access to something.
+[41:58] So what's next for these agents?
+[42:01] I give you an overview of the roadmap.
+[42:03] These are targets but they cannot obviously move.
+[42:06] So what we already have is like we have these AI agent
+[42:09] registry, it's the identity and accountability
+[42:11] for AI agents on chain.
+[42:14] You can explore them and see them on the dashboard.
+[42:17] If this verified by Concordia and Batch is like
+[42:20] a kind of button you can add to your maybe blog explorer
+[42:23] or front end but people should still check
+[42:26] then if they trust these owners based on the things
+[42:30] they want to verify.
+[42:33] And then we support 200 networks
+[42:38] because you can like register your external key
+[42:41] in Concordia with this agent.
+[42:44] It means you don't have to move your agents,
+[42:46] you just need to register their keys on Concordia
+[42:48] to make them countable.
+[42:49] So you have a human being behind the agent.
+[42:52] Then we have these registry MCP server
+[42:54] and the protocol also follows this agent to agent
+[42:57] kind of standard.
+[42:58] So the agent cards can be read outside of Concordia
+[43:01] as well because it's the same standard.
+[43:04] This is a Concordia MCP server
+[43:07] and we have all these X4CO2 payment flows
+[43:10] that you can use if you want to get paid.
+[43:13] What's next coming?
+[43:14] So today I already showed you a little bit
+[43:16] this agent tool kit that's still in development
+[43:19] so there's some new features probably coming.
+[43:21] Then there will be AI agent ID.
+[43:24] The idea is that you select it freely,
+[43:26] give some of the attributes to the new agent
+[43:29] so you can do some of the CK proofs.
+[43:31] So the scope is more narrowed
+[43:35] in terms of to what it has access to
+[43:37] and to what it can generate CK proofs about.
+[43:41] Then there should be an agent ID service
+[43:42] at some point kind of agent identity provider
+[43:46] that will allow your agents to get some identities on their own.
+[43:51] Then in January there should be the protocol level locks
+[43:53] coming and protocol these locks.
+[43:56] And once they are there, we can also extend the favor
+[44:00] and pay in a way that they can interact with these locks.
+[44:03] So locks means that some of the funds
+[44:05] are in a specific in these locks
+[44:08] and then they cannot be kind of sent somewhere else
+[44:13] but they can only be sent
+[44:14] based on some specific restriction that I said.
+[44:19] And then the concordium signer.
+[44:21] So we want to keep the signers away from the agents
+[44:24] but yeah, have more fine-claimed authorization
+[44:27] how keys are managed by agents.
+[44:33] Okay, what is the main stakes you should use?
+[44:34] Like your agents, you can choose whatever you prefer.
+[44:37] Then you can use these interface MCP agent to agent
+[44:41] and the X4s too is the main ones I think.
+[44:44] And on concordium you would probably interact
+[44:45] with agent registry, the batches,
+[44:47] you will need to understand what verified ID means
+[44:50] or verified these agents.
+[44:53] What stablecoin PLTs are
+[44:55] and a sponsored transaction probably also very useful
+[44:57] for your setup.
+[45:00] And if you just have one hour to build everything
+[45:02] then the kind of order I would recommend you to do
+[45:05] because the idea is simpler
+[45:07] is add the registry MCP to your agent
+[45:09] like the remote one that will give you a lot of tools already.
+[45:13] Then you can register on testnet, your agent
+[45:16] so maybe I showed this again
+[45:17] so you don't even need to, you can just go there
+[45:20] and register an agent, follow that flow.
+[45:23] Then you have your agent on chain.
+[45:26] You publish your card with the batch
+[45:28] and there are some these endpoints that are exposed
+[45:30] by MCP that will help you to kind of build them correctly
+[45:33] so the information are in there that need to be in there.
+[45:37] Post them somewhere.
+[45:38] Then you can check other agents, the five checks
+[45:41] I gave you are like use one of the endpoints
+[45:43] which very fast the batches
+[45:45] and then you can use the stablecoin standard
+[45:47] if you want to get some payment into your protocol.
+[45:54] I think that was, yeah, if developer toolkits
+[45:57] I think the most of them I already showed
+[46:01] but like you can go through them again
+[46:03] if anything is interesting and helpful for you
+[46:06] in terms of building.
+[46:10] Okay, let's maybe go to the questions
+[46:12] and then if you still have time
+[46:13] I have some extra things, exotic topics
+[46:16] that I can show you on Concordium.
+[46:18] Well, let's check if people have questions.
+[46:23] Okay, there already is some questions I see.
+[46:28] Hi everyone, leaving any question on chat
+[46:30] for us to answer in the Q&A segment at the end.
+[46:33] This is awesome, I'm already using MCP, cool.
+[46:36] Does Valid also say anything about where payments
+[46:40] to that agent should go?
+[46:41] The agent card changes its payment address
+[46:44] does check batch then reports it as invalid
+[46:47] only as changed.
+[46:49] I mean you can probably to check exactly
+[46:51] what implementation is
+[46:53] but there's a payment address
+[46:55] and I think the payment address is probably not linked
+[46:57] to the owner.
+[46:58] So usually when you check in check the agent card
+[47:03] you check that the owner is the one
+[47:06] that's registered on chain kind of the same
+[47:09] and the payment address you can still change
+[47:11] but maybe you can check it if there's something.
+[47:14] Maybe find a payment address here, I don't know.
+[47:17] No, it's not no payment address.
+[47:20] Yeah, but you would probably need to look up
+[47:21] exactly how the implementation is regarding
+[47:25] the payment address if it's very far away or not.
+[47:29] Hi everyone, is it only get and post
+[47:33] or can you test variable up tools?
+[47:37] But exactly what do you mean?
+[47:38] I guess you mean this work, isn't it this one?
+[47:43] It's usually get and post these endpoints.
+[47:46] It's like a basic server in a way.
+[47:51] Yeah, I'm not sure if I answer your question
+[47:53] or maybe ask again if I don't get it.
+[48:05] Hi, maybe this is about the variables inside.
+[48:10] Okay, let me check.
+[48:14] I guess it's somewhere inside the variables
+[48:15] that you're asking about.
+[48:17] I mean some of the variables that strings
+[48:20] so like you can be even here such as you can set D3,
+[48:22] there's not even completely free.
+[48:24] You can only set true, false.
+[48:26] And if it's a number then probably can set a number.
+[48:29] So if some of the parameters need a number,
+[48:31] you can set it but yeah, depending on what parameter
+[48:34] you have it's different things you allowed to input or not.
+[48:40] The skills you, MD says confirm before building
+[48:44] state changing payloads in unattended agents auto mode
+[48:47] nobody's there to confirm.
+[48:49] Is there a recommended way to enforce
+[48:51] that rule outside the model?
+[48:52] EG client signed hook before
+[48:55] send transaction or assign policy on Concordium Roadmap.
+[49:00] Yeah, I mean for safety we would always say
+[49:02] I guess that you should manually check the transaction
+[49:04] if it's on chain especially if it's a big one
+[49:06] like a big of a lot of funds transferred.
+[49:10] But it's of course if it's a very small one
+[49:11] then maybe you can skip that rule and say
+[49:14] give additional information or kind of constructions
+[49:17] to your agent say okay you can skip this verification.
+[49:20] And if as long as you only use like a one cent
+[49:23] in the transaction and only give a very small amount
+[49:26] on your account that the agent can access.
+[49:28] So not too much funds gets lost
+[49:30] if the agent goes completely off.
+[49:33] Can agent pay each other in stable coins
+[49:35] on Concordium Tesla today
+[49:37] or is that still on development that's already possible?
+[49:39] So like maybe we can even see that
+[49:41] as a block explorer, the protocol level tokens
+[49:44] they're live you see they already transferred
+[49:47] and they're tested but they're also live on many.
+[49:49] So yeah, that's already there for a while.
+[49:53] I think maybe also like people transferring stable coins
+[49:57] and PLTs on main net even.
+[50:03] So agent can also pay each other
+[50:04] because like agents have an address on chain
+[50:07] and it can pay each other.
+[50:10] Single for these workshops they were very useful, okay.
+[50:14] So far no other question.
+[50:15] I have a few extra things to show.
+[50:19] Yeah, a hundred percent.
+[50:20] If you'll take away we serve 10 minutes.
+[50:22] Yeah, okay.
+[50:23] Then I have some other things to show.
+[50:24] Just random things that are nice on Concordium.
+[50:27] So I think one thing is very nice.
+[50:29] This block explorer and there we have, oops, let's see.
+[50:36] They can search by transaction type.
+[50:39] So you can explore what kind of transaction they are
+[50:41] and there's one specifically it's very unique
+[50:44] and these transferrish schedule.
+[50:47] I think other chains don't have them.
+[50:50] And why I find them quite interesting.
+[50:51] I actually showed them in the other blog explore
+[50:53] because I find it even nice in the other blog explorer.
+[50:56] Yeah, let's go.
+[50:57] I think we want to test it.
+[50:58] Let me see.
+[51:00] Okay, I'm gonna be in test minute.
+[51:04] You see like so there's some funds transferred
+[51:06] from one account to another account
+[51:07] but they are under schedule.
+[51:08] That means the new account doesn't have the funds
+[51:12] available immediately but they have some funds
+[51:14] available on this date.
+[51:15] They have these many funds additionally available
+[51:17] than this, then at that time,
+[51:20] this more funds will be available.
+[51:23] And why this is quite interesting is that later
+[51:26] these kind of features can also be used with logs.
+[51:29] So these protocol level logs that are coming up.
+[51:31] So in case you use now days, these schedule transfers
+[51:35] maybe later you can even use it with
+[51:38] or make use of these logs.
+[51:39] They're very similar, not exactly the same
+[51:41] but in a way it's also related to logs
+[51:44] or have similar functionalities.
+[51:49] And maybe then, okay, now we don't see it
+[51:51] but sometimes you see it in a balance here
+[51:53] and then kind of available balance underneath.
+[51:56] That means like some of the funds are not yet available
+[51:58] because they're in the schedule transfers transactions.
+[52:02] So I think no other chain
+[52:03] or not many chains of these schedule transfers.
+[52:05] So maybe you want to make use of it
+[52:07] if it's useful for you.
+[52:10] That's a nice feature we have.
+[52:13] Then you have alias accounts, it's also something very funny.
+[52:16] And what is an alias account?
+[52:20] So let's see.
+[52:23] So we looked up here in account address and testnet
+[52:27] and it's just one account.
+[52:32] Oh, it's listed.
+[52:34] It's one account address.
+[52:37] But it has several, so now I searched here
+[52:41] and you see it switched to this number.
+[52:43] So this is the index.
+[52:44] So whenever you create an account,
+[52:46] it says the first account on chain is like number one
+[52:48] and then next one is number two, next one is number three.
+[52:51] So this account is like number one, 19,058 or something like that.
+[52:57] And it has this account address
+[52:58] that I just input here for search.
+[53:01] And the particular you can look into the end,
+[53:02] it ends with L, I, M, F.
+[53:05] And you can have other accounts.
+[53:08] This one is another account.
+[53:10] It starts exactly with the same.
+[53:11] You see the beginning is the same
+[53:13] but the end is a little bit different
+[53:14] and that's what we call an alias account.
+[53:17] And that means you have another account
+[53:19] which ends up on the same,
+[53:20] can we show the same balance?
+[53:22] It will show the same index here
+[53:23] if I search for this one.
+[53:24] It's a different one because it's an alias account
+[53:27] because it has a different ending here.
+[53:28] The ending is a little bit different
+[53:30] and this one is the same.
+[53:31] Maybe I need to search this one then.
+[53:36] Okay, no, maybe I need to look up one,
+[53:38] but okay, never mind.
+[53:40] Yeah, so what we have is like these alias accounts
+[53:42] and they allow you to send,
+[53:46] so they have different addresses
+[53:47] that they can show to people
+[53:49] and they will end up all in the same account address,
+[53:52] the kind of cannoli account address.
+[53:54] And where it's used often,
+[53:56] so I think a lot of Dexys uses it.
+[53:58] So they show every depositor or every centralized exchange.
+[54:03] They do it often.
+[54:04] Every depositor get a different account,
+[54:06] alias account show to them
+[54:07] so everyone can deposit to a specific address
+[54:10] but they all then all the funds will be kind of combined
+[54:14] in one address that is the exchange address,
+[54:16] the form of centralized exchange.
+[54:18] There's also an interesting features,
+[54:19] these alias accounts, you can look up for them
+[54:20] and maybe if it's useful for your play around with that.
+[54:25] Yes, I think that's all.
+[54:26] I don't know if there's any more questions.
+[54:31] Sorry, I was so mute there.
+[54:33] I think there's two more questions that popped up,
+[54:36] but I also, it's a perfect gateway to say that
+[54:40] just for everyone listening in
+[54:41] and everyone who's going to be listening in on the recording,
+[54:44] we're not going to be having office hours anymore
+[54:46] and we're just going to make it nice and easy
+[54:48] by just playing all your questions on Discord
+[54:50] and between the Concordian team and us,
+[54:53] we will try our best to respond to any questions that you have.
+[54:58] So yeah, I just wanted to let that be now.
+[55:02] Yeah, thanks.
+[55:03] That's another question.
+[55:04] I'm interested in working on Concordium ecosystem.
+[55:06] Is there any other chance than the Hackathon
+[55:08] like researcher, developer
+[55:11] or even work with Concordium team in case I don't win?
+[55:15] I mean, you can always reach out to them.
+[55:16] Of course, they have these grant programs
+[55:20] so they're helping some projects that are very useful
+[55:22] or kind of looking promising in a way,
+[55:25] but you can also apply for them for jobs I guess
+[55:28] or like in a way reach out to them on Discord.
+[55:30] They're often very helpful to help you like,
+[55:32] if you're successful,
+[55:33] that's also good for Concordium makers with your project.
+[55:37] Are there any means to check quality
+[55:39] of registered agents work as far as I understood,
+[55:41] there's no any baiting system or similar.
+[55:45] So evil part is on us, evaluation part is on us,
+[55:48] Concordium or agent or SSD have nothing to do here.
+[55:51] Yes, that's the case.
+[55:52] I mean, we don't know what work they do
+[55:54] or like that's usually maybe off-chain work
+[55:56] and it's not like, on-chain that we know
+[55:58] what they kind of execute in the back ends.
+[56:02] So you need to evaluate
+[56:03] if the agent is good for your work, I guess.
+[56:06] And have some kind of scoring system.
+[56:13] Perfect.
+[56:14] Again, just a reminder to everyone
+[56:16] that the first checkpoint is gonna be coming up on Sunday,
+[56:18] that's the 22nd.
+[56:20] If you're also making teams,
+[56:21] if you're gonna be building by yourself,
+[56:25] just make sure you get that first checkpoint submitted
+[56:28] so we know who's gonna be taking part,
+[56:32] what the teams are, just a rough draft.
+[56:34] I'm sure we can edit anything
+[56:35] if there's any problems please do reach out to us.
+[56:38] I think that should finish the workshops.
+[56:41] Again, thank you very much to you Doris.
+[56:44] Thank you for today, thank you for Monday
+[56:45] and thank you for the rest of the Concordium team
+[56:47] for giving these workshops.
+[56:49] Thank you, everyone, for coming.
+[56:51] Perfect.
+[56:53] We'll catch you around everyone.
+[56:54] That should be us.
+[56:56] I hope everyone has a lovely day.

@@ -1,0 +1,1108 @@
+[00:00] Everyone is it live now? I guess so.
+[00:03] Yeah, I'm pretty people.
+[00:06] We're going to three. Yeah, lovely.
+[00:07] Then I should ask in.
+[00:10] Hello everyone. I think you'll be able to see my screen.
+[00:15] Today's sessions, what you will look at is there was already like four workshops before that.
+[00:21] And this is like the fifth one.
+[00:22] And we look into how we ship to production and how we can adopt blockchain
+[00:26] technology without using crypto.
+[00:29] So the idea is that the users don't even realize that they're using blockchains.
+[00:32] Don't need to understand what wallets are.
+[00:33] Don't need to see phrases to make it easier.
+[00:37] And the main thing is that people should use your product.
+[00:40] It should be easy, but it should not be hindered on the complex part of blockchain and crypto.
+[00:46] And there are three questions we want to look into it.
+[00:49] That's the main pin point I feel for non-crypto users.
+[00:53] We will first look into how these identity works again on Concordium.
+[00:58] And you will put a particular look into companies identities
+[01:01] because this part I think was not so covered that much and it's quite a bit new.
+[01:06] So we look into like how if you are running your product,
+[01:09] how you can register as a company and then behind this kind of app as a company.
+[01:16] Then we look into how we can.
+[01:18] So these are private keys because they usually start in a crypto wallet.
+[01:21] But as users sometimes don't know what wallets and blockchains are,
+[01:25] there are other options like for example,
+[01:26] you can kind of host these, keep these keys of the users in your server.
+[01:32] But then it could be also like a standard way to have the crypto user have the wallets.
+[01:39] But then we look into the third party services,
+[01:41] how we can make this use and what kind of third party providers are integrating
+[01:46] with Concordium so that you can use to make it easier for users
+[01:49] to hold these private keys, not understanding what it actually means.
+[01:53] And another thing is that we will also look into how you can build your branded app
+[01:57] and use a crypto wallet behind it, but the users don't even see it as a wallet.
+[02:00] So it means they only see your name, your app, and everything else
+[02:04] what the blockchain needs is like behind that kind of name.
+[02:08] There's another area which also belongs to this part, which is a sponsor transaction.
+[02:12] But because we already looked into that, I think in a previous workshop,
+[02:16] I will not cover it that much, but this is also a very important part
+[02:19] to make it easier for users, sponsor transaction idea.
+[02:22] To allow people to interact with a blockchain without having to hold a native currency.
+[02:27] And yeah, that's also a very important feature, but we don't look into it today.
+[02:32] And one important thing is like maybe the Concordium's advantage
+[02:35] is that we already have behind every account a verified identity.
+[02:39] So people can link up who is behind something that's not as anonymous as in other blockchains.
+[02:46] We will also give some live demos and they're all on testnet.
+[02:48] So you can follow along without having to have any mainnet accounts.
+[02:56] Okay, the first thing we look into is our business accounts.
+[03:00] So how can you as a company get to something an identity on Concordium and be behind an account?
+[03:06] So we're going to repeat first how accounts are created on Concordium,
+[03:10] because it's a little bit different than what you maybe use on Ethereum or other blockchains.
+[03:14] The most important thing we thought we started with the wallet here again.
+[03:17] So first thing, if you open a wallet, it's empty, there's nothing in there.
+[03:20] The first thing what you do is like you send a request.
+[03:23] And you want to create first an identity.
+[03:25] And once you have the identity, then you create several accounts.
+[03:28] You can create several accounts from this identity.
+[03:30] So what is an identity?
+[03:31] An identity can either be a person or a company.
+[03:35] And both of the flows are similar.
+[03:36] They just go to different identity providers.
+[03:39] So if you are a person or a company, your first thing is you request an identity
+[03:43] that's an off-chain kind of process.
+[03:46] There's an identity provider that's like companies that have specialized in kind of very fine people
+[03:52] or companies.
+[03:53] And you're sent from the wallet to these websites.
+[03:56] And these websites will then check these off-chain data.
+[03:59] So they will, for example, if you're a person, maybe check your passport ID.
+[04:03] Or if you're a company, they will check your company documents and make sure they're kind
+[04:06] of real and you're a real person and a real company.
+[04:10] Once this process is completed, you get an identity object sent back to the wallet.
+[04:15] And this identity object stays in the wallet.
+[04:17] So this is like your off-chain data.
+[04:19] You can think about it a little bit like if you're a passport, if you have your passport,
+[04:23] then these fields of your passport are held in the wallet, but they're not on-chain or anything.
+[04:28] And then in the next step, you can create accounts from that.
+[04:31] So every time you create an account, you send an on-chain transaction.
+[04:35] It literally means create an account.
+[04:39] And this on-chain transaction, it links your identity object or the attributes that are in
+[04:44] there with the account on-chain.
+[04:46] What I mean with linking is that there's no off-chain data sent on the blockchain.
+[04:51] So the blockchain doesn't hold your passport information.
+[04:53] There's not a real name or anything or passport number on-chain because it wouldn't
+[04:57] be allowed based on privacy considerations.
+[05:00] But what is sent on-chain is like a Patterson commitment.
+[05:02] So there's a bit of technical, cryptographic term.
+[05:06] But what Patterson commitment is, it's literally a randomly looking point on an elliptic curve.
+[05:11] And we do this for every attribute.
+[05:12] So every field that is in your passport, we do such an elliptic curve
+[05:16] point we put on on-chain.
+[05:18] And later this point can be used for zero-knowledge proofs.
+[05:21] And you can kind of proof that this point was generated from data that is in the wallet.
+[05:25] But the important, the privacy-preserving data that's in the wallet,
+[05:29] the number put on-chain.
+[05:30] So we're not putting your date of birth or your passport number on-chain.
+[05:34] It's just like you're allowed to, are you able to link these things together and say,
+[05:37] okay, I have to spray the real passport in my wallet.
+[05:40] And the Patterson commitment that belongs to this on-chain and you can show that they fit together.
+[05:46] Okay, let's look into first how these two transactions look on-chain.
+[05:50] So we look into how account creation looks on-chain.
+[05:53] Like we look into like a transaction.
+[05:56] And then we also look into this credentials.
+[05:57] So like we look into a specific account and look what kind of credentials they're stored and
+[06:02] what attributes are.
+[06:04] Okay, let's do that first.
+[06:07] So this is an account transaction.
+[06:16] So this is account creation transaction.
+[06:19] It means it's written here that's the type.
+[06:21] And we created this account.
+[06:23] So it's just a number, like a number of indexes increases.
+[06:26] So we start with like one, two, three, four.
+[06:28] Now we added the account.
+[06:29] So it's not so special.
+[06:31] It's just a normal transaction.
+[06:33] And if you look into this account then,
+[06:36] then you can go into like credentials.
+[06:39] And this is like the person behind it.
+[06:42] But we don't see any kind of personal data.
+[06:44] So there's not like your date of birth or anything.
+[06:46] It just specifies which attributes are committed to.
+[06:50] So in this case, you see it's like there's a date of birth commitment as a first name.
+[06:55] Yeah, I did it.
+[06:55] You don't mean so this is a passport kind of document and it's a person behind it.
+[06:59] So the company.
+[07:01] And you know, like all these fields we can, or these other builds we call them,
+[07:04] we can later turn out it's a K-Pro sub-border.
+[07:08] Okay, that was like the second part I wanted to show.
+[07:11] This was this product.
+[07:12] Each account has some potential behind it.
+[07:14] And there's like attributes fields.
+[07:18] Okay, let's continue.
+[07:23] Okay, let's go back to like what the identity is.
+[07:25] So we have two options.
+[07:26] We can either have a person or a company.
+[07:29] When you're a person, what you need to provide is like you need to provide an ID document.
+[07:33] So it could be for example, like your passport or like some driver license allowed.
+[07:38] It depends a bit on the country and the identity provider that you choose,
+[07:41] which kind of ID document they require.
+[07:44] There's some other ways you can do it.
+[07:46] Like there's some digital IDs you can use.
+[07:47] It's specific for some Nordic countries.
+[07:49] They have like Scandinavian countries.
+[07:51] They often have it's called MITID, BankID.
+[07:54] So they support some digital IDs, but it's not for other countries.
+[07:59] And if you want to know exactly which kind of companies or which kind of countries
+[08:05] and which kind of identity provider support what,
+[08:07] I think you can look up the document here.
+[08:10] For companies to prove that you have a legal entity, it's a bit different.
+[08:14] You need to provide like your official company papers from our business registry.
+[08:19] Can be also some financial regulators that you provide them from.
+[08:23] And they shouldn't be too old.
+[08:25] And the other thing you need to provide,
+[08:26] you need to provide an owner behind this company
+[08:29] or like some signatory like somebody who is in charge of the company.
+[08:33] And how we verify them, like not concordium does it,
+[08:36] but like one of the identity provider does it.
+[08:38] And they also require some kind of passport,
+[08:40] vibranising license document to prove that this owner is real
+[08:44] and like it's allowed to kind of own this company.
+[08:48] And now we look into these identity providers,
+[08:51] but option we have on mainnet.
+[08:52] So this is mainnet.
+[08:53] It's a wallet.
+[08:54] So when you request an identity, you have like these three options.
+[08:57] And these are two companies that provide for person,
+[09:00] these verifications and these option verification.
+[09:03] And then we have one global FinREC, which is for the companies.
+[09:06] And we look later into a wallet for real and see how this looks like.
+[09:13] Okay, let's maybe do this in real.
+[09:14] So I show you this in the browser wallet.
+[09:17] This is the browser wallet.
+[09:19] You need to look in.
+[09:22] And if you go here to identities,
+[09:25] oops, it disappeared for some reason.
+[09:29] So already have one identity and it will actually have two.
+[09:33] So these are fake identities because I'm on testnet.
+[09:35] So on testnet we have, if you create a new identity,
+[09:37] you can click here.
+[09:40] On testnet we have this fake identity provider,
+[09:42] which allows you to create any person identity.
+[09:45] But we have also these three ones,
+[09:47] or like these two ones there also on mainnet.
+[09:50] And this one is only on testnet.
+[09:52] But if you want to go for a business identity,
+[09:54] you have to go for global FinREC here.
+[09:56] It says business ID.
+[09:58] And this one is also the same on mainnet.
+[09:59] On mainnet you will also see this provider.
+[10:02] And if you click here, it takes a while.
+[10:15] We will now send you to like this off-chain company,
+[10:18] the identity provider, and then the flow will continue there.
+[10:21] We wait a little bit more.
+[10:22] And then later we can look into a bit details
+[10:25] what they provide.
+[10:27] So this is now the global FinREC company.
+[10:31] It still takes a bit of time to load it.
+[10:34] Now that's their website.
+[10:35] So it's not our website anymore.
+[10:36] It's not like Concordia is hosting it.
+[10:38] It's like it goes to global FinREC at a company
+[10:42] and it requires the documents that you need
+[10:44] for business verification.
+[10:45] So that's a bit how the flow is for accounts to be created.
+[10:50] First you need an identity, then an account.
+[10:55] Okay, let's continue here.
+[11:01] Okay, what different fields there are for these identities.
+[11:05] So we look first into these persons identities.
+[11:08] And forget the SIGAPO for now.
+[11:10] I will talk about it in a bit.
+[11:12] So the typical attributes that you need,
+[11:14] these four needs are required.
+[11:16] So they need to be provided every time.
+[11:17] So you need to provide in first last name,
+[11:19] date of birth, nationality and ID document.
+[11:22] And important thing, we also have these formats
+[11:24] that they need to be.
+[11:26] So texts need to be in text format.
+[11:29] Then date times they are in this format.
+[11:32] For nationalities, we follow this standard.
+[11:34] So this is a way to identify countries.
+[11:38] So there's like for example, like US or like decay,
+[11:42] it means Denmark.
+[11:44] So it's like a world wide kind of standard
+[11:45] how to present countries or geographic locations.
+[11:50] And this matter areas or attributes that can be there
+[11:53] but they're optional.
+[11:54] So they don't have to be an every persons identity.
+[11:57] So sometimes you see them sometimes they're not there.
+[11:59] So for example, text ID number is not in every,
+[12:01] and passport is usually not included.
+[12:04] So you should don't see that often.
+[12:07] And depending on what kind of format
+[12:09] or what type this attribute is,
+[12:12] we can do the different CK booths on it.
+[12:13] So I will later show you such a CK booth.
+[12:17] We want to be able to, for example,
+[12:19] ask a specific question about the user's identity
+[12:22] without telling too much about the whole identity.
+[12:25] So we can give maybe us a little bit
+[12:27] of information without the rest.
+[12:30] So what all of these fields support,
+[12:32] they support revealing that fields.
+[12:34] So what it means is mean,
+[12:36] I can prove that my name is exactly that name.
+[12:39] So I can say, okay, my name is Doris
+[12:40] and I can prove it's really Doris.
+[12:43] And this works very well for every format that we have.
+[12:46] Then we have something that we call range booths.
+[12:48] They are only working on something
+[12:50] that's well, like a date or time or like a,
+[12:53] you need to have a continuous number range for each work.
+[12:56] So it works on this date of birth.
+[12:58] It also works on document dates.
+[13:00] And what range booths is, you say like,
+[13:02] you have upper limit and lower limit,
+[13:04] and you prove that your value is in between this range.
+[13:07] So usually it's, for example,
+[13:08] you prove that you're older than 18 years old.
+[13:09] That's a typical example.
+[13:11] And some of these formats have also set booths
+[13:14] or not set membership proofs.
+[13:17] These are them.
+[13:18] And the typical, for example,
+[13:20] when you want to prove that your nationality
+[13:22] is from the European Union
+[13:23] and you prove that your nationality is from a set,
+[13:26] like means a list of countries.
+[13:29] So these set membership proofs are set,
+[13:30] not membership proof.
+[13:32] So you can prove you're not from Russia or something like that.
+[13:37] Then for companies,
+[13:38] they are different, feels like a completely different technically
+[13:41] because a person is not a company.
+[13:43] And what a company needs,
+[13:45] D3 are required.
+[13:46] So you need to have a legal name.
+[13:47] You need to have, be associated to a specific country.
+[13:50] And you need to have a business number.
+[13:52] And there's also like formats, text formats.
+[13:55] This is the same format for countries
+[13:56] that we already saw in the person identities.
+[14:00] And then there's a specific thing, lay.
+[14:01] So we'll later look into what this is.
+[14:03] So for now, you can ignore it.
+[14:05] And then we have to registrate an authority,
+[14:07] but yeah, optional.
+[14:09] And interesting thing maybe is here again,
+[14:11] we support revealing attributes in all these,
+[14:14] for all these attributes,
+[14:15] and only for the countries,
+[14:17] it makes sense to support set membership proofs.
+[14:21] But otherwise, we don't have range proofs
+[14:23] because there's no date range or something.
+[14:26] So the next thing what you want to look into
+[14:28] is like the lay number, what is it?
+[14:31] So lay what it means is the legal identity identifier.
+[14:35] And what it helps you with or why we need it,
+[14:37] it's if you have it for your company,
+[14:39] you be on the fast track,
+[14:40] that means you can get a much faster identity on chain.
+[14:44] Whereas if you don't have a lay number,
+[14:45] it's a bit more slowly because of the manual process.
+[14:49] So what the identity provider does,
+[14:50] the global Finnewegg,
+[14:52] it uses this lay number and it allows it to kind of
+[14:54] check the data much faster
+[14:55] because you already have registered it somewhere
+[14:57] and someone has approved it.
+[15:00] And it means you get an identity very fast on concordium.
+[15:04] For the other track, the standard track is like
+[15:06] you provide your information and then actually Finnewegg
+[15:09] needs to kind of check everything
+[15:10] and it takes a much longer.
+[15:12] And there's like a website where you can check
+[15:14] such an identifier.
+[15:16] So this is like an identifier.
+[15:19] Maybe I have a, let me see if I can code it.
+[15:21] Yeah.
+[15:22] And what this identity identifier,
+[15:24] the lay number means that there are some characters
+[15:27] which specify which issuer it is.
+[15:29] Then this is your actually company number,
+[15:32] I would say for this issuer,
+[15:34] and then something like checksums.
+[15:35] And let's check that on the Glyve site.
+[15:38] So you can go there and check every kind of company.
+[15:42] So here is the Glyve page.
+[15:44] They have an option for searching for a company.
+[15:48] So you put in this number and you find it.
+[15:50] This number belongs to global Finnewegg
+[15:52] and you can look into what information
+[15:54] are provided by this company.
+[15:56] And yeah.
+[16:08] So what flows we have now
+[16:10] when you want to get a business identity on Concordium.
+[16:13] So there are actually four kind of situations
+[16:15] that you can be into
+[16:16] and depending on what situation you go for,
+[16:18] it takes maybe more time or it's easier.
+[16:20] So it could be so that you have already a lay number
+[16:23] and this number is with global Finnewegg already.
+[16:25] They have already put it into the database.
+[16:27] That means you can immediately get an identity on Concordium.
+[16:30] It's very fast.
+[16:32] If you have no lay number yet,
+[16:35] global Finnewegg can kind of help you to get it issued
+[16:38] and then it's like maybe there in one hour
+[16:40] and then it helps you to identify the remaining documents
+[16:43] and make sure that you're actually owning this company.
+[16:45] That's how you get an identity on Concordium.
+[16:49] That means you also get a lay number after that.
+[16:52] You can also have a lay number
+[16:54] but it's with an other provider.
+[16:55] In that way you can go for an option
+[16:58] to move your lay number to global Finnewegg.
+[17:00] It takes maybe three to five days
+[17:02] and then you get your identity verified,
+[17:04] the business identity and then you get an account on Concordium.
+[17:08] And you can also say,
+[17:09] okay, actually I don't want a lay number issued to me
+[17:11] then it takes 12 hours.
+[17:12] So it manually checks the identity verification
+[17:15] but no lay numbers issued.
+[17:18] So you have these four options that you can go for.
+[17:22] And for comparison, I think banks also,
+[17:24] when you want to have a corporate onboarding there,
+[17:25] it takes much longer times.
+[17:27] And also like a global Finnewegg
+[17:28] is a globally company that's operating,
+[17:33] it's a registration agent for lays.
+[17:34] So it's not a lay issue itself
+[17:36] but it works together with them.
+[17:39] And we can actually look into this.
+[17:42] In the next demo,
+[17:43] we want to actually show you the start page,
+[17:45] how it looks like.
+[17:46] So as I said, when you go in the wallet to identities,
+[17:49] as you do, you press the plus button,
+[17:51] you select the global Finnewegg as an identity provider,
+[17:54] you get to this option here.
+[17:56] That's their website.
+[17:57] So again, this top one here is like the fast track,
+[17:59] which I said, if you already have a lay number
+[18:02] or like want to get one issued, it's like the fastest option.
+[18:05] And the standard process is the bottom one.
+[18:07] It's the one, if you say,
+[18:08] okay, I don't want to have a lay code,
+[18:10] but you should still check my documents
+[18:12] and give me an account if you're verified
+[18:15] with the documents I provide you
+[18:17] and an identity and then later I can get an account from that.
+[18:20] And we look into that.
+[18:22] I actually made a screenshot.
+[18:25] So this was when I was logged into the website
+[18:28] and I already had,
+[18:31] so I had no lane and lane number at that time
+[18:33] because I'm doing the company,
+[18:35] but you can see here at the top at the fast track,
+[18:37] there are two options.
+[18:38] You can either create a new lay number
+[18:41] or you can transfer an existing one to your company
+[18:44] to global Finnewegg and get beyond the fast track
+[18:47] or you do the standard process
+[18:48] where you submit your documents,
+[18:50] but you don't want to have a lay code.
+[18:52] And then if you already have a kind of fourth flow,
+[18:56] if you already had a lay number with global Finnewegg,
+[18:59] then it would be appearing here.
+[19:01] This is like a third option, third flow.
+[19:04] And I can show you that.
+[19:05] I think we have a video.
+[19:08] So that's a document or like a blog post that they showed.
+[19:14] And here you see this top one that only appears
+[19:16] if you actually have a lay code with global Finnewegg already,
+[19:19] but not most people don't have it
+[19:21] because you don't want to own a company.
+[19:23] Then you see the bottom box already,
+[19:24] so then at the bottom there will be even the standard track
+[19:28] which is like kind of checking all the documents.
+[19:32] Yeah, I hope that's clear what kind of flows there are
+[19:35] and which one you should choose.
+[19:38] Maybe on Testnet,
+[19:39] if you just want to do this on for the hackathon,
+[19:42] on Testnet the website looks the same.
+[19:44] So you also go to the global Finnewegg website,
+[19:47] but it's kind of the outer proof everything.
+[19:50] What it means there, they are supposed to,
+[19:52] whenever you send something and fill in the documents
+[19:55] or fill in your company identity,
+[19:58] they will just say, okay, fine, we don't check the documents.
+[20:01] We just issue that company to you
+[20:03] and you're allowed to do this on Testnet.
+[20:06] Obviously, in many, they will really check the information.
+[20:09] So that means if you do this whole thing on Testnet,
+[20:11] it will be much faster because there's not a real kind of checking,
+[20:14] but it's still a bit of a manual process.
+[20:16] It takes a bit of time and you need to fill in the fields.
+[20:19] So like fill in some realistically sounding company,
+[20:22] if you do it completely unrealistic,
+[20:24] maybe they cannot approve it, cannot auto approve it.
+[20:27] So try it on Testnet, it should be faster
+[20:29] than if you do it on Mainnet.
+[20:30] And the Mainnet you need to be an owner of a real company
+[20:32] or something like that.
+[20:36] Okay, we can also look into something else
+[20:38] that might be interesting.
+[20:39] And there is that these identity providers,
+[20:41] you saw them in the wallet.
+[20:42] So let's maybe just show them again on Mainnet.
+[20:47] Because for now we were on Testnet,
+[20:48] so let's check switch to Mainnet.
+[20:55] And there you see that there are only the three real identity
+[21:01] providers.
+[21:01] These two are for person.
+[21:02] This one is for businesses.
+[21:05] And they are in this order.
+[21:07] So how do you figure out if we in the future get new identity
+[21:11] providers of which order they should be?
+[21:13] So they have indexes and they have one, two, three.
+[21:16] And they have different indexes on Testnet.
+[21:19] So this might be best confusing.
+[21:20] So that's why I also want to show you that.
+[21:23] In particular, it's important if you do at some point maybe CKBOS,
+[21:26] there's a way you can say, okay, I want to only accept CKBOS
+[21:29] coming from this identity provider.
+[21:31] So you want to be specific or you only want to deal
+[21:34] with business identities means you maybe only allow CKBOS
+[21:39] from this index.
+[21:40] And yeah, because they're not the same on Testnet,
+[21:43] Mainnet, so just make sure that you change the index.
+[21:45] So for example, if you use Global FinVig on Testnet,
+[21:48] it's four, you need to change it to three on Mainnet.
+[21:51] And how do you figure it out?
+[21:52] So there's a link.
+[21:56] Let's see if I can copy it.
+[22:02] Can look into them.
+[22:03] There's a bit.
+[22:07] Yeah, it's a lot of information, but it's what kind of a hosted
+[22:12] index that we have.
+[22:14] And it creates the node and this is the information
+[22:16] and node gives back.
+[22:17] The node knows at every point of time
+[22:18] what identity providers are on chain.
+[22:21] And it's a bit a lot of information, but there's these IP
+[22:24] information and this is the index.
+[22:25] So IP index, so I had index two is digital trust solution
+[22:30] and we are on Mainnet here.
+[22:32] And then if you look further in, there's a lot more
+[22:34] information about this identity provider.
+[22:36] But for example, here is the index one
+[22:38] and it's not a Pino on Mainnet.
+[22:40] So that's how you can check what kind of identity
+[22:41] providers we are having live on chain currently.
+[22:44] But obviously they're not changing very frequently.
+[22:46] It's like a rare occasion that we change them.
+[22:50] Or like add a new one.
+[22:51] Like we will not like override them
+[22:53] because it wouldn't make sense to index this.
+[22:55] We only append them and create new ones.
+[22:58] Okay, then we have also the CK proof explorer.
+[23:01] And maybe look into this one.
+[23:05] Yeah, this is the CK proof explorer.
+[23:08] It's for showing these K proofs and I want to
+[23:11] show it that you can see how these attributes
+[23:13] can be shown.
+[23:14] So first of all, this metal flow, I will show you
+[23:17] for accounts from for persons accounts.
+[23:22] And we are testing it.
+[23:23] So I create this fake net.
+[23:26] That was the fake identity provider.
+[23:28] And here we have all these attributes.
+[23:30] So I can maybe say, okay, I want to reveal my name.
+[23:33] And I edit and the statement arrives here.
+[23:37] Oh, I need to connect to a browser.
+[23:38] So I think I can connect this first.
+[23:40] And now I can prove it.
+[23:44] Oh, I think I'm still on Mainnet.
+[23:45] Okay, we need to switch to Mainnet.
+[23:48] I'm testing it.
+[23:48] I mean, they have an identity.
+[23:52] So let's see if it works.
+[23:54] Now it works.
+[23:55] So like I revealed that my first name on
+[23:57] testnet is John because it's like a fake identity.
+[23:59] I have that you can prove it.
+[24:01] And then you can look into this proof details.
+[24:04] And you see there's a real, real attribute proof.
+[24:08] And here you can test it out.
+[24:10] So if you use these, for example, the ages,
+[24:13] then you have the range proofers.
+[24:14] And if you go down here, do you have
+[24:16] the set membership proofs and you can explode them?
+[24:19] And I think I can show you this was the,
+[24:21] this, this here, this column is the fafian access
+[24:25] that was shown, I think on Monday.
+[24:26] So maybe go back.
+[24:27] It's a bit, maybe two, maybe don't know if you remember it,
+[24:31] but there was this fafian access flow on Monday.
+[24:34] I think it was the first workshop that we had.
+[24:37] And there was also like we were requesting a CK proof,
+[24:40] the CK proof appeared here,
+[24:41] but there was the first anchor transaction,
+[24:44] like a specific transaction sent on chain.
+[24:46] And I want to show you this flow as well
+[24:48] and the CK proof explorer.
+[24:52] So let's just reload the page.
+[24:57] I connect the browser wallet.
+[25:00] I'm a testnet, so I use the fake testnet at any provider.
+[25:03] And here we can maybe prove that we are older than 18 years.
+[25:07] And this time we need to create this anchor transaction on chain.
+[25:10] So we use this program to test a lot of things.
+[25:14] And it takes a while to be submitted.
+[25:16] And then we can prove.
+[25:18] And then you see the same kind of page.
+[25:21] You prove it.
+[25:23] And you can also check out this proof.
+[25:25] And this is like a attribute and range proof.
+[25:28] And it's about a date of birth.
+[25:30] So you can also play out around this
+[25:32] this fafian access flow on this kind of testing front end,
+[25:35] if you want.
+[25:38] Okay, let's go back.
+[25:44] Okay, let's go to the next section,
+[25:45] which is like how do we store the private keys?
+[25:47] So what options we have?
+[25:48] I mean, you can store the private keys in your server for the user,
+[25:52] but then it's not like another self-custodial resolution.
+[25:56] Other options that the user owns, like a wallet,
+[25:58] it means the user needs to understand what a crypto wallet is,
+[26:00] needs to understand what seed phrases are potentially.
+[26:03] And in the middle thing is something which we call as a wallet
+[26:05] as a service provider.
+[26:06] And we will look into one that we recently added to Concordium,
+[26:10] how this works.
+[26:13] But first of all, we look into multi-seq,
+[26:15] because it's also something that Concordium provides
+[26:19] by the protocol already.
+[26:20] And what it means is that each account on Concordium
+[26:24] can have several credentials, and then each credential
+[26:27] can have several keys.
+[26:27] So this is kind of a two-level kind of splitting up.
+[26:31] What it means, you can think about it like
+[26:33] if you have a company account.
+[26:34] So this is a company account.
+[26:35] You can have three directors, for example,
+[26:37] that are operating on this account.
+[26:39] So you mean to have, for example, two out of three signatures.
+[26:43] And then maybe each director also have a multi-seq on their account
+[26:46] or like on their credential
+[26:48] to make sure they can only sign it in specific,
+[26:51] like a multi-seq way.
+[26:53] And to see that, we can look into that.
+[26:59] So this is one that has seven credentials on it.
+[27:05] An account that has seven credentials on it.
+[27:08] So how do we see that?
+[27:10] So we see the credentials here, it has seven,
+[27:12] and it needs three to sign,
+[27:13] so to get a transaction through that account.
+[27:16] And you can click here,
+[27:17] and then you see the different credentials
+[27:20] here.
+[27:20] Yeah, that's identity one, identity two,
+[27:23] seven, and you need three of them to sign.
+[27:30] And how can you set up such a multi-seq account?
+[27:32] You need either the desktop wallet or concordium client.
+[27:35] Yeah, if you have time later, maybe we can look into how multi-seq works
+[27:39] in concordium client, but it's not so important for this talk, I think.
+[27:44] Okay, this is a thing that you can always add
+[27:46] to your kind of business account
+[27:47] because it makes sense for businesses
+[27:49] that often they are operated by several persons.
+[27:52] Very C-suite levels directors.
+[27:55] So that's possible already in the protocol.
+[27:57] You don't need to set up a smart contact multi-seq or something like that in concordium.
+[28:02] Okay, now let's go back to the wallet as a service provider.
+[28:06] And what do we have there?
+[28:09] As I said, we want to make it easier
+[28:12] that users don't have to hold the private key.
+[28:15] And what we have, there's this company,
+[28:17] they're called Defense, so that's DFNS,
+[28:20] they're calling themselves Defense.
+[28:22] And this is a wallet as a service provider.
+[28:25] And it's often linked to institutions
+[28:27] which want to operate on crypto,
+[28:28] but yeah, don't understand or don't want the users to hold wallets.
+[28:32] And what does the company does?
+[28:34] DFNS Defense, it stores the keys and signs for you.
+[28:38] So if you create an app, you can call the API endpoint
+[28:42] and say, okay, create a wallet for me.
+[28:44] And then later, your app creates a transaction
+[28:46] and then you call the endpoint, the API endpoint of Defense
+[28:49] and say, okay, now sign the transaction.
+[28:52] And how does the Defense hold the keys?
+[28:56] So they have something like we call it multi-party computation.
+[28:58] So they split the key,
+[28:59] but we don't defend servers to make it a bit more secure.
+[29:04] And they have a package which is for Concordium.
+[29:08] And this way, it allows you to kind of interact
+[29:11] with the services and use wallet as a service
+[29:14] on the Concordium chain.
+[29:16] And there's an example how to build a basic transaction
+[29:19] on Concordium using the Defense solution.
+[29:22] So it's kind of a third party.
+[29:24] It's not Concordium, but they have integrated with Concordium.
+[29:28] And the three steps that you need is like your app.
+[29:30] You're in your app, you're building a transaction,
+[29:32] and I'm using Concordium SDK.
+[29:34] Then you create a wallet or you want to sign something.
+[29:36] You call the Defense API endpoint.
+[29:39] The key never leaves the services, signs it,
+[29:42] and you get the signature back.
+[29:43] And then it's your app kind of a job
+[29:46] to submit the transaction on chain.
+[29:48] Have to have a Concordium node.
+[29:50] Let's look into the examples that most basic examples they have.
+[30:04] So this is the repo.
+[30:05] They have different examples here.
+[30:06] We look into the most basic one, which I think is this one.
+[30:12] And here we go.
+[30:13] Look into the three steps that we have.
+[30:14] So first, we create a transaction.
+[30:18] So what do we do?
+[30:20] And we have an account here.
+[30:23] And we get the denunces.
+[30:25] And wait, there's the transaction.
+[30:28] Here we create a transaction.
+[30:29] So we create a basic CCD transfer.
+[30:31] So we need a two address.
+[30:33] We need an amount.
+[30:34] And we generate a transaction in our app.
+[30:36] So this step.
+[30:38] And then we call the endpoint.
+[30:40] So the wallet is the endpoint.
+[30:41] It's the Defense wallet.
+[30:44] And we say, okay, sign out this one section.
+[30:46] You get the signature back.
+[30:47] Once you have the signature,
+[30:48] then it's your job to submit the transaction on chain.
+[30:50] So here you see the client.
+[30:51] It's the node client, the blockchain node client.
+[30:54] And send the transaction on chain.
+[30:56] These are the three steps to get a signature signed
+[31:00] by the end service and then submit it.
+[31:06] Okay.
+[31:09] Then I also list some other wallets that they are already there
+[31:13] that maybe don't have the name Concordium in it,
+[31:15] but they're working with Concordium or they have plug-in.
+[31:18] So there's already a CCD in the wallet.
+[31:20] So you can use the features that Concordium has.
+[31:24] So there's a bitcoin.com wallet.
+[31:27] And these are the features that already support it,
+[31:29] but maybe in the future they're even more supported.
+[31:32] So for now, this wallet already allows you to create a Concordium account,
+[31:35] hold and send CCD and also the faith and access kind of flow is implemented.
+[31:39] So if you use already operating on these wallets,
+[31:42] you have kind of already access to Concordium.
+[31:45] There's a coin 98 wallet.
+[31:47] It also can create Concordium accounts, hold CCD,
+[31:50] and it works also with the Concordium stable coins,
+[31:52] the protocol level tokens that we are talking about
+[31:55] in some previous workshops.
+[31:57] Then is the ledger and the hardware wallet that you may be aware of this ledger life.
+[32:01] That's the kind of app that they have,
+[32:03] and it allows you to hold CCD on hardware wallets.
+[32:07] And then we have also our own wallets that kind of worked
+[32:11] or kind of built by Concordium.
+[32:12] There's a Concordium mobile wallet.
+[32:13] So you have iOS one and Android one.
+[32:16] And you have the wallet for web.
+[32:17] That's like the web extension that you can have in your browser.
+[32:21] And these are these wallets have a lot of features
+[32:23] that Concordium supports like literally all the features.
+[32:26] Because you're supporting them and testing the features
+[32:29] on these wallets obviously first.
+[32:30] So you can hold that ledger, hold CCD,
+[32:33] but much more you can also do the capable tokens,
+[32:35] T tokens, Mac under tokens.
+[32:40] Okay, if you are now like an app and want to like a company
+[32:43] and want to integrate with Concordium or use it features,
+[32:47] there's usually two ways you can do is you can go and say,
+[32:50] okay, we try to connect or use a wallet already uses Concordium.
+[32:55] Integrate as an hour app.
+[32:57] So we can use for example the browser wallet API
+[32:59] and it allows you to that a user have the browser extension
+[33:04] and work with Concordium.
+[33:06] Or if you want to support the mobile wallets,
+[33:08] you use wallet connect and implemented in your app.
+[33:11] And then you have access to the Concordium wallets.
+[33:12] But it means also the user has to download
+[33:14] the Concordium wallet already beyond one of the wallets
+[33:17] or have one of the wallets previously mentioned.
+[33:19] So it can also have one of these wallets already.
+[33:21] And the other option is integrated.
+[33:25] So if you have your own wallet, you can also like in the wallet
+[33:28] implement the Concordium module or package
+[33:31] and it then allows these identity creation proof tokens
+[33:35] and staking what are specific for Concordium.
+[33:37] Maybe your most complex part is like it add integrations
+[33:40] and account creation because they're very different to maybe
+[33:43] how you're used to another change.
+[33:45] But a lot of other things like transfer or staking
+[33:49] is very similar to what you used to in other chains.
+[33:52] The capabilities are maybe also very different,
+[33:54] so you might need to look a little bit to that.
+[33:57] But it's also like this Concordium ID app that makes it easier.
+[34:00] So there's another kind of app that you could kind of use
+[34:05] as a hop in the beginning to make it easier,
+[34:08] this integration in the beginning.
+[34:13] Okay, what do users do?
+[34:14] Can we use branded apps?
+[34:16] So the idea is like using wide level solutions
+[34:18] so you don't have to build everything yourselves.
+[34:22] And here again kind of repeat what kind of
+[34:25] the Concordium wallet SDK support,
+[34:27] what are the features that might be interesting
+[34:28] you want to implement.
+[34:30] So obviously you need to have some ways
+[34:33] to get from a seed phase to the keys that Concordium needs.
+[34:37] You also need to some flows maybe if you want to have
+[34:40] your wallet supporting that you can create at least
+[34:43] and then accounts later and then recover them.
+[34:45] Opening accounts is like one flow and then the typical things
+[34:48] like signing, sending transactions,
+[34:49] different types of transactions or maybe some you want to support,
+[34:52] some you don't need to support because your use case is neat.
+[34:55] And we also have like the CK proofs,
+[34:57] if you need it for use case might be another option
+[34:59] to implement another area that you might want to have support
+[35:04] for any wallet.
+[35:06] And all these wallets SDKs that we have,
+[35:07] so we have one for TypeScript web,
+[35:10] that's about the browser wallet also uses.
+[35:13] We have Kotlin that's for Android and we have Swift iOS and macOS
+[35:16] and these are the most or the best supported ones
+[35:19] so you find a lot of features in them like pretty much all of them.
+[35:23] There's probably some other SDKs that exist that might be,
+[35:26] not so maintained that it might be by other community members,
+[35:32] we don't know, but it might not be the only SDKs that exist,
+[35:35] but at least that's the ones that you're supporting
+[35:36] and that are usually up to date.
+[35:39] There's another thing that's just building
+[35:42] and it's very new and it's the tether wallet development kit.
+[35:45] And it's open source, it's like a module that's built
+[35:48] for Concordium like the module for Concordium
+[35:50] will be part of the tether wallet development kit.
+[35:53] And this is called VDK, wallet development kit, WDK.
+[36:00] And this module that's built for Concordium
+[36:02] is open sources and beta source, it's really quite new,
+[36:04] so we want you to test it,
+[36:06] but obviously maybe keep in mind that
+[36:08] there might be still something, not everything as smooth
+[36:12] as something that has been tested for a while.
+[36:15] Yeah.
+[36:17] And I also show you that in a bit, I guess.
+[36:21] So how you install it, like you installed NPM install
+[36:24] like that and it can already do like,
+[36:26] it can derive keys from a seed phase,
+[36:28] it can do like CC token balances transfers,
+[36:31] transaction fee quotes and stuff like that.
+[36:32] It can also sign a verify messages.
+[36:36] Maybe look into that.
+[36:37] Yeah, let's look into it first.
+[36:40] So this is like a very new repo and you're welcome to test it out.
+[36:55] And it has a lot of information like how to set it up
+[36:57] and how to use it and you're welcome to play around with that.
+[37:02] And yeah, it also, it allows you like,
+[37:05] when you have it and use this SDKs,
+[37:08] then you get a lot of different supported change
+[37:11] and some of them is like one of them,
+[37:13] what do this like Concordium that's supported?
+[37:15] One thing that's not yet supported,
+[37:17] but it's on the road.
+[37:19] Map for this SDK is like account creation.
+[37:24] And this is like literally what we're kind of working on now
+[37:27] in November.
+[37:28] There should be the WDK module version one coming out
+[37:34] and it should then be able to create accounts
+[37:36] and with the help of this Concordium idea.
+[37:39] And then later in a few months,
+[37:41] we will have the account creation
+[37:42] and then the inside of all that.
+[37:43] So we don't need to have to separate app.
+[37:45] And then in the long run,
+[37:47] we also want to have support.
+[37:48] For CK proofs and favor and access and human consent
+[37:52] that's on the roadmap.
+[37:54] So you can check out the roadmap,
+[37:55] and you see then the different versions of the wallet
+[37:58] development kit, how it develops
+[38:00] and what features will be available at each stage.
+[38:05] Okay, these are, I think the most important links for you.
+[38:10] Like check out the global FinVoc,
+[38:12] how it works, the kind of business creations,
+[38:16] lay numbers, defense, the wallet as a service provider,
+[38:20] Concordium wallet SDK,
+[38:21] then the wallet development kit,
+[38:23] which is on the working now,
+[38:25] and general developer help here.
+[38:28] So they're all related to wallets today.
+[38:30] So that's the main topic that we had.
+[38:32] In case you have any questions,
+[38:33] I will go through them now.
+[38:36] So always come up with them.
+[38:39] Okay, see that's one question.
+[38:40] Yeah, we've got a couple in chat.
+[38:41] Yeah.
+[38:43] Okay, let's check.
+[38:43] Hello, Doris.
+[38:44] Is it is live?
+[38:46] Yes.
+[38:46] Okay.
+[38:47] Hi there.
+[38:47] If you have any questions,
+[38:48] please leave it in the chat,
+[38:49] Doris can get it.
+[38:50] I would want to only accept from only a certain identity
+[38:54] provider, do they all meet the same style of specification?
+[38:58] So it depends really on you.
+[39:00] Like you can also allow any identity provider.
+[39:03] So if you don't care,
+[39:05] but as I say, for example,
+[39:06] maybe you want to specifically interact with
+[39:10] only business identities.
+[39:11] For example, you only want to have a service that's for
+[39:14] businesses, then you can, for example,
+[39:16] sort out the person identities in a way.
+[39:18] Or the opposite, maybe you want to actually have an app
+[39:20] that works with persons and not with businesses,
+[39:22] then you can sort them out.
+[39:24] But maybe you don't trust a specific app,
+[39:25] I don't provide it,
+[39:26] then you can sort them out for whatever reason.
+[39:28] But they are all like,
+[39:29] I would say they're all trustworthy.
+[39:31] So there's like companies that are very well
+[39:33] established, so it's not that they will,
+[39:35] they're bad in a way.
+[39:36] So you should sort them out in a way.
+[39:38] Please, how do we get access to the presentation
+[39:41] slides resources?
+[39:42] I actually asked Peter and so far it's up to them,
+[39:45] again, to make them open source.
+[39:48] They can put it on GitHub, I guess.
+[39:51] But yeah, it's to them.
+[39:55] Not too related, but can I use Sys8 or Sys8-004
+[39:58] to authenticate an external AI agent request
+[40:01] to my API and model context protocol?
+[40:09] Yes, I think so.
+[40:09] Like as I said, these standards, they are there.
+[40:15] So you can have, when you have an agent,
+[40:17] address, you can verify that, for example,
+[40:20] the registered on-chain, the metadata link is working,
+[40:24] that the hash that is registered on-chain
+[40:26] has not been changed since it has been registered.
+[40:29] And behind an agent account is a real-world identity,
+[40:33] like a business or person.
+[40:34] So yes, your endpoint, your API endpoint,
+[40:37] can do all these checks and then let your user in
+[40:40] if they are verified in a way.
+[40:42] So you can kind of sort out people who have not
+[40:46] registered the agent.
+[40:48] All right, thank you Doris.
+[40:50] Okay, what's a Canon app check that someone is over 18
+[40:53] without ever seeing the date of birth?
+[40:56] What does the app actually get back?
+[40:58] And yeah, exactly this IDCK proofs.
+[41:01] So the IDCK proof, you asked the wallet say,
+[41:03] okay, proof that you're older than 18 years old,
+[41:05] proof that the identity behind your account
+[41:06] is over 18 years old.
+[41:09] And what you're not reveal is your actual date of birth.
+[41:11] So you don't know how old the person is,
+[41:13] if they are just 18 years old
+[41:15] or like 60 years old.
+[41:17] And what you get back, I maybe can show you this back.
+[41:20] This is where we have the proof explorer.
+[41:23] So what you get back is this is the proof
+[41:25] that the wallet gives back.
+[41:28] And this is the information it goes back.
+[41:30] It's a bit cryptographically,
+[41:31] so I guess most people will not be able to read it.
+[41:35] But it says like, for example, it says date of birth.
+[41:38] This is the lower bound, upper bound.
+[41:39] It says the years, then month and years.
+[41:41] It specifies that this is the bounds.
+[41:43] And it only says that it's kind of secret value,
+[41:47] which is the wallet, which is the date of birth.
+[41:49] It's a secret value.
+[41:49] It's in this range, it's in between of this.
+[41:52] And the wallet, I can even look into it.
+[41:54] Oops, I think it's just copied it,
+[41:56] but you can also see the wallet.
+[41:58] This is literally the whole type of information
+[42:01] that the wallet sends back, which is the CK proof.
+[42:03] Wait, here's the CK, you can proof it.
+[42:05] This is actually a CK proof.
+[42:06] But as I said, it's like a cryptographic number.
+[42:10] It's probably not something a normal person can read.
+[42:13] Yeah, it's a concordium CK proof, version VP, version four.
+[42:17] It's a concordium weak linking proof.
+[42:19] And it proofs that your secret value is in that range here.
+[42:22] That's the statement that we've proven.
+[42:23] The CK statement here.
+[42:25] You can form an article in range with proof.
+[42:29] Yeah.
+[42:35] Okay, what are some of the limitations one would have?
+[42:38] Let's say I'm not from, or in the EU,
+[42:40] can we use a regular in from in America?
+[42:44] What about third world countries?
+[42:46] Yeah, I mean, on Tesla, you can use everything obviously,
+[42:49] because you can create your own fake identity.
+[42:51] But on mainnet, I mean, you should fae fight who you are.
+[42:54] So if you're on a third world country,
+[42:56] you need to use the IDs that they're using.
+[43:00] Most countries are supported.
+[43:01] So like, I think nearly every ID or every person
+[43:04] can actually create a kind of person identity on concordium.
+[43:08] I think there's some countries excluded,
+[43:09] I think, maybe North Korea or some specific countries.
+[43:12] But I think nearly every country is supported.
+[43:16] So I think it shouldn't be a problem here.
+[43:18] And global finnury is like a global company.
+[43:19] So there should be support for American companies.
+[43:22] It's not that they're specific to you or something.
+[43:26] Okay, then there's no question.
+[43:29] Two quick question.
+[43:29] What with the new fae file presentation,
+[43:32] we won't flow identity credential plus
+[43:34] and got registered rules from account
+[43:36] where it should keep working as they do now.
+[43:38] And who pays for the anchor transaction to fae file
+[43:41] for a guest or can it be sponsored?
+[43:45] So for now, the wallet still support both flows.
+[43:48] That's what I showed you here.
+[43:49] So like, still the old flow,
+[43:52] this is the old flow with auto anchor still works.
+[43:54] And this is the new flow, which needs an anchor transaction.
+[43:58] It can be that at some point,
+[43:59] concordium only supports the fae file access flow.
+[44:02] That's up to them, I guess.
+[44:05] Yes, for the fae file access flow,
+[44:06] there is a transaction that needs to be submitted
+[44:09] on chain, this anchor transaction.
+[44:11] And someone needs to pay for it.
+[44:13] So usually that's like the merchant
+[44:14] or the person running the backend
+[44:16] with the app where you kind of buy maybe some services from.
+[44:19] And you can also sponsor them.
+[44:23] So the like every transaction,
+[44:24] every transaction type on concordium can be sponsored.
+[44:26] So there's literally no restriction on it.
+[44:28] Even these account transactions, what they are,
+[44:30] they are like just, they called registered data transaction.
+[44:33] Maybe I can show you that.
+[44:35] This transaction here, this was an anchor transaction.
+[44:37] And it's a, let's look into the blog explorer,
+[44:41] beyond testnet.
+[44:43] To go to testnet, let's check this transaction.
+[44:48] So this was this anchor transaction
+[44:50] from the fae file access flow.
+[44:51] And it's what is this, the type transaction,
+[44:53] it's a data register transaction.
+[44:55] And you can sponsor it because every type of transaction
+[44:58] that we have can be sponsored.
+[44:59] So when it's sponsored, you will see
+[45:00] here's a new field sponsor and then yes,
+[45:03] an account that paid for transaction fee.
+[45:05] Whereas at the moment, it's like that the sender
+[45:07] actually pays the transaction fee
+[45:08] because it's a normal transaction.
+[45:09] But yeah, anchor transaction can be sponsored.
+[45:12] So you can use that.
+[45:14] Sponsored action work for us for contract updates,
+[45:17] but a sponsored in a contract is rejected
+[45:19] by the node internal error on testnet.
+[45:22] Rejected by the node on mainnet is,
+[45:24] okay, I'm actually interested in that.
+[45:26] Maybe send it to them.
+[45:27] I think that every transaction type is supported.
+[45:34] So I'm curious why this one isn't supported
+[45:37] or why it shouldn't be supported.
+[45:39] So maybe reach out to concordium in the chat.
+[45:41] I think it should actually work.
+[45:43] I mean, creating a contract,
+[45:45] it's usually the first step is like creating a module.
+[45:47] You should deploy a module on change.
+[45:49] So maybe that could be a very specific thing.
+[45:51] Maybe that's not supported, but yeah,
+[45:54] maybe we need to check that.
+[45:56] Maybe there's also a bug like that
+[45:57] we haven't really tested or something like that.
+[45:59] So what would be very interesting
+[46:00] if you can catch up with us on that.
+[46:02] So we figure out how to do it
+[46:04] or if you need to change something.
+[46:06] Is sponsoring an innet contract supported in protocol 10
+[46:09] or is it planned?
+[46:10] Yeah, again, I'm not 100% sure.
+[46:12] I may want to double check with the concordium team
+[46:15] if this is really not supported,
+[46:17] because I would assume that actually everything is supported.
+[46:19] But I know it's very specific there.
+[46:22] Getting a new contract on change,
+[46:24] you deploy a module.
+[46:25] So maybe that's really something specific that's not supported.
+[46:29] Okay, one more question.
+[46:30] Nice workshop.
+[46:30] This is all usable in the hackathon.
+[46:33] Yes, I think you can use everything.
+[46:35] Every frontend I showed you, it's open.
+[46:38] You can just go to the websites and use it.
+[46:41] There's maybe one,
+[46:42] like this is a smart contract deployment tool.
+[46:45] Maybe you want to play or there's a greeting writing
+[46:49] to smart contracts.
+[46:50] There's also this wallet test bench
+[46:52] that we created initially for testing our own wallet.
+[46:56] So maybe it's useful for you if you want to test your own wallet.
+[46:59] I can test it everything if it's still up to date.
+[47:01] But I think there's even some new fields
+[47:03] for sponsoring, testing sponsoring transactions.
+[47:06] I'm pretty sure something is also sponsoring.
+[47:10] It's a very new feature.
+[47:11] So I guess it's still very much used for testing our wallets.
+[47:16] So maybe it helps you if you want to test your own wallet as well.
+[47:21] If there's anything else?
+[47:24] For an app whose user never touched crypto,
+[47:26] who goes through the identity provider step?
+[47:29] User or the business on their behalf.
+[47:31] I mean, you cannot really go through
+[47:35] I mean, it's probably hard that you go for the user
+[47:39] on their behalf through the identity creation
+[47:41] because you don't have the passport information usually.
+[47:43] I mean, there's only a few companies who usually have access
+[47:47] at some point to passport data.
+[47:49] Maybe for example, an airline.
+[47:50] I know that airlines often also ask you to submit
+[47:53] their passport information.
+[47:54] So maybe they at the back end could kind of do that
+[47:56] on behalf of users.
+[47:57] But most other use cases,
+[47:59] I don't think they have the right to kind of collect
+[48:02] personal passport data from users.
+[48:03] So often the user needs to go through the step,
+[48:07] but it depends on your business.
+[48:08] It depends on your use case, what product you're offering.
+[48:09] I guess.
+[48:12] Okay, any other questions?
+[48:14] I think I have a few things.
+[48:16] I think that should be all.
+[48:18] I've not seen any more questions coming.
+[48:20] Youp.
+[48:22] I think.
+[48:23] Thank you very much, Doris.
+[48:26] It was a great workshop and I'm sure plenty of people
+[48:28] enjoyed it as well.
+[48:29] It seems to be a lot of questions.
+[48:30] So everyone was really engaged there.
+[48:35] Lovely.
+[48:36] We'll leave it as that.
+[48:38] The workshop should be recorded and it will come up soon
+[48:42] and the next one will be on Wednesday.
+[48:46] Yeah, see you all on Wednesday.
+[48:48] Keep building.
+[48:48] Thanks, lovely.
+[48:49] Yeah.
+[48:50] See you Doris.
+[48:50] It was a pleasure.
+[48:51] Thank you.

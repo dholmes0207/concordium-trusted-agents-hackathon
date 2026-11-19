@@ -1,6 +1,18 @@
-# Ghi chú phiên làm việc (03/11 – 12/11/2026)
+# Ghi chú phiên làm việc (03/11 – 20/11/2026)
 
-> Ghi chú ngắn để tiếp tục công việc ở phiên sau. Chi tiết đầy đủ nằm trong `Tong-hop-sau-W4.md`.
+> Ghi chú ngắn để tiếp tục công việc ở phiên sau. **Bản mới nhất: `Tong-hop-sau-W6.md` (v5, 20/11)**; chi tiết thiết kế L1–L4 vẫn ở `Tong-hop-sau-W4.md`.
+
+## 0. Cập nhật 20/11
+
+| | |
+|---|---|
+| **Workshop** | Đủ 6 buổi; báo cáo W1–W6, slide và transcript trong `Workshop01/` – `Workshop06/` |
+| **Trang chủ** | Giải: top 3 mỗi đội 1M CCD + xét grant 75M CCD; tiêu chí: depth of integration, path to production, it works, usefulness |
+| **Dashboard** | Chưa tạo project (Checkpoint 1 hạn 06:59 sáng T2 23/11); Discord đã kết nối; PM là Yashar Ajdari |
+| **Discord** | Q1 đã có trả lời: Verify & Access V1 **chỉ nhận identity claim**. Q6 (Global FinReg) đóng nhờ W5: testnet tự duyệt |
+| **Thiết kế chốt (v5)** | Gateway là MCP server; `agent-proxy` local của A giữ key EVM (CIS-8) và ký request; L3b qua V&A V1 với `ResourceID` = `D`; L3a và x402 là mở rộng |
+| **Spike** | Không có kết quả spike S0–S3 trong repo → gộp vào 21–22/11 |
+| **Chờ bạn** | Tạo project + Checkpoint 1 · xin danh tính công ty qua Global FinReg Testnet · Node ≥ 22 · chốt D1–D4 (mục 5 của v5) |
 
 ## 1. Trạng thái hiện tại
 

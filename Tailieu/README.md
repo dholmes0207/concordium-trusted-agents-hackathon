@@ -2,7 +2,9 @@
 
 | Đường dẫn | Nội dung |
 |---|---|
-| [Tong-hop-sau-W4.md](Tong-hop-sau-W4.md) | ⭐ **Đọc file này trước (bản mới nhất, v4, 12/11).** Cập nhật theo Workshop 04: chốt Register Data và định dạng anchor CBOR, trường log theo EU AI Act Điều 12(2), tách dữ liệu cá nhân để xóa được theo GDPR, Locks chỉ có trên devnet (đưa vào path to production), hardening gateway; các điểm còn mở G1.x, G2, Global FinReg, agent nền |
+| [Tong-hop-sau-W6.md](Tong-hop-sau-W6.md) | ⭐ **Đọc file này trước (bản mới nhất, v5, 20/11).** Đủ dữ liệu 6 workshop + trang chủ + Discord đến 20/11: tình hình thực tế cuộc thi (giải 1M CCD × 3, tiêu chí, dashboard), trạng thái các điểm mở (GF, A2A, G1.3 đã đóng), thiết kế chốt (gateway là MCP server, agent-proxy giữ key, key EVM qua CIS-8, phê duyệt qua Verify & Access V1), 4 quyết định cần chốt, **kế hoạch chi tiết theo ngày 20/11 → 10/12**, rủi ro |
+| [Checkpoint1-goi-y.md](Checkpoint1-goi-y.md) | **Gợi ý điền Checkpoint 1** (hạn 06:59 sáng T2 23/11 giờ VN): các trường của form, tên project, mô tả tiếng Anh để copy, cách thêm đồng đội |
+| [Tong-hop-sau-W4.md](Tong-hop-sau-W4.md) | Bản v4 (12/11), giữ để đối chiếu; **thiết kế chi tiết L1–L4, mô hình đe dọa và 24 negative test vẫn lấy ở đây**. Cập nhật theo Workshop 04: chốt Register Data và định dạng anchor CBOR, trường log theo EU AI Act Điều 12(2), tách dữ liệu cá nhân để xóa được theo GDPR, Locks chỉ có trên devnet (đưa vào path to production), hardening gateway; các điểm còn mở G1.x, G2, Global FinReg, agent nền |
 | [Ghi-chu-phien-lam-viec.md](Ghi-chu-phien-lam-viec.md) | Ghi chú ngắn để tiếp tục ở phiên sau (12/11): trạng thái, account testnet, câu hỏi mở, việc tiếp theo |
 | [Ke-hoach-theo-ngay.md](Ke-hoach-theo-ngay.md) | **Kế hoạch theo ngày (13/11 → 10/12)**: tuần kiểm chứng (spike S0–S3, W5, W6), hai tuần build (L1 → L4, L3b, L3a), tuần hoàn thiện; chia việc "mình làm" và "bạn làm", điều kiện hoàn thành mỗi ngày |
 | [Cau-hoi-Discord.md](Cau-hoi-Discord.md) | **Câu hỏi Discord (12/11)**: 7 câu theo thứ tự hỏi từng câu, bản tiếng Anh tự đứng được để copy, bảng theo dõi câu trả lời và điểm mở được đóng |
@@ -15,6 +17,9 @@
 | [Bao-cao-Workshop01.md](Bao-cao-Workshop01.md) | Báo cáo chi tiết Workshop 01 (đã hiệu đính theo slide): thể lệ, giải thưởng, công nghệ, Q&A, rủi ro và 3 hướng dự án |
 | [Bao-cao-Workshop02.md](Bao-cao-Workshop02.md) | **Báo cáo Workshop 02 (04/11)**: Agent Registry, CIS-8/CIS-8004, badge, 3 loại key, Agent IDP, demo MCP, Q&A về tiêu chí chấm, phân tích chat |
 | [Bao-cao-Workshop03.md](Bao-cao-Workshop03.md) | **Báo cáo Workshop 03 (09/11)**: PLT/stablecoin, sponsored transactions, x402 (3 bên, facilitator tự chạy), spend controls "soft", memo cho audit, roadmap, Q&A Global FinReg |
+| [Bao-cao-Workshop05.md](Bao-cao-Workshop05.md) | **Báo cáo Workshop 05 (16/11)**: danh tính công ty (Global FinReg testnet tự duyệt, LEI, chỉ số IdP), giữ key (multi-sig, Dfns), ví thương hiệu (SDK, Tether WDK), Proof Explorer và cấu trúc proof V1, sponsor anchor, Q&A về xác thực request agent bằng CIS-8 |
+| [Bao-cao-Workshop06.md](Bao-cao-Workshop06.md) | **Báo cáo Workshop 06 (18/11)**: MCP hosted (41 tool, REST) và `ccd-agent-kit` local (signer bị khóa, người mở mới ký), A2A card, năm phép kiểm agent, discover → verify → pay, lộ trình (AI Agent ID, Concordium Signer) |
+| [Discord/Tong-hop-Discord-13-20-11.md](Discord/Tong-hop-Discord-13-20-11.md) | **Discord 13–20/11**: Q1 đã có trả lời (V&A V1 chỉ nhận identity claim), cross-chain, "the more the better", facilitator x402 qua API key, danh tính testnet giả chấp nhận được, dự án mới |
 | [Bao-cao-Workshop04.md](Bao-cao-Workshop04.md) | **Báo cáo Workshop 04 (11/11)**: Protocol-Level Locks (devnet, 01/2027), EU AI Act Điều 12 và trường log, GDPR, neo log bằng Register Data (mẫu VRA/VAA), audit CertiK và bài học hardening, Q&A, cập nhật giải thưởng |
 | [Danh-gia-chot-huong-sau-W2.md](Danh-gia-chot-huong-sau-W2.md) | **Đánh giá chốt hướng nghiên cứu sau W2 (05/11)**: đã đủ dữ kiện chưa, chấm lại 3 hướng, hướng đề xuất MandateOS (gộp A+B), việc còn thiếu |
 | [Danh-gia-chot-huong-sau-W2-v2.md](Danh-gia-chot-huong-sau-W2-v2.md) | **Bản v2 (06/11)**: đánh giá lại Hướng C, thêm Web3 ID / CIS-4, đề xuất C-lite có điều kiện, mốc quyết định 11/11, dự phòng A+B |
@@ -30,6 +35,10 @@
 | [Workshop03/](Workshop03/) | Transcript Workshop 03 (60 phút): bản Whisper `Workshop-03-transcript-EN.txt` và bản phụ đề tự động YouTube `Workshop-03-transcript-YouTube-auto-EN.txt` |
 | [Workshop04/slides/](Workshop04/slides/) | 54 ảnh từ video Workshop 04 (11/11, 1080p): `01–30` bộ slide chính (Protocol-Level Locks, EU AI Act Article 12, anchor log, CertiK audit, có xen màn hình demo), `31–54` bộ slide phụ của Doris về các lỗi trong CertiK Grey Box audit |
 | [Workshop04/Workshop-04-transcript-EN.txt](Workshop04/Workshop-04-transcript-EN.txt) | Bản chép lời Workshop 04 (58 phút, Whisper) |
+| [Workshop05/slides/](Workshop05/slides/) | 29 ảnh slide và màn hình demo Workshop 05 (16/11, 1080p) |
+| [Workshop05/Workshop-05-transcript-EN.txt](Workshop05/Workshop-05-transcript-EN.txt) | Bản chép lời Workshop 05 (49 phút, Whisper) |
+| [Workshop06/slides/](Workshop06/slides/) | 38 ảnh slide và màn hình demo Workshop 06 (18/11, 1080p) |
+| [Workshop06/Workshop-06-transcript-EN.txt](Workshop06/Workshop-06-transcript-EN.txt) | Bản chép lời Workshop 06 (57 phút, Whisper) |
 
-Video gốc **không đưa lên GitHub** (đã đưa vào `.gitignore`, vượt giới hạn 100 MB): Workshop 01 (`.mkv` 2 GB, `.mp4` 380 MB) và Workshop 02 (`.mp4` 250 MB) lưu ở máy local; Workshop 03 (`.mp4` 168 MB) lưu trên Google Drive của bạn; Workshop 04 (`.mp4` 162 MB) lưu ở máy local.
+Video gốc **không đưa lên GitHub** (đã đưa vào `.gitignore`, vượt giới hạn 100 MB): Workshop 01 (`.mkv` 2 GB, `.mp4` 380 MB) và Workshop 02 (`.mp4` 250 MB) lưu ở máy local; Workshop 03 (`.mp4` 168 MB) lưu trên Google Drive của bạn; Workshop 04 (`.mp4` 162 MB), Workshop 05 (`.mp4` 185 MB) và Workshop 06 (`.mp4` 174 MB) lưu ở máy local.
 Bản ghi chính thức của các workshop có trên trang programme của Encode.

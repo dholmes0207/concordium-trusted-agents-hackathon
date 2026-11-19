@@ -108,13 +108,13 @@ Mở: **GF**.
 
 | Lượt | Mã | Ngày hỏi | Trạng thái | Câu trả lời tóm tắt | Điểm mở được đóng | Việc kéo theo |
 |---|---|---|---|---|---|---|
-| 1 | Q1 | 12/11 22:33 | ⏳ Đang hỏi (đã đăng ở #general, tag Piotr) | Chưa có (tính đến 12/11 22:33) | G1.3 | Chờ trả lời rồi mới đăng Q7 |
-| 2 | Q7 | | ⬜ Chưa hỏi | | G1.3 / AB2 | |
+| 1 | Q1 | 12/11 22:33 | ✅ Đã có trả lời (Piotr, 16/11) | **"only identity/claims!"**: V&A V1 không nhận claim trên credential Web3 ID | G1.3 (phần giao thức) | L3a phải đi Web3 ID presentation riêng; xem `Tong-hop-sau-W6.md` |
+| 2 | Q7 | | ⬜ Chưa hỏi (chỉ cần nếu làm L3a) | | G1.3 / AB2 | |
 | 3 | Q3 | | ⬜ Chưa hỏi | | G1.4 | |
 | 4 | Q2 | | ⬜ Chưa hỏi | | G1.4, MVP-C/T | |
 | 5 | Q4 | | ⬜ Chưa hỏi | | G2 | |
 | 6 | Q5 | | ⬜ Chưa hỏi | | G1.1, G1.2 | |
-| 7 | Q6 | | ➖ Không cần đăng (trả lời một phần ở nơi khác) | Piotr (11/11, trả lời KinganLogicLogan): trên testnet dùng IdP nào cũng được. Concordium IdP cấp ngay, tự điền thuộc tính, nhưng **chưa có thuộc tính công ty**. Muốn ZK trên thông tin công ty thì phải qua **Global FinReg testnet** như bình thường. Phần "có công ty/tài khoản test không" đã có Arome hỏi (10/11), chưa ai trả lời | GF (một phần) | Theo dõi thread của Arome và W5 (16/11); không đăng câu trùng |
+| 7 | Q6 | | ✅ Đóng (W5: Global FinReg testnet tự duyệt) | Piotr (11/11, trả lời KinganLogicLogan): trên testnet dùng IdP nào cũng được. Concordium IdP cấp ngay, tự điền thuộc tính, nhưng **chưa có thuộc tính công ty**. Muốn ZK trên thông tin công ty thì phải qua **Global FinReg testnet** như bình thường. Phần "có công ty/tài khoản test không" đã có Arome hỏi (10/11), chưa ai trả lời | GF (một phần) | Theo dõi thread của Arome và W5 (16/11); không đăng câu trùng |
 
 **Trạng thái:** ⬜ chưa hỏi · ⏳ đang hỏi · ✅ đã có câu trả lời · ➖ bỏ (đã được trả lời ở nơi khác)
 
