@@ -1,7 +1,7 @@
 # Tổng hợp sau Workshop 06 (v5): đủ dữ liệu 6 buổi, chốt thiết kế, kế hoạch build
 
 > **Soạn ngày:** 20/11/2026 (ngày thứ 2 của build window).
-> **Nguồn mới so với v4:** Workshop 05 ([Bao-cao-Workshop05.md](Bao-cao-Workshop05.md)), Workshop 06 ([Bao-cao-Workshop06.md](Bao-cao-Workshop06.md)), trang programme và dashboard trên Encode (đọc 20/11 bằng Claude in Chrome), Discord #general và #announcements 13–20/11 ([Discord/Tong-hop-Discord-13-20-11.md](Discord/Tong-hop-Discord-13-20-11.md)), tài liệu MCP service và repo `ccd-agent-kit` (đọc 20/11).
+> **Nguồn mới so với v4:** Workshop 05 ([Bao-cao-Workshop05.md](Bao-cao-Workshop05.md)), Workshop 06 ([Bao-cao-Workshop06.md](Bao-cao-Workshop06.md)), trang programme và dashboard trên Encode (đọc 20/11 bằng Claude in Chrome), Discord #general và #announcements 13–20/11 (`~/hackathon-private/Discord/Tong-hop-Discord-13-20-11.md` (chỉ lưu ở máy)), tài liệu MCP service và repo `ccd-agent-kit` (đọc 20/11).
 > **Bản trước:** [Tong-hop-sau-W4.md](Tong-hop-sau-W4.md) (v4, 12/11). Thiết kế chi tiết L1–L4, mô hình đe dọa, 24 negative test **vẫn giữ nguyên ở v4** trừ những gì mục 4 của bản này sửa.
 > **Ký hiệu:** ✅ đã xác nhận · 📄 có trong tài liệu, chưa thử · ⚠️ chưa chắc · ⭐ quan trọng.
 
@@ -51,7 +51,7 @@
 | Discord | **Đã kết nối** |
 | Programme Manager | **Yashar Ajdari** (yashar@encode.club, Discord `yasharencode`) |
 
-### 1.3 Discord 13–20/11 (chi tiết ở [Discord/Tong-hop-Discord-13-20-11.md](Discord/Tong-hop-Discord-13-20-11.md))
+### 1.3 Discord 13–20/11 (chi tiết ở `~/hackathon-private/Discord/Tong-hop-Discord-13-20-11.md` (chỉ lưu ở máy))
 
 | Thông tin | Tác động |
 |---|---|
@@ -293,6 +293,6 @@ L2 (schema phiếu giao việc, quy tắc cấp quyền, thu hồi R1 fail-close
 | [Bao-cao-Workshop05.md](Bao-cao-Workshop05.md) | Báo cáo W5 |
 | [Bao-cao-Workshop06.md](Bao-cao-Workshop06.md) | Báo cáo W6 |
 | [Checkpoint1-goi-y.md](Checkpoint1-goi-y.md) | Nội dung điền Checkpoint 1 |
-| [Discord/Tong-hop-Discord-13-20-11.md](Discord/Tong-hop-Discord-13-20-11.md) | Discord 13–20/11 |
+| `~/hackathon-private/Discord/Tong-hop-Discord-13-20-11.md` (chỉ lưu ở máy) | Discord 13–20/11 |
 | [Workshop05/slides/](Workshop05/slides/), [Workshop06/slides/](Workshop06/slides/) | Slide W5 (29 ảnh), W6 (38 ảnh) |
 | [Workshop05/Workshop-05-transcript-EN.txt](Workshop05/Workshop-05-transcript-EN.txt), [Workshop06/Workshop-06-transcript-EN.txt](Workshop06/Workshop-06-transcript-EN.txt) | Bản chép lời |

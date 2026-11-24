@@ -124,7 +124,7 @@ Nếu câu trả lời trước đã trả lời luôn câu sau, đánh dấu c�
 
 ## 4. Thông tin rút ra từ kênh #general (đến 12/11 22:33)
 
-Nguồn: bản xuất toàn bộ kênh, lưu ở [Discord/general-den-2026-11-12.md](Discord/general-den-2026-11-12.md) (59 tin, giờ UTC+7).
+Nguồn: bản xuất toàn bộ kênh, lưu ở `~/hackathon-private/Discord/general-den-2026-11-12.md` (chỉ lưu ở máy) (59 tin, giờ UTC+7).
 
 ### 4.1. Liên quan trực tiếp tới dự án
 

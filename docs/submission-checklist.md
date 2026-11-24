@@ -21,5 +21,5 @@ Nguồn: slide "What to submit" / "Checkpoints" (Workshop 01, 02/11/2026) — `T
 
 ## Trước khi public repo
 - [ ] Quyết định có giữ thư mục `Tailieu/` (research nội bộ, tiếng Việt) khi public hay không
-- [ ] Bỏ `Tailieu/Discord/` (chứa tin nhắn và tên của người tham gia khác)
+- [x] Bỏ `Tailieu/Discord/` (chứa tin nhắn và tên của người tham gia khác): đã chuyển ra `~/hackathon-private/Discord/` và xóa khỏi lịch sử git (25/11)
 - [ ] Kiểm tra license

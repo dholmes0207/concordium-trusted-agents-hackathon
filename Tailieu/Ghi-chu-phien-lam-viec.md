@@ -36,8 +36,8 @@
 
 - ✅ **Spike S3a đạt** (xem `spikes/s3a/README.md`): Browser Wallet trả lời V&A V1 bằng proof gắn account; `ResourceID` nằm trong anchor VRA; proof mang `credId` cố định; ví không hiện context → **D3 = MVP-C**.
 
-- Project **Mandate Gate** đã tạo, 2 thành viên, challenge "Make your Agents Accountable with Concordium". ✅ **Checkpoint 1 đã nộp 24/11** (thông báo "Your submission has been saved"; nút đổi thành "View / Edit Submission"). Ô "Your idea, in a paragraph" dùng đoạn ở `Discord/Tong-hop-Discord-20-24-11.md` mục 6, có thêm câu mở đầu "Brief: Make your Agents Accountable with Concordium."
-- Piotr `@here` 24/11: hỏi ai cần facilitator x402 testnet, EurQ, câu hỏi bị sót. Gợi ý trả lời: `Discord/Tong-hop-Discord-20-24-11.md` mục 4.
+- Project **Mandate Gate** đã tạo, 2 thành viên, challenge "Make your Agents Accountable with Concordium". ✅ **Checkpoint 1 đã nộp 24/11** (thông báo "Your submission has been saved"; nút đổi thành "View / Edit Submission"). Ô "Your idea, in a paragraph" dùng đoạn ở `~/hackathon-private/Discord/Tong-hop-Discord-20-24-11.md` (chỉ lưu ở máy) mục 6, có thêm câu mở đầu "Brief: Make your Agents Accountable with Concordium."
+- Piotr `@here` 24/11: hỏi ai cần facilitator x402 testnet, EurQ, câu hỏi bị sót. Gợi ý trả lời: `~/hackathon-private/Discord/Tong-hop-Discord-20-24-11.md` (chỉ lưu ở máy) mục 4.
 - x402 có scheme chính thức `@x402/concordium` (client, server, facilitator) để tự chạy trên testnet.
 
 ## 0. Cập nhật 20/11
