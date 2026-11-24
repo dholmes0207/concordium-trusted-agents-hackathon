@@ -1,0 +1,24 @@
+{
+  "name": "@mandate-gate/gateway",
+  "private": true,
+  "type": "module",
+  "description": "MandateGate: the customer's MCP gateway that verifies agent, mandate and approval before acting",
+  "main": "src/gateway.ts",
+  "exports": {
+    ".": "./src/gateway.ts"
+  },
+  "scripts": {
+    "start": "tsx src/main.ts",
+    "test": "tsx --test test/*.test.ts"
+  },
+  "dependencies": {
+    "@mandate-gate/core": "workspace:*",
+    "@modelcontextprotocol/sdk": "1.32.2",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@mandate-gate/agent-proxy": "workspace:*",
+    "@mandate-gate/mock-ops": "workspace:*",
+    "viem": "^2.58.4"
+  }
+}

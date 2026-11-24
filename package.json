@@ -3,13 +3,19 @@
   "private": true,
   "description": "MandateGate: an MCP gateway that lets a company's AI agent act on a customer's infrastructure only with a verified agent identity, a revocable work order and a human approval, all anchored on Concordium testnet",
   "type": "module",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
-    "typecheck": "pnpm -r exec tsc --noEmit"
+    "typecheck": "pnpm -r --filter './packages/*' --filter './spikes/s0-agent-key' --filter './spikes/s1-anchor' exec tsc --noEmit -p .",
+    "test": "pnpm -r --filter './packages/*' --if-present test",
+    "gateway": "pnpm --filter @mandate-gate/gateway start",
+    "mock-ops": "pnpm --filter @mandate-gate/mock-ops start"
   },
   "devDependencies": {
     "typescript": "^5.6.3",
     "tsx": "^4.19.2",
     "@types/node": "^20.17.6"
-  }
+  },
+  "packageManager": "pnpm@12.6.0"
 }

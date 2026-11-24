@@ -1,86 +1,109 @@
-# [Project name]
+# MandateGate
 
 > **Concordium Trusted Agents Hackathon 2026** (Encode Club × Concordium): *Add trust and accountability to the AI agents you already have.*
 >
-> One-line pitch: [Which agent, which trust problem, and which Concordium capability solves it.]
+> MandateGate lets a company's AI DevOps agent act on a customer's infrastructure without the customer trusting it blindly: every tool call goes through the customer's gateway, which checks on Concordium who the agent is, who authorised it to do what, and which named engineer approved each risky action, and anchors the record on chain.
+
+![CI](https://github.com/dholmes0207/concordium-trusted-agents-hackathon/actions/workflows/ci.yml/badge.svg)
 
 | | |
 |---|---|
-| 🎥 **Demo video (≤ 3 min)** | [link] |
-| 🔎 **CCDExplorer (testnet)** | [agent / contract / transaction link] |
-| 🌐 **Live demo** *(optional)* | [link] |
-| 📊 **Slides** *(optional)* | [link] |
+| 🎥 **Demo video (≤ 3 min)** | *to come* |
+| 🔎 **CCDExplorer (testnet)** | *to come (agent registration, CIS-8 binding, anchors)* |
 | 🚀 **Path to production** | [docs/path-to-production.md](docs/path-to-production.md) |
+
+> **Status (25 Nov 2026):** build in progress. Working today: signed request envelopes, the MCP gateway with idempotency, size limits and a hash-chained audit log, the agent-side proxy, simulated customer infrastructure, and 15 automated tests. Next: on-chain agent checks (spike S0), work-order anchors and revocation (S1, L2), human approval with Verify & Access (L3).
 
 ---
 
 ## 1. What we built
 
-[2–3 paragraphs: the existing project or agent, what it does, and what it can do now that it couldn't do before Concordium.]
-
 ### The problem
-[Who suffers when this agent cannot be trusted? Give a concrete trust failure: identity, authority, payment, or auditability.]
+Managed-service providers increasingly let AI agents operate on their customers' infrastructure (read logs, restart services, deploy). The customer has no way to check **which agent** is calling, **who is accountable** for it, **what it was authorised to do**, or **whether a human approved** a risky action. Agents such as HolmesGPT already ask a human before mutating actions, but that approval lives inside the provider's agent, where the customer cannot verify it.
 
 ### The solution
-[How the agent proves who is behind it, what it is allowed to do, how it pays, and how actions can be audited later.]
+MandateGate moves the checks to the customer's side and anchors them on Concordium:
+
+| Layer | Check | Concordium |
+|---|---|---|
+| **L1 Agent identity** | The agent is registered, active, its Agent Card is unchanged, and each request is signed by its key | Agent Registry (CIS-8004), Verified by Concordium badge, CIS-8 key binding (EVM key, `eip155:84532`) |
+| **L2 Mandate** | The agent's owner issued a signed, scoped, revocable work order | Register Data anchors; revocation watched on chain, fail-closed |
+| **L3 Human approval** | A named engineer approved this exact high-risk action | Concordium ID / Verify & Access V1 (Browser Wallet, ID App) |
+| **L4 Audit** | Every request, decision, approval and execution is logged and anchored | Hash-chained log, Register Data anchors, sponsored transactions |
+| *(Extension)* Payments | The agent pays per privileged action within its work-order budget | x402 (`@x402/concordium`) |
 
 ## 2. How it works
 
-[Architecture diagram or short flow. Details in [docs/architecture.md](docs/architecture.md).]
-
+```text
+Any MCP agent (HolmesGPT, Claude Code)
+   │ MCP (stdio)
+   ▼
+agent-proxy (company A) ── signed request ──▶ MandateGate (customer B, MCP over HTTP) ──▶ customer infrastructure
+   holds the agent key                          L1 → L2 → L3 → execute → L4
+                                                          │
+                                                          ▼
+                                                Concordium testnet
 ```
-User ──▶ Agent ──▶ [Concordium component] ──▶ Counterparty / Service
+
+The agent itself is not modified: it sees ordinary MCP tools (`logs_read`, `service_restart`, `deploy_prod`, …). Details: [docs/architecture.md](docs/architecture.md).
+
+## 3. Repository layout
+
+```text
+packages/
+  core/          shared code: request envelope (EIP-191 signing), JCS hashing, CBOR anchors,
+                 idempotency ledger, hash-chained audit log, tool catalogue, hosted MCP client
+  gateway/       MandateGate: the customer's MCP server and decision pipeline (+ e2e tests)
+  agent-proxy/   company A's local MCP server; signs every call with the agent key
+  mock-ops/      simulated customer infrastructure (services, logs, deploys)
+spikes/
+  s0-agent-key/  agent EVM key + CIS-8 registration payload
+  s1-anchor/     Register Data anchors, chain watcher (fail-closed)
+  s3a/           Verify & Access V1 test with an account credential (done, see README there)
+docs/            architecture, Concordium integration, path to production, demo script, checklist
+Tailieu/         research notes, workshop reports, slides and transcripts (Vietnamese)
 ```
 
-## 3. Concordium components used
+## 4. Run it locally
 
-Details and every on-chain link: [docs/concordium-integration.md](docs/concordium-integration.md).
+Prerequisites: Node.js ≥ 20 (22 recommended), pnpm 12. Keys never live in the repository: they go in `~/ccd-keys/` (override with `CCD_KEYS_DIR`).
 
-| Component | Used for | Where in code |
-|---|---|---|
-| Agent Registry (CIS-8004) + Agent Card | | |
-| Verified by Concordium badge | | |
-| Concordium ID / ZK proofs (Verify & Access) | | |
-| CIS-8 cross-chain key binding | | |
-| x402 payments | | |
-| Protocol-Level Tokens / sponsored transactions | | |
-| Agent Registry MCP / A2A | | |
-| Smart contract (Rust/Wasm) | | |
-
-*Delete the rows you don't use.*
-
-## 4. Demo flow
-
-[What the 3-minute video shows, step by step. Script in [docs/demo-script.md](docs/demo-script.md).]
-
-## 5. Run it locally
-
-### Prerequisites
-- Node.js ≥ 18 / Rust (cargo-concordium) — [adjust to the stack]
-- Concordium Browser Wallet or ID App on **testnet**: use the *Concordium Test IDP* and request free test CCD
-- (Optional) [Concordium local stack](https://github.com/Concordium/concordium-local-stack) for a devnet
-
-### Setup
 ```bash
-cp .env.example .env   # fill in testnet endpoints; never commit keys
-# install & run commands
+pnpm install
+pnpm test          # 15 offline tests: envelope, idempotency, audit chain, gateway end to end
+pnpm typecheck
 ```
 
-## 6. Repository layout
+Run the pieces by hand:
 
-```
-app/                  # agent / backend / frontend code
-contracts/            # Concordium smart contracts (Rust → Wasm), if any
-docs/                 # architecture, Concordium integration, path to production, demo script
-Tailieu/              # research notes, workshop slides & transcripts (Vietnamese)
+```bash
+pnpm mock-ops                                             # customer infrastructure on 127.0.0.1:7401
+cp packages/gateway/gateway.config.example.json packages/gateway/gateway.config.json
+GATEWAY_CONFIG=gateway.config.json pnpm gateway           # MandateGate on 127.0.0.1:7400/mcp
+pnpm --filter spike-s0-agent-key keygen                   # creates ~/ccd-keys/agent-evm.json
 ```
 
-## 7. Team
+Then register `packages/agent-proxy` as a stdio MCP server in your agent (for Claude Code: `claude mcp add mandate-gate -- pnpm --dir packages/agent-proxy start`).
+
+## 5. Concordium components used
+
+| Component | Used for | Status |
+|---|---|---|
+| Agent Registry (CIS-8004) + Agent Card | L1 agent identity, minted via agentcards.site | Next (S0) |
+| Verified by Concordium badge | L1 five checks (registry, active, URL, bytes, owner) | Next (S0) |
+| CIS-8 external key binding | L1: EVM key that signs every request | Payload built (S0) |
+| Register Data | L2 work orders and revocations, L4 audit anchors | Script ready (S1) |
+| Verify & Access V1 | L3 human approval bound to the action (`ResourceID` = action digest) | Tested on testnet (S3a) |
+| Sponsored transactions | Fees paid by the gateway, not the agent or engineer | Planned |
+| x402 | Pay-per-privileged-action extension | Planned |
+
+## 6. Team
 
 | Name | Role | GitHub |
 |---|---|---|
-| | | |
+| D. Holmes | Lead | dholmes0207 |
+| *(teammate)* | | |
 
-## 8. License
+## 7. License
 
-[MIT / Apache-2.0]. Concordium SDKs and APIs remain under their own licenses.
+To be decided before the repository goes public (proposed: Apache-2.0). Concordium SDKs and APIs remain under their own licenses.

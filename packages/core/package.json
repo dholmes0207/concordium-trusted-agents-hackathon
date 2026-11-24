@@ -3,10 +3,16 @@
   "private": true,
   "type": "module",
   "main": "src/index.ts",
-  "exports": { ".": "./src/index.ts" },
+  "exports": {
+    ".": "./src/index.ts"
+  },
   "dependencies": {
     "canonicalize": "^2.0.0",
     "cbor-x": "^1.6.0",
-    "viem": "^2.21.45"
+    "viem": "^2.21.45",
+    "zod": "^3.25.76"
+  },
+  "scripts": {
+    "test": "tsx --test test/*.test.ts"
   }
 }

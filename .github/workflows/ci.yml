@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Refuse committed key material
+        run: |
+          set -e
+          found=$(git ls-files | grep -E '(\.export$|\.pem$|\.key$|(^|/)ccd-keys/|(^|/)\.env$)' || true)
+          if [ -n "$found" ]; then echo "Key-like files are tracked:"; echo "$found"; exit 1; fi
+          if git grep -nE '"privateKey"[[:space:]]*:[[:space:]]*"0x[0-9a-fA-F]{64}"|-----BEGIN [A-Z ]*PRIVATE KEY-----' -- . ':!pnpm-lock.yaml'; then
+            echo "Possible private key in tracked files"; exit 1
+          fi
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Unit and end-to-end tests (offline; no testnet access needed)
+        run: pnpm test

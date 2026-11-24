@@ -1,0 +1,15 @@
+{
+  "name": "spike-s1-anchor",
+  "private": true,
+  "type": "module",
+  "description": "S1: anchor a hash on Concordium testnet with RegisterData, read it back, watch for revocation anchors",
+  "scripts": {
+    "anchor": "tsx anchor.ts",
+    "watch": "tsx watch.ts"
+  },
+  "dependencies": {
+    "@mandate-gate/core": "workspace:*",
+    "@concordium/web-sdk": "12.0.3",
+    "@grpc/grpc-js": "^1.12.0"
+  }
+}

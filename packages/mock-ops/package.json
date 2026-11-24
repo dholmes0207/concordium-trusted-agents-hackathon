@@ -1,0 +1,9 @@
+{
+  "name": "@mandate-gate/mock-ops",
+  "private": true,
+  "type": "module",
+  "description": "Simulated customer infrastructure (customer B) behind the gateway",
+  "main": "src/server.ts",
+  "exports": { ".": "./src/server.ts" },
+  "scripts": { "start": "tsx src/main.ts" }
+}

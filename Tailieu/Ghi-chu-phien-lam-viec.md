@@ -2,6 +2,24 @@
 
 > Ghi chú ngắn để tiếp tục công việc ở phiên sau. **Bản mới nhất: `Tong-hop-sau-W6.md` (v5, 20/11)**; chi tiết thiết kế L1–L4 vẫn ở `Tong-hop-sau-W4.md`.
 
+## 0c. Trạng thái code (cuối ngày 25/11)
+
+| Phần | Trạng thái |
+|---|---|
+| Monorepo pnpm | `packages/core`, `packages/gateway`, `packages/agent-proxy`, `packages/mock-ops`; `spikes/s0-agent-key`, `spikes/s1-anchor`, `spikes/s3a` |
+| L1 (phần không cần chain) | ✅ Envelope ký EIP-191 (`MGATE/v1/request`), kiểm audience/hạn/params/chữ ký; idempotency sống qua restart; giới hạn kích thước body (413) |
+| Gateway MCP | ✅ 6 tool (mức 0/1/2); mức 2 tạm trả `approval_required`; agent được ghim trong config cho tới khi có kiểm on-chain (S0) |
+| L4 (bản đầu) | ✅ Audit log chuỗi hash + nonce; công cụ kiểm toàn vẹn |
+| Test | ✅ 15 test offline (7 core + 8 end-to-end) |
+| CI | ✅ GitHub Actions: chặn file key, typecheck, test (Node 22, pnpm 12.6) |
+| S0 | Key agent đã tạo (`~/ccd-keys/agent-evm.json`, địa chỉ `0xA3198Ee065B9f633aa36030C34310836Bf37c650`); payload CIS-8 dựng thử OK. **Chờ:** account company-A, mint agent trên agentcards.site |
+| S1 | Script `anchor.ts` (chạy khô OK, `--submit <file key>` để gửi) và `watch.ts` (theo dõi block, fail-closed). **Chờ:** file key của company-A / gateway-B |
+| Đã dọn | Xóa thư mục mẫu `app/`, `contracts/`; README gốc viết lại theo dự án |
+
+**Việc tiếp theo của mình (khi có account và agent):** chạy S0 đầy đủ (gửi CIS-8 bằng key company-A, 5 phép kiểm on-chain, thay agent ghim bằng kiểm chain), chạy S1 (`--submit`, thêm sponsor bởi gateway-B), rồi L2 (phiếu giao việc + thu hồi).
+
+**Danh sách chờ bạn chốt (đã gửi tối 25/11):** xóa `app/`/`contracts/` (đã làm theo đề xuất) · license Apache-2.0 · phân loại thao tác mức 0/1/2 · giữ request chờ duyệt 5 phút · x402 0,5 CCD/thao tác mức 2, hạn mức 10 CCD/phiếu · nâng Node 22.
+
 ## 0b. Quyết định (25/11)
 
 - ✅ **D1:** HolmesGPT là agent chính trong demo; Claude Code chạy song song làm dự phòng (Piotr 24/11: gateway + agent MCP có sẵn là đúng tinh thần "your existing agent").

@@ -39,3 +39,6 @@ Thumbs.db
 .idea/
 .vscode/*
 !.vscode/extensions.json
+
+# Local runtime data (gateway ledger and audit log)
+.data/

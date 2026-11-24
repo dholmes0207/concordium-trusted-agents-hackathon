@@ -1,0 +1,19 @@
+{
+  "name": "@mandate-gate/agent-proxy",
+  "private": true,
+  "type": "module",
+  "description": "Company A's local MCP server: offers the gateway's tools to any MCP agent, signs every call with the agent's key",
+  "main": "src/proxy.ts",
+  "exports": {
+    ".": "./src/proxy.ts"
+  },
+  "scripts": {
+    "start": "tsx src/main.ts"
+  },
+  "dependencies": {
+    "@mandate-gate/core": "workspace:*",
+    "@modelcontextprotocol/sdk": "1.32.2",
+    "viem": "^2.58.4",
+    "zod": "^3.25.0"
+  }
+}
