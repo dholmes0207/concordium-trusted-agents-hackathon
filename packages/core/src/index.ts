@@ -7,3 +7,5 @@ export * from './envelope.js';
 export * from './ledger.js';
 export * from './audit.js';
 export * from './tools.js';
+export * from './workorder.js';
+export * from './approval.js';
