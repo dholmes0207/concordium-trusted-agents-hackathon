@@ -18,7 +18,7 @@
 
 **Việc tiếp theo của mình (khi có account và agent):** chạy S0 đầy đủ (gửi CIS-8 bằng key company-A, 5 phép kiểm on-chain, thay agent ghim bằng kiểm chain), chạy S1 (`--submit`, thêm sponsor bởi gateway-B), rồi L2 (phiếu giao việc + thu hồi).
 
-**Danh sách chờ bạn chốt (đã gửi tối 25/11):** xóa `app/`/`contracts/` (đã làm theo đề xuất) · license Apache-2.0 · phân loại thao tác mức 0/1/2 · giữ request chờ duyệt 5 phút · x402 0,5 CCD/thao tác mức 2, hạn mức 10 CCD/phiếu · nâng Node 22 · **(mới) Billing GitHub Actions: sửa trong Settings, hay chờ public repo để CI chạy miễn phí**.
+**Đã chốt 25/11 (bạn trả lời "oke cả"):** xóa `app/`/`contracts/` (đã làm theo đề xuất) · license Apache-2.0 · phân loại thao tác mức 0/1/2 · giữ request chờ duyệt 5 phút · x402 0,5 CCD/thao tác mức 2, hạn mức 10 CCD/phiếu · nâng Node 22 · Billing: **repo đã chuyển public 25/11** để CI chạy miễn phí. License Apache-2.0 đã thêm (`LICENSE`).
 
 ## 0b. Quyết định (25/11)
 

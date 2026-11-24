@@ -106,4 +106,4 @@ Then register `packages/agent-proxy` as a stdio MCP server in your agent (for Cl
 
 ## 7. License
 
-To be decided before the repository goes public (proposed: Apache-2.0). Concordium SDKs and APIs remain under their own licenses.
+[Apache-2.0](LICENSE). Concordium SDKs and APIs remain under their own licenses.
