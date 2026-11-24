@@ -5,10 +5,12 @@
   "description": "S0: create the agent's EVM key and prepare its CIS-8 binding on Concordium testnet",
   "scripts": {
     "keygen": "tsx keygen.ts",
-    "cis8": "tsx cis8.ts"
+    "cis8": "tsx cis8.ts",
+    "verify-agent": "tsx verify-agent.ts"
   },
   "dependencies": {
     "@mandate-gate/core": "workspace:*",
-    "viem": "^2.21.45"
+    "viem": "^2.21.45",
+    "@mandate-gate/gateway": "workspace:*"
   }
 }

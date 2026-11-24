@@ -2,7 +2,7 @@
   "audience": "mgate:customer-b",
   "mockOpsUrl": "http://127.0.0.1:7401",
   "dataDir": "../../.data/gateway",
-  "trustedAgents": [
-    { "tokenId": "<agent token id from agentcards.site>", "address": "0xA3198Ee065B9f633aa36030C34310836Bf37c650" }
-  ]
+  "trustedAgents": [],
+  "onboardedOwners": ["<company-A account address>"],
+  "mandates": { "trustedIssuers": ["<company-A account address>"], "maxStalenessSeconds": 30 }
 }

@@ -9,6 +9,7 @@ import {
   type SignedRequest, type ToolDef, type WorkOrder,
 } from '@mandate-gate/core';
 import { MandateIndex } from './mandates.js';
+import type { AgentVerifier } from './agents.js';
 
 export interface TrustedAgent { tokenId: string; address: string; owner?: string }
 
@@ -20,7 +21,9 @@ export interface GatewayConfig {
   trustedAgents: TrustedAgent[];
   maxBodyBytes?: number;
   /** L2: when set, every request must carry an anchored, unrevoked work order from a trusted issuer. */
-  mandates?: { trustedIssuers: string[]; maxStalenessSeconds?: number };
+  mandates?: { trustedIssuers: string[]; maxStalenessSeconds?: number; startHeight?: number };
+  /** L1 chain mode: owners (company A accounts) this customer has onboarded. */
+  onboardedOwners?: string[];
 }
 
 export type Decision =
@@ -42,7 +45,7 @@ export class Gateway {
   readonly mandates?: MandateIndex;
   private rate = new Map<string, number[]>(); // `${woHash}|${action}` -> timestamps (ms)
 
-  constructor(readonly cfg: GatewayConfig, mandateIndex?: MandateIndex) {
+  constructor(readonly cfg: GatewayConfig, mandateIndex?: MandateIndex, private agentVerifier?: AgentVerifier) {
     this.ledger = new RequestLedger(join(cfg.dataDir, 'requests.jsonl'));
     this.audit = new AuditLog(join(cfg.dataDir, 'audit.jsonl'));
     if (cfg.mandates) {
@@ -92,10 +95,17 @@ export class Gateway {
     if (r.action !== tool.action) return deny('action_mismatch');
     if (r.resource !== resourceFor(params as { service?: string })) return deny('resource_mismatch');
 
-    // L1: agent identity. Pinned for now; replaced by the five on-chain checks + CIS-8 owner_of_key.
-    const trusted = this.cfg.trustedAgents.find((a) => a.tokenId === r.agent.tokenId);
-    if (!trusted) return deny('unknown_agent');
-    if (trusted.address.toLowerCase() !== r.agent.key.address.toLowerCase()) return deny('key_not_bound_to_agent');
+    // L1: agent identity. With a verifier: on-chain checks (registry, active, card URL and bytes,
+    // owner, CIS-8 key binding, onboarded owner), re-checked fresh before level-2 actions.
+    // Without one (tests, offline demo): agents pinned in the config.
+    if (this.agentVerifier) {
+      const chk = await this.agentVerifier.verify(auth, { fresh: tool.level === 2 });
+      if (!chk.ok) return deny(`agent_${chk.reasons[0]}`, { agentChecks: chk.reasons });
+    } else {
+      const trusted = this.cfg.trustedAgents.find((a) => a.tokenId === r.agent.tokenId);
+      if (!trusted) return deny('unknown_agent');
+      if (trusted.address.toLowerCase() !== r.agent.key.address.toLowerCase()) return deny('key_not_bound_to_agent');
+    }
 
     // L2: mandate (negative tests #7 #8 #9 #10 #21).
     const m = this.checkMandate(tool, auth);

@@ -5,7 +5,9 @@
   "description": "MandateGate: the customer's MCP gateway that verifies agent, mandate and approval before acting",
   "main": "src/gateway.ts",
   "exports": {
-    ".": "./src/gateway.ts"
+    ".": "./src/gateway.ts",
+    "./agents": "./src/agents.ts",
+    "./mandates": "./src/mandates.ts"
   },
   "scripts": {
     "start": "tsx src/main.ts",

@@ -241,6 +241,9 @@ importers:
       '@mandate-gate/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@mandate-gate/gateway':
+        specifier: workspace:*
+        version: link:../../packages/gateway
       viem:
         specifier: ^2.21.45
         version: 2.58.4(typescript@5.9.3)(zod@3.25.76)

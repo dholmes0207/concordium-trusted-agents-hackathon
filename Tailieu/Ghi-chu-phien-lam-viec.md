@@ -2,6 +2,25 @@
 
 > Ghi chú ngắn để tiếp tục công việc ở phiên sau. **Bản mới nhất: `Tong-hop-sau-W6.md` (v5, 20/11)**; chi tiết thiết kế L1–L4 vẫn ở `Tong-hop-sau-W4.md`.
 
+## 0d. Cập nhật cuối phiên 25/11 (đêm)
+
+| Phần | Trạng thái |
+|---|---|
+| Repo | **Public**; CI GitHub Actions chạy xanh; license Apache-2.0 |
+| Discord | `Tailieu/Discord/` đã **xóa khỏi toàn bộ lịch sử** (git filter-repo, force-push `main` và `claude/charming-clarke-wr8iqq`); bản gốc ở `~/hackathon-private/Discord/`. Lưu ý: GitHub có thể còn giữ commit cũ theo mã SHA một thời gian; ref PR #1–#6 không chứa thư mục này |
+| L1 on-chain | ✅ `packages/gateway/src/agents.ts`: agent_of, check_badge, tự tải card và so SHA-256, `owner_of_key` (khôi phục public key từ chữ ký request), owner allow-list; cache 60 s, kiểm lại ngay trước thao tác mức 2. Chạy thật với agent #601 testnet: 5 phép kiểm qua, `key_not_bound` + `owner_not_onboarded` đúng như mong đợi (`pnpm --filter spike-s0-agent-key verify-agent 601`) |
+| L2 | ✅ Phiếu giao việc (schema, hash JCS, scope, hạn, rate limit); `MandateIndex` theo dõi block finalized, nhận `MGATE-WO`/`MGATE-WOREV` chỉ từ issuer tin cậy, fail-closed khi quá 30 s không thấy block; proxy mang phiếu theo mỗi request |
+| L3 (nền) | ✅ Digest `D`, câu consent theo mẫu cố định, commitment người duyệt. Chưa: hàng chờ duyệt + yêu cầu V&A V1 + VRA (cần key gateway-B) |
+| Test | ✅ 30 test offline (12 core + 18 gateway, gồm 10 test L2 với chain giả) |
+| Chạy gateway thật | `packages/gateway/gateway.config.example.json` (chế độ chain: `onboardedOwners`, `mandates.trustedIssuers`) |
+
+**Việc kế tiếp khi có account (company-A, gateway-B) và agent đã mint:**
+1. `pnpm --filter spike-s0-agent-key cis8 <company-A>` → gửi CIS-8 bằng key company-A (cần thêm bước submit dùng `spikes/s1-anchor/signer.ts`).
+2. `verify-agent <tokenId> <company-A>` phải trả `ok: true`.
+3. `pnpm --filter spike-s1-anchor anchor --submit company-A.export`; thêm sponsor bởi gateway-B.
+4. Công cụ cấp/thu hồi phiếu cho A (CLI: tạo work order JSON + anchor `MGATE-WO`/`MGATE-WOREV`).
+5. L3: hàng chờ duyệt (giữ request ≤ 5 phút), trang phê duyệt, yêu cầu V&A V1 (`ResourceID` = D), kiểm presentation.
+
 ## 0c. Trạng thái code (cuối ngày 25/11)
 
 | Phần | Trạng thái |
