@@ -75,3 +75,40 @@ Chi tiết và script tái kiểm: [`spikes/s3a/README.md`](../spikes/s3a/README
 | Định danh trong bằng chứng | `did:ccd:testnet:cred:<credId>`: **mã credential cố định của account** |
 
 **Quyết định kéo theo:** D3 = **MVP-C** (gateway tự kiểm người duyệt bằng `credId` + commitment trong phiếu; `D` nằm trong `ResourceID`, được neo bằng VRA). Vì ví không hiện context, trang phê duyệt của công ty A phải hiển thị hành động và tự tính lại `D`; bài nộp gọi là "approval evidence".
+
+---
+
+## 5. Thử danh tính công ty (spike S-V2, hướng dẫn 24/11)
+
+**Mục tiêu:** chứng minh bước V2 (Organization) chạy được trên testnet: account "công ty A" có danh tính doanh nghiệp từ **Global FinReg Testnet** (IdP chỉ số 4), và một yêu cầu Verify & Access V1 lấy được `legalName` từ account đó.
+
+**Đã kiểm trước:** dropdown "Reveal attribute" của Proof Explorer lấy toàn bộ `AttributeKeyString` của SDK, trong đó có `legalName`, `legalCountry`, `businessNumber`, `lei`. Ví có nhãn hiển thị cho `legalName`.
+
+### Phần A: xin danh tính công ty (bạn làm; chờ vài phút tới khoảng 12 giờ)
+
+1. Browser Wallet (Testnet) → **Identities** → **+** → chọn **Global FinReg Testnet** ("Business ID").
+2. Ví mở trang của Global FinReg (bên thứ ba, không phải Concordium). Có thể phải tạo tài khoản trên trang đó: bạn tự tạo, mật khẩu do bạn giữ.
+3. Chọn **Standard process** (không lấy LEI).
+4. Điền **một công ty giả nhưng nghe hợp lý** (W5: testnet tự duyệt, nhưng dữ liệu quá vô lý thì không tự duyệt được). Gợi ý: tên "Mandate Gate Demo Ltd", quốc gia DK hoặc VN, mã đăng ký 8–10 chữ số, địa chỉ hợp lý.
+5. ⚠️ **Không tải lên giấy tờ thật** (hộ chiếu, CCCD, giấy phép kinh doanh thật) và không dùng dữ liệu cá nhân thật. Nếu trang **bắt buộc** giấy tờ thật hoặc chụp selfie, **dừng lại**, chụp màn hình, báo mình; khi đó mới hỏi Piotr.
+6. Gửi yêu cầu. Danh tính hiện "Pending" trong ví cho tới khi được duyệt.
+7. Khi danh tính chuyển sang hợp lệ: ví → **Accounts** → **+** → chọn danh tính công ty vừa có → tạo account, đặt tên **"Company A"**.
+8. Xin CCD test cho account "Company A" (Activity → Request CCD), vì account này sẽ ký đăng ký agent và cấp phiếu giao việc.
+
+### Phần B: thử chứng minh `legalName` (khoảng 10 phút, giống S3a)
+
+1. Proof Explorer → **Start a new credential statement**.
+2. **Cột phải** (V1): chỉ tick **Global FinReg Testnet**.
+3. Ô **Reveal attribute**: chọn **legalName** → **Add**. (Có thể thêm `legalCountry` → Add.)
+4. **Select Credential Type Source** = **Account only**.
+5. **Submit Anchor Transaction** (ký bằng account đang kết nối) → chờ ~10 giây.
+6. **ProveV1** → trong popup ví, **chọn account "Company A"** → 📸 chụp popup → **Approve**.
+7. **View Details** → **Copy Raw Data** → lưu `~/ccd-proof-company.json` (ngoài repo) → báo mình.
+
+| Kết quả | Ý nghĩa | Việc tiếp |
+|---|---|---|
+| Proof OK, có `legalName`, `issuer = did:ccd:testnet:idp:4` | ✅ V2 chạy được: gateway nhận diện "công ty A" bằng danh tính doanh nghiệp đã xác minh | Agent và phiếu giao việc dùng account "Company A" |
+| Ví không cho chọn account công ty, hoặc báo lỗi thuộc tính | Ví chưa hỗ trợ proof trên danh tính doanh nghiệp ở luồng V1 | Hỏi Piotr (cùng câu Prashant đã hỏi 17/11); tạm dùng account cá nhân đóng vai A |
+| Global FinReg không tự duyệt sau 1 ngày | GF testnet chưa dùng được | Account cá nhân đóng vai A, ghi rõ giới hạn trong bài nộp |
+
+**Không chặn việc khác:** S0, S1 và khung gateway làm song song được. Nếu "Company A" có sau, chỉ cần đăng ký lại agent dưới account này.
