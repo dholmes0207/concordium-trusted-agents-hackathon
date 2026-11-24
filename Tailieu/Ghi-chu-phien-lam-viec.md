@@ -2,6 +2,11 @@
 
 > Ghi chú ngắn để tiếp tục công việc ở phiên sau. **Bản mới nhất: `Tong-hop-sau-W6.md` (v5, 20/11)**; chi tiết thiết kế L1–L4 vẫn ở `Tong-hop-sau-W4.md`.
 
+## 0b. Quyết định (25/11)
+
+- ✅ **D1:** HolmesGPT là agent chính trong demo; Claude Code chạy song song làm dự phòng (Piotr 24/11: gateway + agent MCP có sẵn là đúng tinh thần "your existing agent").
+- D2, D3, D4: đang chốt.
+
 ## 0a. Cập nhật 24/11
 
 - Đợt hỏi 2 đã đăng (23:12). Piotr: office hours **bất đồng bộ trên Discord**; tiêu chí chấm chi tiết đã gửi Encode, sắp lên trang programme. Câu 2, 3, 5 và câu Veriff đang chờ (bảng ở `Cau-hoi-Discord.md` mục 5.3).
