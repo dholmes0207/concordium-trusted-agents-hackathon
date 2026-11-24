@@ -1,0 +1,7 @@
+packages:
+  - "packages/*"
+  - "spikes/s0-agent-key"
+  - "spikes/s1-anchor"
+allowBuilds:
+  cbor-extract: set this to true or false
+  esbuild: set this to true or false
