@@ -5,7 +5,11 @@
 ## 0b. Quyết định (25/11)
 
 - ✅ **D1:** HolmesGPT là agent chính trong demo; Claude Code chạy song song làm dự phòng (Piotr 24/11: gateway + agent MCP có sẵn là đúng tinh thần "your existing agent").
-- D2, D3, D4: đang chốt.
+- ✅ **D2:** key EVM (secp256k1) gắn qua CIS-8, namespace `eip155:84532` (Base Sepolia); key nằm trong `agent-proxy`, không trong agent (Piotr 24/11: namespace mainnet hay testnet đều được).
+- ✅ **D3:** duyệt bằng Browser Wallet (proof gắn account, đã chạy ở S3a) trước; sau đó thêm **ID App** (consent hiện đúng hành động, kỹ sư reveal họ tên để gắn đúng người) và dùng ID App trong video. Gateway giữ request chờ duyệt tối đa ~5 phút. Bạn **chưa có ID App** → cài và tạo danh tính testnet trước ~02/12.
+- ✅ **D4:** x402 bằng CCD test; `agent-proxy` tự trả trong hạn mức ghi trên phiếu giao việc; facilitator tự chạy bằng `@x402/concordium`. Chỉ làm sau khi lõi L1–L4 + Browser Wallet + ID App chạy; tối đa 1,5 ngày.
+- Công ty A: tạm dùng account cá nhân (Global FinReg dừng ở bước Veriff).
+- Thứ tự ưu tiên khi thiếu thời gian: L1–L4 → duyệt Browser Wallet → ID App → x402.
 
 ## 0a. Cập nhật 24/11
 
