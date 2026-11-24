@@ -1,7 +1,8 @@
 # Gợi ý điền Checkpoint 1: Create your project, add your team & share your idea
 
 > **Soạn ngày:** 20/11/2026.
-> **Hạn:** CN 22/11, 23:59 UTC = **06:59 sáng T2 23/11 giờ VN**. Nên nộp **trước tối CN 22/11**.
+> **Hạn:** ~~CN 22/11~~ → **đã lùi sang T4 25/11, 23:59 UTC = 06:59 sáng T5 26/11 giờ VN** (dashboard, xem 24/11).
+> **Cập nhật 24/11:** project **Mandate Gate** đã tạo, có 2 thành viên, Discord đã kết nối. **Còn thiếu:** chọn challenge (Add Challenge) và điền ô **"Challenge"** (2–3 câu) rồi bấm **Submit Now**. Nội dung copy ở [Discord/Tong-hop-Discord-20-24-11.md](Discord/Tong-hop-Discord-20-24-11.md), mục 6.
 > **Nơi điền:** encodeclub.com → My Dashboard → Concordium Trusted Agents Hackathon (trang `my-programmes/concordium-trusted-agents-hackathon`) → khung **"Join or Create a Project"**.
 > **Tình trạng 20/11 (đã kiểm bằng Claude in Chrome, chỉ xem):** bạn **chưa tạo project**; Discord **đã kết nối**; ô checkpoint ghi *"No submission requirements set for this checkpoint"*.
 > Mình không điền hay bấm "Create Project" thay bạn. Bạn copy nội dung dưới đây và tự tạo.
