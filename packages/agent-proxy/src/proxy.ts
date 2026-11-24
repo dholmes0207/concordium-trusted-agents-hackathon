@@ -4,9 +4,9 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 import {
-  TOOLS, resourceFor, signRequest, paramsHash, newRequestId,
+  TOOLS, resourceFor, signRequest, paramsHash, newRequestId, workOrderHash,
   CCD_TESTNET_CAIP2, CIS8004_CONTRACT, AGENT_KEY_NAMESPACE, AGENT_KEY_TYPE,
-  type AgentRequest, type ToolDef,
+  type AgentRequest, type ToolDef, type WorkOrder,
 } from '@mandate-gate/core';
 
 export interface ProxyConfig {
@@ -15,7 +15,7 @@ export interface ProxyConfig {
   agentTokenId: string;
   agentAddress: string;
   privateKey: Hex; // the agent's EVM key; never exposed to the agent/LLM
-  workOrderHash?: string | null;
+  workOrder?: WorkOrder; // L2 mandate carried with every call
   runtime?: { model?: string; version?: string };
   ttlSeconds?: number;
 }
@@ -32,7 +32,7 @@ export async function signedCall(cfg: ProxyConfig, tool: ToolDef, params: Record
       tokenId: cfg.agentTokenId,
       key: { namespace: AGENT_KEY_NAMESPACE, keyType: AGENT_KEY_TYPE, address: cfg.agentAddress },
     },
-    workOrderHash: cfg.workOrderHash ?? null,
+    workOrderHash: cfg.workOrder ? workOrderHash(cfg.workOrder) : null,
     action: tool.action,
     resource: resourceFor(params as { service?: string }),
     paramsHash: paramsHash(params),
@@ -41,7 +41,8 @@ export async function signedCall(cfg: ProxyConfig, tool: ToolDef, params: Record
     expiresAt: now + (cfg.ttlSeconds ?? 30),
     ...(cfg.runtime ? { agentRuntime: cfg.runtime } : {}),
   };
-  return signRequest(request, cfg.privateKey);
+  const signed = await signRequest(request, cfg.privateKey);
+  return cfg.workOrder ? { ...signed, workOrder: cfg.workOrder } : signed;
 }
 
 export async function connectGateway(url: string): Promise<Client> {

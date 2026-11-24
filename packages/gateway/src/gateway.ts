@@ -5,8 +5,10 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import {
   TOOLS, resourceFor, verifyEnvelope, requestHash, RequestLedger, AuditLog,
-  type SignedRequest, type ToolDef,
+  WorkOrderSchema, workOrderHash, checkScope,
+  type SignedRequest, type ToolDef, type WorkOrder,
 } from '@mandate-gate/core';
+import { MandateIndex } from './mandates.js';
 
 export interface TrustedAgent { tokenId: string; address: string; owner?: string }
 
@@ -17,6 +19,8 @@ export interface GatewayConfig {
   /** Agents pinned in config until the on-chain L1 checks land (spike S0). */
   trustedAgents: TrustedAgent[];
   maxBodyBytes?: number;
+  /** L2: when set, every request must carry an anchored, unrevoked work order from a trusted issuer. */
+  mandates?: { trustedIssuers: string[]; maxStalenessSeconds?: number };
 }
 
 export type Decision =
@@ -27,18 +31,55 @@ export type Decision =
 const authSchema = z.object({
   request: z.object({}).passthrough(),
   signature: z.string().regex(/^0x[0-9a-fA-F]{130}$/),
+  workOrder: z.object({}).passthrough().optional(),
 });
+
+export type GatewayAuth = SignedRequest & { workOrder?: unknown };
 
 export class Gateway {
   readonly ledger: RequestLedger;
   readonly audit: AuditLog;
-  constructor(readonly cfg: GatewayConfig) {
+  readonly mandates?: MandateIndex;
+  private rate = new Map<string, number[]>(); // `${woHash}|${action}` -> timestamps (ms)
+
+  constructor(readonly cfg: GatewayConfig, mandateIndex?: MandateIndex) {
     this.ledger = new RequestLedger(join(cfg.dataDir, 'requests.jsonl'));
     this.audit = new AuditLog(join(cfg.dataDir, 'audit.jsonl'));
+    if (cfg.mandates) {
+      this.mandates = mandateIndex ?? new MandateIndex(new Set(cfg.mandates.trustedIssuers), cfg.mandates.maxStalenessSeconds ?? 30);
+    }
+  }
+
+  /** L2 (V3): work order present, matches the request, anchored, not revoked, fresh, in scope. */
+  private checkMandate(tool: ToolDef, auth: GatewayAuth):
+    { ok: true; wo: WorkOrder | null; woHash: string | null; needsApproval: boolean; maxPerHour?: number } | { ok: false; reason: string } {
+    if (!this.mandates) return { ok: true, wo: null, woHash: null, needsApproval: tool.level === 2 };
+    const parsed = WorkOrderSchema.safeParse(auth.workOrder);
+    if (!parsed.success) return { ok: false, reason: 'work_order_missing_or_malformed' };
+    const wo = parsed.data;
+    const h = workOrderHash(wo);
+    if (auth.request.workOrderHash !== h) return { ok: false, reason: 'work_order_hash_mismatch' };
+    const st = this.mandates.status(h, wo.issuer.account);
+    if (st.status === 'stale') return { ok: false, reason: 'revocation_status_stale' };
+    if (st.status === 'revoked') return { ok: false, reason: 'work_order_revoked' };
+    if (st.status === 'unknown') return { ok: false, reason: 'work_order_not_anchored' };
+    const r = auth.request;
+    const sc = checkScope(wo, { audience: this.cfg.audience, tokenId: r.agent.tokenId, keyAddress: r.agent.key.address, action: r.action, resource: r.resource });
+    if (!sc.ok) return { ok: false, reason: `work_order_${sc.reason}` };
+    // B's policy may only raise the bar: level 2 always needs approval.
+    return { ok: true, wo, woHash: h, needsApproval: tool.level === 2 || sc.approval === 'required', maxPerHour: sc.maxPerHour };
+  }
+
+  private overRate(key: string, maxPerHour?: number): boolean {
+    if (!maxPerHour) return false;
+    const now = Date.now();
+    const list = (this.rate.get(key) ?? []).filter((t) => now - t < 3_600_000);
+    if (list.length >= maxPerHour) { this.rate.set(key, list); return true; }
+    list.push(now); this.rate.set(key, list); return false;
   }
 
   /** The decision pipeline. Every branch writes an audit record before answering. */
-  async handle(tool: ToolDef, params: Record<string, unknown>, auth: SignedRequest): Promise<Decision & { auditSeq: number }> {
+  async handle(tool: ToolDef, params: Record<string, unknown>, auth: GatewayAuth): Promise<Decision & { auditSeq: number }> {
     const r = auth.request;
     const deny = (reason: string, extra: Record<string, unknown> = {}) => {
       const rec = this.audit.append('decision', { requestId: r?.requestId, action: tool.action, decision: 'deny', reason, ...extra });
@@ -56,6 +97,10 @@ export class Gateway {
     if (!trusted) return deny('unknown_agent');
     if (trusted.address.toLowerCase() !== r.agent.key.address.toLowerCase()) return deny('key_not_bound_to_agent');
 
+    // L2: mandate (negative tests #7 #8 #9 #10 #21).
+    const m = this.checkMandate(tool, auth);
+    if (!m.ok) return deny(m.reason);
+
     // L1: idempotency (negative test #17).
     const rh = requestHash(r);
     const res = this.ledger.reserve(r.requestId, rh, r.expiresAt);
@@ -66,15 +111,20 @@ export class Gateway {
       workOrderHash: r.workOrderHash, agentRuntime: r.agentRuntime ?? null,
     });
 
-    // L2 (work order) and L3 (approval) come next; level 2 is held until L3 exists.
-    if (tool.level === 2) {
+    if (m.woHash && this.overRate(`${m.woHash}|${tool.action}`, m.maxPerHour)) {
+      this.ledger.finish(r.requestId, 'failed');
+      return deny('rate_limited');
+    }
+
+    // L3 (approval) comes next; actions that need approval are held until it is wired.
+    if (m.needsApproval) {
       this.ledger.finish(r.requestId, 'failed');
       const rec = this.audit.append('decision', { requestId: r.requestId, action: tool.action, decision: 'needs_approval', reason: 'approval_flow_not_enabled' });
       return { status: 'approval_required', reason: 'approval_flow_not_enabled', auditSeq: rec.seq };
     }
 
     // Fail-closed: the allow decision must be durable before executing.
-    this.audit.append('decision', { requestId: r.requestId, action: tool.action, decision: 'allow', level: tool.level });
+    this.audit.append('decision', { requestId: r.requestId, action: tool.action, decision: 'allow', level: tool.level, workOrderHash: m.woHash });
     try {
       const resp = await fetch(`${this.cfg.mockOpsUrl}/ops/${tool.action}`, {
         method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(params),
@@ -99,7 +149,7 @@ export class Gateway {
         description: `${tool.description} Requires a signed MandateGate request envelope in "auth".`,
         inputSchema: { params: z.object(tool.params).strict(), auth: authSchema },
       }, async ({ params, auth }) => {
-        const out = await this.handle(tool, params as Record<string, unknown>, auth as unknown as SignedRequest);
+        const out = await this.handle(tool, params as Record<string, unknown>, auth as unknown as GatewayAuth);
         return {
           content: [{ type: 'text' as const, text: JSON.stringify({ ...out, auditHead: this.audit.headHash }) }],
           isError: out.status !== 'ok',
