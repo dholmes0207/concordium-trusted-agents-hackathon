@@ -4,7 +4,7 @@
 
 ## 0a. Cập nhật 24/11
 
-- Project **Mandate Gate** đã tạo, 2 thành viên. **Checkpoint 1 chưa nộp**: còn chọn challenge + điền ô "Challenge" + Submit Now; hạn lùi sang **06:59 sáng T5 26/11** (giờ VN).
+- Project **Mandate Gate** đã tạo, 2 thành viên, challenge "Make your Agents Accountable with Concordium". ✅ **Checkpoint 1 đã nộp 24/11** (thông báo "Your submission has been saved"; nút đổi thành "View / Edit Submission"). Ô "Your idea, in a paragraph" dùng đoạn ở `Discord/Tong-hop-Discord-20-24-11.md` mục 6, có thêm câu mở đầu "Brief: Make your Agents Accountable with Concordium."
 - Piotr `@here` 24/11: hỏi ai cần facilitator x402 testnet, EurQ, câu hỏi bị sót. Gợi ý trả lời: `Discord/Tong-hop-Discord-20-24-11.md` mục 4.
 - x402 có scheme chính thức `@x402/concordium` (client, server, facilitator) để tự chạy trên testnet.
 
