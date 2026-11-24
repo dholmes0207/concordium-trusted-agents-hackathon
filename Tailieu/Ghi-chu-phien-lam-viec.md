@@ -4,6 +4,9 @@
 
 ## 0a. Cập nhật 24/11
 
+- Đợt hỏi 2 đã đăng (23:12). Piotr: office hours **bất đồng bộ trên Discord**; tiêu chí chấm chi tiết đã gửi Encode, sắp lên trang programme. Câu 2, 3, 5 và câu Veriff đang chờ (bảng ở `Cau-hoi-Discord.md` mục 5.3).
+- Global FinReg testnet: đi được bước 1–3 (công ty giả "Mandate Gate Demo Co., Ltd", file PDF test), **dừng ở bước 4 Veriff (ID + selfie)**. Đề xuất: account cá nhân đóng vai công ty A cho tới khi Piotr trả lời.
+
 - ✅ **Spike S3a đạt** (xem `spikes/s3a/README.md`): Browser Wallet trả lời V&A V1 bằng proof gắn account; `ResourceID` nằm trong anchor VRA; proof mang `credId` cố định; ví không hiện context → **D3 = MVP-C**.
 
 - Project **Mandate Gate** đã tạo, 2 thành viên, challenge "Make your Agents Accountable with Concordium". ✅ **Checkpoint 1 đã nộp 24/11** (thông báo "Your submission has been saved"; nút đổi thành "View / Edit Submission"). Ô "Your idea, in a paragraph" dùng đoạn ở `Discord/Tong-hop-Discord-20-24-11.md` mục 6, có thêm câu mở đầu "Brief: Make your Agents Accountable with Concordium."

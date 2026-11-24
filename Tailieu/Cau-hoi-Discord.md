@@ -200,3 +200,14 @@ it works well. A few questions:
    approve a V1 request?
 Thanks!
 ```
+
+### 5.3 Theo dõi đợt hỏi 2 (đăng 24/11, 23:12 giờ VN)
+
+| # | Câu hỏi | Trạng thái | Trả lời (Piotr, 24/11 23:24) |
+|---|---|---|---|
+| 1 | Tiêu chí chấm chi tiết | ✅ Đã trả lời | Đã gửi tiêu chí chi tiết cho Encode; Encode sẽ cập nhật lên trang programme sớm → **theo dõi trang programme** |
+| 2 | Gateway + agent MCP có sẵn có đúng "your existing agent" | ⏳ Chờ | "let me get back to you" |
+| 3 | Namespace EVM cho agent testnet (`eip155:8453` hay `eip155:84532`) | ⏳ Chờ | "let me get back to you" |
+| 4 | Office hours | ✅ Đã trả lời | **Office hours làm bất đồng bộ trên Discord** (không có buổi live) |
+| 5 | Ví hiện `ContextString` | ⏳ Chờ | "let me get back to you" |
+| 6 | Global FinReg testnet đòi Veriff (ID + selfie); có cách test không (đăng 23:33) | ⏳ Chờ | — |
