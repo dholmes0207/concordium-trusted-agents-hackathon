@@ -157,3 +157,46 @@ Nguồn: bản xuất toàn bộ kênh, lưu ở [Discord/general-den-2026-11-12
 
 - Tin của Tareq ngày 12/11 ("$50.00 reward" + link agentrouter.org) có dấu hiệu spam / lừa đảo. **Không bấm.**
 - Chỉ ký giao dịch trên trang do Concordium giới thiệu (agentcards.site, registry chính thức) và chỉ dùng ví testnet.
+
+---
+
+## 5. Đợt hỏi 2 (soạn 24/11, sau spike S3a)
+
+### 5.1 Đã tự trả lời được, không cần hỏi
+
+| Câu hỏi | Tự kiểm bằng | Kết quả |
+|---|---|---|
+| Facilitator x402 testnet | Gói `@x402/concordium` | Tự chạy được (cần 1 account testnet có CCD) |
+| Trả x402 bằng gì | README gói | CCD test là đủ; EURQ testnet chỉ 1.000 do bên phát hành giữ |
+| V&A V1 gắn account, ví hiện gì, ResourceID có được neo không | Spike S3a (`spikes/s3a/`) | Có; ví không hiện context; ResourceID nằm trong anchor VRA |
+| CIS-8 có nhận key EVM không (D2) | Schema tool `build_cis8_canonical_bytes` / `owner_of_key` của MCP hosted | Có: `secp256k1-uncompressed` + `ethereum-personal-sign`, namespace dạng CAIP (`eip155:<id>`) |
+| Có verifier V1 hosted trên testnet không | Mã nguồn Proof Explorer (`concordium-web3id/test-tools/proof-explorer`) | Có (`/verifiable-presentations/verify`); SDK cũng tự kiểm được, nên gateway không phụ thuộc |
+| Rate limit MCP hosted | Gọi REST vài lần | Không có header giới hạn; gateway đọc chain trực tiếp nên không phụ thuộc |
+
+### 5.2 Nên hỏi (một tin, tag Piotr và Yashar)
+
+| # | Câu hỏi | Vì sao không tự trả lời được | Ảnh hưởng |
+|---|---|---|---|
+| 1 | Tiêu chí chấm chi tiết (Piotr hứa 17/11) bao giờ có | Chỉ ban tổ chức biết | Ưu tiên phần nào (payments, số thành phần) |
+| 2 | Bài thi là **lớp xác minh (gateway MCP)** demo với **agent MCP có sẵn** (Claude Code) có đúng tinh thần "your existing agent" không | Cách hiểu của giám khảo | D1 |
+| 3 | Agent testnet gắn key EVM qua CIS-8 nên dùng namespace chain mainnet trong `chains.json` (vd `eip155:8453`) hay chain testnet (`eip155:84532`) có được badge coi là hợp lệ | `chains.json` chỉ có mainnet; không rõ `check_badge` xử lý namespace testnet thế nào | D2 |
+| 4 | Office hours T3/T6 còn diễn ra không (trang chủ vẫn ghi, W6 nói không) | Thông tin lịch | Kế hoạch hỏi đáp |
+| 5 (tùy chọn) | Ví có kế hoạch hiển thị `ContextString` cho người dùng khi duyệt V1 không | Lộ trình sản phẩm | Cách gọi "approval evidence" hay "verifiable consent" |
+
+```text
+Hi @Piotr from Concordium @Yashar, Mandate Gate here (an MCP gateway that checks an agent's
+badge, a signed work order and a human approval before the agent can act on a customer's
+infrastructure). We tested the V1 flow on testnet (account credential, Browser Wallet), and
+it works well. A few questions:
+1) When will the detailed judging criteria be shared?
+2) Our entry is a verification layer: an existing MCP agent (e.g. Claude Code) calls tools
+   through our gateway, unchanged. Does that fit "your existing agent" for judging?
+3) For a testnet agent with an EVM key bound via CIS-8, should the key namespace be a
+   mainnet chain from chains.json (e.g. eip155:8453) or a testnet chain (eip155:84532)?
+   Will check_badge treat both as valid?
+4) Are the Tue/Fri office hours still running? The site lists them, but Workshop 6 said
+   questions should go to Discord.
+5) (Optional) Any plan for the wallet to show the ContextString to the user when they
+   approve a V1 request?
+Thanks!
+```
