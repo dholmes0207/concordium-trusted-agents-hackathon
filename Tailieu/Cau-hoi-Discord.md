@@ -206,8 +206,8 @@ Thanks!
 | # | Câu hỏi | Trạng thái | Trả lời (Piotr, 24/11 23:24) |
 |---|---|---|---|
 | 1 | Tiêu chí chấm chi tiết | ✅ Đã trả lời | Đã gửi tiêu chí chi tiết cho Encode; Encode sẽ cập nhật lên trang programme sớm → **theo dõi trang programme** |
-| 2 | Gateway + agent MCP có sẵn có đúng "your existing agent" | ⏳ Chờ | "let me get back to you" |
-| 3 | Namespace EVM cho agent testnet (`eip155:8453` hay `eip155:84532`) | ⏳ Chờ | "let me get back to you" |
+| 2 | Gateway + agent MCP có sẵn có đúng "your existing agent" | ✅ Đã trả lời (23:46) | **"yes"** |
+| 3 | Namespace EVM cho agent testnet (`eip155:8453` hay `eip155:84532`) | ✅ Đã trả lời (23:46) | **"either should be good"** |
 | 4 | Office hours | ✅ Đã trả lời | **Office hours làm bất đồng bộ trên Discord** (không có buổi live) |
-| 5 | Ví hiện `ContextString` | ⏳ Chờ | "let me get back to you" |
+| 5 | Ví hiện `ContextString` | ✅ Đã trả lời (23:46) | **"at some point, but currently the ID App is the place to demo consent flows"** → ví sẽ hiện về sau; hiện tại demo consent bằng **ID App** |
 | 6 | Global FinReg testnet đòi Veriff (ID + selfie); có cách test không (đăng 23:33) | ⏳ Chờ | — |
