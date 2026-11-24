@@ -17,7 +17,7 @@
 | **V&A V1 nhận loại claim nào** | ✅ Trong SDK, `SubjectClaims = IdentityClaims` (khớp câu trả lời Q1). Nhưng mỗi claim có `source: 'identityCredential' \| 'accountCredential'`: **giao thức cho phép proof gắn account** | Không |
 | **Proof lộ định danh nào (G2)** | ✅ Proof **gắn identity**: `credentialSubject.id` là *"identity disclosure information also acts as ephemeral ID"* → **ID tạm thời, không ổn định**, không gắn được với người cụ thể. Proof **gắn account**: `credentialSubject.id` là **DID của account credential** (ổn định) → dùng được cho commitment trong phiếu giao việc (AB3) | Không |
 | **Chỗ đặt digest `D` và câu consent** | ✅ Context V1 có các nhãn `ContextString`, `ResourceID`, `ConnectionID`, `Nonce`, `BlockHash`, `PaymentHash`; SDK có `createSimpleContext(nonce, connectionId, resourceId, contextString?)`. Đặt `ResourceID = D`, `ContextString` = câu mô tả hành động | Không |
-| **Browser Wallet có trả lời yêu cầu V1 gắn account không, và hiện gì cho người dùng** | ⏳ **Chưa kiểm được** (cần ví của bạn) | **Chỉ hỏi nếu tự thử thất bại** (mục 2) |
+| **Browser Wallet có trả lời yêu cầu V1 gắn account không, và hiện gì cho người dùng** | ✅ **Đã thử 24/11 (mục 4):** có, ví cho chọn account; ví **không** hiện ResourceID / context | Không (chỉ tùy chọn: hỏi ví có định hiện `ContextString` không) |
 
 ## 2. Việc bạn tự thử (khoảng 10 phút): spike S3a rút gọn
 
@@ -58,3 +58,20 @@ explorer and <describe what happened>. Thanks!
 ```
 
 Địa chỉ ví gửi qua DM, không đăng công khai.
+
+---
+
+## 4. Kết quả spike S3a (24/11, bạn chạy, mình kiểm)
+
+Chi tiết và script tái kiểm: [`spikes/s3a/README.md`](../spikes/s3a/README.md).
+
+| Câu hỏi | Kết quả |
+|---|---|
+| Ví trả lời V1 bằng proof gắn **account**? | ✅ Có. Popup cho chọn account `3Rgk…6gaw - Identity 1` |
+| Ví hiện gì? | Tên trang, account, điều cần chứng minh bằng lời ("18 years or older…"). **Không hiện** ResourceID, ConnectionID hay câu context |
+| Anchor VRA | Giao dịch testnet `bcfb716f…7861`, finalized, `registerData`, CBOR `{hash, type: "CCDVRA", version: 1}`, khoảng 4,38 CCD test |
+| `ResourceID` có được neo không? | ✅ Có. Tính lại hash từ context + claims của bằng chứng **khớp** hash on-chain; đổi riêng `ResourceID` thì hash khác |
+| Bằng chứng liên kết với anchor? | ✅ `requested.BlockHash` = block chứa anchor VRA |
+| Định danh trong bằng chứng | `did:ccd:testnet:cred:<credId>`: **mã credential cố định của account** |
+
+**Quyết định kéo theo:** D3 = **MVP-C** (gateway tự kiểm người duyệt bằng `credId` + commitment trong phiếu; `D` nằm trong `ResourceID`, được neo bằng VRA). Vì ví không hiện context, trang phê duyệt của công ty A phải hiển thị hành động và tự tính lại `D`; bài nộp gọi là "approval evidence".

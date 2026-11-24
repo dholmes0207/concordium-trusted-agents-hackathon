@@ -131,3 +131,10 @@ Toàn bộ là dữ liệu thử nghiệm, không phải giấy tờ thật. Ghi
 |---|---|
 | Nhận test CCD | [Account Identity 1 trên CCDExplorer](https://ccdexplorer.io/testnet/account/3Rgk3fkCJVsyqdpetE7Xq6w8KFhY7RQhQh8na1Qc36b4A26gaw); giao dịch thấy trên trang: `41837ab6c4b33b5b81c834c3388e0fba65a213a76ce8b3c8fccf03cdcb617c8c` (chưa xác định loại) |
 | Đăng ký agent | |
+
+
+## Kết quả spike (từ 24/11)
+
+| Spike | Ngày | Kết quả | Bằng chứng | Quyết định |
+|---|---|---|---|---|
+| **S3a** (V&A V1, nguồn Account, Browser Wallet) | 24/11 | ✅ Đạt: ví trả lời proof gắn account; `ResourceID` được neo (hash khớp); proof mang `credId` cố định. ❌ Ví không hiện context | Anchor testnet `bcfb716f9d899b5b49faf1ec1e63c6090cc6693a2ac599d849ad1953e8a67861`; `spikes/s3a/` | D3 = MVP-C; trang phê duyệt của A hiển thị hành động |

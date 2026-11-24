@@ -1,0 +1,10 @@
+{
+  "name": "spike-s3a",
+  "private": true,
+  "type": "module",
+  "description": "S3a: check that a Verify & Access V1 request (incl. ResourceID) is bound to its on-chain VRA anchor",
+  "dependencies": {
+    "@concordium/web-sdk": "12.0.3",
+    "@grpc/grpc-js": "^1.12.0"
+  }
+}
