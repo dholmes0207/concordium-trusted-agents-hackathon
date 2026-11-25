@@ -4,6 +4,8 @@
 
 ## 0f. ✅ S0 hoàn tất (25/11, tối)
 
+**Trang agent (GitHub Pages):** https://dholmes0207.github.io/concordium-trusted-agents-hackathon/ — tự kiểm 6 điều trong trình duyệt người xem (registry, Active, URL, SHA-256 tự tính, owner, badge check của Concordium); nguồn ở `site/index.html`, đăng bằng workflow `.github/workflows/pages.yml` (Pages source: GitHub Actions).
+
 | Bước | Kết quả | Link |
 |---|---|---|
 | Tx 1: CIS-8004 `register` (company-A) | Agent **token 1505**, Active, badge `JyP9Y8gnY2peWyyQMsrAk` | https://ccdexplorer.io/testnet/transaction/105b018650e557f75b1ebd940be2c2f5a2594b84ff2f80c8bd0558b24991bb65 |

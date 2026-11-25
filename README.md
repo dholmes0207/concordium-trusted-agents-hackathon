@@ -10,6 +10,7 @@
 |---|---|
 | 🎥 **Demo video (≤ 3 min)** | *to come* |
 | 🔎 **CCDExplorer (testnet)** | Agent **#1505** ([register](https://ccdexplorer.io/testnet/transaction/105b018650e557f75b1ebd940be2c2f5a2594b84ff2f80c8bd0558b24991bb65) · [pin card](https://ccdexplorer.io/testnet/transaction/50eb19421df3173f9b2664f754d8d7a522b1d2aeaae594f53a91b2f583b72eba) · [CIS-8 key binding](https://ccdexplorer.io/testnet/transaction/d219aef839d039136d67160d0053b83c90b7b86fb46c850f3f20fdbea39dd72a)) · badge `JyP9Y8gnY2peWyyQMsrAk` |
+| 🌐 **Agent page (live verification)** | https://dholmes0207.github.io/concordium-trusted-agents-hackathon/ |
 | 🪪 **Agent Card** | [agent-card/mandate-gate-devops-agent.json](agent-card/mandate-gate-devops-agent.json) (SHA-256 pinned on chain) |
 | 🚀 **Path to production** | [docs/path-to-production.md](docs/path-to-production.md) |
 
