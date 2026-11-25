@@ -2,6 +2,17 @@
 
 > Ghi chú ngắn để tiếp tục công việc ở phiên sau. **Bản mới nhất: `Tong-hop-sau-W6.md` (v5, 20/11)**; chi tiết thiết kế L1–L4 vẫn ở `Tong-hop-sau-W4.md`.
 
+## 0h. L3 + L4 đã cài (26/11, rạng sáng)
+
+- **Node 22** cho cả repo (`.nvmrc`, `engines`, CI). Shell mới đã dùng 22.23.3; nếu một shell cũ còn Node 20: `nvm use 22`.
+- **Độ trễ thu hồi:** follower poll khối finalized theo height mỗi 1 s → khoảng 14,5 s sau khi giao dịch thu hồi finalized (phần còn lại do node). Tạm chấp nhận.
+- **L4:** `packages/gateway/src/anchorer.ts`. Trước mọi hành động cấp 2, gateway neo đầu chuỗi audit (`MGATE-AUD {hash, seq}`) bằng gateway-B; neo không finalized → từ chối `audit_anchor_failed`. Kiểm lại: `pnpm --filter @mandate-gate/gateway verify-audit <thư mục audit>` (chỉ đọc chain).
+- **L3:** `approvals.ts` (giữ hành động 5 phút, dùng một lần, kiểm commitment người duyệt) + `verifier.ts` (V&A V1 thật: `createAndAnchor` VRA với `ResourceID = D`, `createChecked`, bắt buộc credential gắn account, neo VAA). Trang duyệt: `http://127.0.0.1:<port>/approvals/<id>` (bundle `web/approve.ts`, build bằng esbuild). Mọi giao dịch của gateway-B đi qua một hàng đợi tuần tự (`txqueue.ts`).
+- Phiếu giao việc có thể chỉ định người duyệt: `pnpm --filter @mandate-gate/issuer wo issue --approver <credId>`; salt nằm ở `.data/work-orders/<id>.approver-salt`, đưa cho kỹ sư qua link `…/approvals/<id>#salt=<salt>`.
+- 38 test offline qua (12 core + 26 gateway, có 8 test L3/L4 với chain giả).
+- **Chạy live 26/11 (chưa có người duyệt):** phiếu `wo_20261125_79ccf5` (neo `f3ea07a9…d36b`, gateway-B trả phí), VRA thật `3e8b0b9f…8677` (ResourceID = D, ConnectionID = mã phê duyệt, ContextString = câu đồng ý; trang duyệt tải request thật, không lỗi). Kết quả: logs/restart ok, data_delete bị chặn (ngoài phạm vi), **deploy_prod bị từ chối `approval_timeout`** sau 5 phút (đúng, không ai duyệt), mạo danh và thiếu phiếu bị chặn. Neo audit cuối phiên `85ef4f47…a9b6` (seq 11); `verify-audit` → chuỗi nguyên vẹn, **MATCH**, RESULT OK.
+- **Việc bạn cần làm (khoảng 5 phút):** chạy lại lệnh live trong README (`LIVE_APPROVAL=1 …`), mở link in ra bằng Chrome có Browser Wallet (Testnet), bấm **Approve with Concordium wallet**, chọn account, Approve. Gateway sẽ kiểm proof, neo VAA, neo audit rồi mới deploy.
+
 ## 0g. ✅ S1 hoàn tất (25/11, tối) — gateway chạy thật với chain
 
 | Bước | Kết quả | Link |

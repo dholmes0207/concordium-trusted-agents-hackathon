@@ -80,7 +80,10 @@ if (process.env.WAIT_FOR_REVOCATION) {
   await call('logs_read', { service: 'payments' });
 }
 if (live) {
-  console.log(`\naudit log: ${dataDir}`);
+  // Anchor whatever is left in the log so the whole run is covered on chain.
+  const a = await gateway.anchorer!.anchorNow().catch((e) => ({ error: (e as Error).message }));
+  console.log('\nfinal audit anchor:', JSON.stringify(a));
+  console.log(`audit log: ${dataDir}`);
   console.log(`check it: pnpm --filter @mandate-gate/gateway verify-audit ${dataDir}`);
 }
 gw.close(); ops.close(); process.exit(0);

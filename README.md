@@ -14,7 +14,7 @@
 | 🪪 **Agent Card** | [agent-card/mandate-gate-devops-agent.json](agent-card/mandate-gate-devops-agent.json) (SHA-256 pinned on chain) |
 | 🚀 **Path to production** | [docs/path-to-production.md](docs/path-to-production.md) |
 
-> **Status (25 Nov 2026):** build in progress. Working today: signed request envelopes, the MCP gateway with idempotency, size limits and a hash-chained audit log, the agent-side proxy, simulated customer infrastructure, and 15 automated tests. Next: on-chain agent checks (spike S0), work-order anchors and revocation (S1, L2), human approval with Verify & Access (L3).
+> **Status (26 Nov 2026):** all four layers are implemented. L1 on-chain agent checks and L2 anchored, revocable work orders run live on testnet. L3 (approval held until an engineer answers a Verify & Access V1 request whose `ResourceID` is the action digest) and L4 (audit head anchored as `MGATE-AUD` before every level-2 action, fail closed) pass 38 automated tests; the live wallet approval run is next. Then: HolmesGPT as the agent, ID App approval, x402.
 
 ---
 
@@ -68,11 +68,11 @@ Tailieu/         research notes, workshop reports, slides and transcripts (Vietn
 
 ## 4. Run it locally
 
-Prerequisites: Node.js ≥ 20 (22 recommended), pnpm 12. Keys never live in the repository: they go in `~/ccd-keys/` (override with `CCD_KEYS_DIR`).
+Prerequisites: Node.js 22 (`.nvmrc`), pnpm 12. Keys never live in the repository: they go in `~/ccd-keys/` (override with `CCD_KEYS_DIR`).
 
 ```bash
 pnpm install
-pnpm test          # 15 offline tests: envelope, idempotency, audit chain, gateway end to end
+pnpm test          # 38 offline tests: envelope, audit chain, work orders, gateway end to end (L1–L4, fake chain)
 pnpm typecheck
 ```
 
@@ -85,6 +85,19 @@ GATEWAY_CONFIG=gateway.config.json pnpm gateway           # MandateGate on 127.0
 pnpm --filter spike-s0-agent-key keygen                   # creates ~/ccd-keys/agent-evm.json
 ```
 
+Company A issues a work order (anchored on testnet; `--approver <credId>` names the engineer who may approve):
+
+```bash
+pnpm --filter @mandate-gate/issuer wo issue --hours 3 --sponsor
+```
+
+Live run against testnet with the approval flow (sends VRA, VAA and `MGATE-AUD` transactions from the gateway account): the deploy is held and the script prints an approval link to open in a browser with the Concordium Browser Wallet (testnet).
+
+```bash
+LIVE_APPROVAL=1 pnpm --filter @mandate-gate/gateway exec tsx scripts/testnet-e2e.ts <work-order.json> <start height>
+pnpm --filter @mandate-gate/gateway verify-audit <audit dir>      # log vs. on-chain anchors, read only
+```
+
 Then register `packages/agent-proxy` as a stdio MCP server in your agent (for Claude Code: `claude mcp add mandate-gate -- pnpm --dir packages/agent-proxy start`).
 
 ## 5. Concordium components used
@@ -94,8 +107,8 @@ Then register `packages/agent-proxy` as a stdio MCP server in your agent (for Cl
 | Agent Registry (CIS-8004) + Agent Card | L1 agent identity: agent #1505, card hosted in this repo | ✅ Live on testnet |
 | Verified by Concordium badge | L1 five checks (registry, active, URL, bytes, owner) | ✅ `badge_valid: true`; gateway check `ok: true` |
 | CIS-8 external key binding | L1: EVM key (`eip155:84532`) that signs every request | ✅ Bound to the agent owner |
-| Register Data | L2 work orders and revocations ([issue, sponsored](https://ccdexplorer.io/testnet/transaction/ffd8f75ffddebc1719a0d551dc53e1053532b8572c8e74c1687b35b46bd19030) · [revoke](https://ccdexplorer.io/testnet/transaction/aa1cac7f1a2eb1802faedfef223ad35be2c990dba284a978ab33516cbe2c4ab9)), L4 audit anchors | ✅ L2 live on testnet |
-| Verify & Access V1 | L3 human approval bound to the action (`ResourceID` = action digest) | Tested on testnet (S3a) |
+| Register Data | L2 work orders and revocations ([issue, sponsored](https://ccdexplorer.io/testnet/transaction/ffd8f75ffddebc1719a0d551dc53e1053532b8572c8e74c1687b35b46bd19030) · [revoke](https://ccdexplorer.io/testnet/transaction/aa1cac7f1a2eb1802faedfef223ad35be2c990dba284a978ab33516cbe2c4ab9)), L4 audit anchors (`MGATE-AUD`, before each level-2 action) | ✅ L2 live on testnet; L4 implemented |
+| Verify & Access V1 | L3 human approval bound to the action (`ResourceID` = action digest; VRA anchored by the gateway, proof checked with `VerificationAuditRecordV1.createChecked`, VAA anchored) | Implemented; wallet run tested in S3a |
 | Sponsored transactions | Fees paid by the gateway, not the agent or engineer | ✅ Work-order anchor sponsored by the gateway account |
 | x402 | Pay-per-privileged-action extension | Planned |
 
