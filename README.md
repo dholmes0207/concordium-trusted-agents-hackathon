@@ -14,7 +14,7 @@
 | 🪪 **Agent Card** | [agent-card/mandate-gate-devops-agent.json](agent-card/mandate-gate-devops-agent.json) (SHA-256 pinned on chain) |
 | 🚀 **Path to production** | [docs/path-to-production.md](docs/path-to-production.md) |
 
-> **Status (26 Nov 2026):** all four layers are implemented. L1 on-chain agent checks and L2 anchored, revocable work orders run live on testnet. L3 (approval held until an engineer answers a Verify & Access V1 request whose `ResourceID` is the action digest) and L4 (audit head anchored as `MGATE-AUD` before every level-2 action, fail closed) pass 38 automated tests; the live wallet approval run is next. Then: HolmesGPT as the agent, ID App approval, x402.
+> **Status (26 Nov 2026):** all four layers are implemented. L1 on-chain agent checks and L2 anchored, revocable work orders run live on testnet. L3 (approval held until an engineer answers a Verify & Access V1 request whose `ResourceID` is the action digest) and L4 (audit head anchored as `MGATE-AUD` before every level-2 action, fail closed) pass 38 automated tests and ran live on testnet with the Browser Wallet ([VRA](https://ccdexplorer.io/testnet/transaction/0ac27871fda1d2b975d3a98dfbe2e83937cfe32ae18c7b41599dbd3cd7633227) → [VAA](https://ccdexplorer.io/testnet/transaction/ad4768043e829c66ef2c2c269fab3cb011eb3fa7dc5c789f573e193c452b241d) → [audit anchor](https://ccdexplorer.io/testnet/transaction/29908ace3784c9af96670eb11cf7a4ed8c24dc9f6b7a5ed355c2c0bd636bf37d) → deploy). Then: HolmesGPT as the agent, ID App approval, x402.
 
 ---
 
@@ -107,8 +107,8 @@ Then register `packages/agent-proxy` as a stdio MCP server in your agent (for Cl
 | Agent Registry (CIS-8004) + Agent Card | L1 agent identity: agent #1505, card hosted in this repo | ✅ Live on testnet |
 | Verified by Concordium badge | L1 five checks (registry, active, URL, bytes, owner) | ✅ `badge_valid: true`; gateway check `ok: true` |
 | CIS-8 external key binding | L1: EVM key (`eip155:84532`) that signs every request | ✅ Bound to the agent owner |
-| Register Data | L2 work orders and revocations ([issue, sponsored](https://ccdexplorer.io/testnet/transaction/ffd8f75ffddebc1719a0d551dc53e1053532b8572c8e74c1687b35b46bd19030) · [revoke](https://ccdexplorer.io/testnet/transaction/aa1cac7f1a2eb1802faedfef223ad35be2c990dba284a978ab33516cbe2c4ab9)), L4 audit anchors (`MGATE-AUD`, before each level-2 action) | ✅ L2 live on testnet; L4 implemented |
-| Verify & Access V1 | L3 human approval bound to the action (`ResourceID` = action digest; VRA anchored by the gateway, proof checked with `VerificationAuditRecordV1.createChecked`, VAA anchored) | Implemented; wallet run tested in S3a |
+| Register Data | L2 work orders and revocations ([issue, sponsored](https://ccdexplorer.io/testnet/transaction/ffd8f75ffddebc1719a0d551dc53e1053532b8572c8e74c1687b35b46bd19030) · [revoke](https://ccdexplorer.io/testnet/transaction/aa1cac7f1a2eb1802faedfef223ad35be2c990dba284a978ab33516cbe2c4ab9)), L4 audit anchors (`MGATE-AUD`, before each level-2 action) | ✅ L2 and L4 live on testnet |
+| Verify & Access V1 | L3 human approval bound to the action (`ResourceID` = action digest; VRA anchored by the gateway, proof checked with `VerificationAuditRecordV1.createChecked`, VAA anchored) | ✅ Live on testnet with Browser Wallet |
 | Sponsored transactions | Fees paid by the gateway, not the agent or engineer | ✅ Work-order anchor sponsored by the gateway account |
 | x402 | Pay-per-privileged-action extension | Planned |
 
