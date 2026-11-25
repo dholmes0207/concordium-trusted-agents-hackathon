@@ -6,11 +6,16 @@
   "scripts": {
     "keygen": "tsx keygen.ts",
     "cis8": "tsx cis8.ts",
-    "verify-agent": "tsx verify-agent.ts"
+    "verify-agent": "tsx verify-agent.ts",
+    "register-agent": "tsx register-agent.ts",
+    "submit": "tsx submit-payload.ts",
+    "build-card": "tsx build-card.ts"
   },
   "dependencies": {
     "@mandate-gate/core": "workspace:*",
     "viem": "^2.21.45",
-    "@mandate-gate/gateway": "workspace:*"
+    "@mandate-gate/gateway": "workspace:*",
+    "@concordium/web-sdk": "12.0.3",
+    "@grpc/grpc-js": "^1.12.0"
   }
 }

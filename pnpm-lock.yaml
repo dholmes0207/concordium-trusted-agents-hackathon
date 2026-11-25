@@ -238,6 +238,12 @@ importers:
 
   spikes/s0-agent-key:
     dependencies:
+      '@concordium/web-sdk':
+        specifier: 12.0.3
+        version: 12.0.3(@protobuf-ts/runtime-rpc@2.11.1)(cbor2@1.12.0)
+      '@grpc/grpc-js':
+        specifier: ^1.12.0
+        version: 1.14.7
       '@mandate-gate/core':
         specifier: workspace:*
         version: link:../../packages/core

@@ -1,0 +1,3 @@
+
+# Agent Card must keep exact bytes
+agent-card/*.json -text
