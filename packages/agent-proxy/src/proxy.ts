@@ -52,6 +52,9 @@ export async function connectGateway(url: string): Promise<Client> {
 }
 
 /** The MCP server the agent sees: same tools as the gateway, minus the auth field. */
+/** How long the proxy waits for a held call: approval hold (300 s) + anchors + margin. */
+export const APPROVAL_WAIT_MS = Number(process.env.MGATE_CALL_TIMEOUT_MS ?? 420_000);
+
 export function buildProxyServer(cfg: ProxyConfig): McpServer {
   const mcp = new McpServer({ name: 'mandate-gate-agent-proxy', version: '0.1.0' });
   let client: Client | undefined;
@@ -63,7 +66,8 @@ export function buildProxyServer(cfg: ProxyConfig): McpServer {
     }, async (params) => {
       client ??= await connectGateway(cfg.gatewayUrl);
       const auth = await signedCall(cfg, tool, params as Record<string, unknown>);
-      const out = await client.callTool({ name: tool.name, arguments: { params, auth } });
+      // Level-2 actions can be held for human approval (up to 5 min) and an on-chain anchor.
+      const out = await client.callTool({ name: tool.name, arguments: { params, auth } }, undefined, { timeout: APPROVAL_WAIT_MS });
       return out as { content: Array<{ type: 'text'; text: string }>; isError?: boolean };
     });
   }

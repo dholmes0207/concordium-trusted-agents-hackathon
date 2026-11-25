@@ -9,3 +9,4 @@ export * from './audit.js';
 export * from './tools.js';
 export * from './workorder.js';
 export * from './approval.js';
+export * from './chain.js';

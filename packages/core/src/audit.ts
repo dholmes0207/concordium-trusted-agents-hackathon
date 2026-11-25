@@ -8,7 +8,7 @@ import { canonicalJson, sha256, toHex } from './canonical.js';
  * the previous one and a random nonce, so the chain is tamper-evident and short records
  * cannot be guessed from their hash. Anchoring the head hash on chain comes with spike S1.
  */
-export type AuditKind = 'request' | 'decision' | 'approval' | 'execution' | 'revocation' | 'payment' | 'denied_batch';
+export type AuditKind = 'request' | 'decision' | 'approval_requested' | 'approval' | 'execution' | 'revocation' | 'payment' | 'denied_batch';
 
 export interface AuditRecord {
   seq: number;
@@ -48,6 +48,8 @@ export class AuditLog {
   }
 
   get headHash() { return this.head; }
+  /** Sequence number of the last record, -1 when empty. */
+  get lastSeq() { return this.seq - 1; }
 }
 
 /** Recomputes the chain; returns the index of the first broken record, or -1 if intact. */

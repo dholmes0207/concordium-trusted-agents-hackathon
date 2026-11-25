@@ -10,7 +10,9 @@
     "canonicalize": "^2.0.0",
     "cbor-x": "^1.6.0",
     "viem": "^2.21.45",
-    "zod": "^3.25.76"
+    "zod": "^3.25.76",
+    "@concordium/web-sdk": "12.0.3",
+    "@grpc/grpc-js": "^1.12.0"
   },
   "scripts": {
     "test": "tsx --test test/*.test.ts"

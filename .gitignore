@@ -42,3 +42,4 @@ Thumbs.db
 
 # Local runtime data (gateway ledger and audit log)
 .data/
+dist-web/
