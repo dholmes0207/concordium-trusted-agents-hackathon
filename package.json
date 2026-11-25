@@ -4,7 +4,7 @@
   "description": "MandateGate: an MCP gateway that lets a company's AI agent act on a customer's infrastructure only with a verified agent identity, a revocable work order and a human approval, all anchored on Concordium testnet",
   "type": "module",
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "scripts": {
     "typecheck": "pnpm -r --filter './packages/*' --filter './spikes/s0-agent-key' --filter './spikes/s1-anchor' exec tsc --noEmit -p .",

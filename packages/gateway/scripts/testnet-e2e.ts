@@ -9,7 +9,7 @@ import { startMockOps } from '@mandate-gate/mock-ops';
 import { signedCall, connectGateway } from '@mandate-gate/agent-proxy';
 import { WorkOrderSchema, workOrderHash, loadAgentKey, toolByName, CCD_GRPC } from '@mandate-gate/core';
 import { Gateway } from '../src/gateway.js';
-import { MandateIndex, grpcChainSource } from '../src/mandates.js';
+import { MandateIndex, pollingChainSource } from '../src/mandates.js';
 import { RegistryAgentVerifier } from '../src/agents.js';
 
 const [woFile, startArg] = process.argv.slice(2);
@@ -19,7 +19,7 @@ const key = loadAgentKey();
 const OPS = 17501, GW = 17500;
 
 const index = new MandateIndex(new Set([companyA]), 60);
-const follow = index.follow(await grpcChainSource(CCD_GRPC.host, CCD_GRPC.port), BigInt(startArg));
+const follow = index.follow(await pollingChainSource(CCD_GRPC.host, CCD_GRPC.port), BigInt(startArg));
 follow.catch((e) => console.error('follower stopped:', e.message));
 const ops = await startMockOps(OPS);
 const gw = await new Gateway({
@@ -56,7 +56,7 @@ if (process.env.WAIT_FOR_REVOCATION) {
   console.log('\nwaiting for a revocation anchor (run `pnpm --filter @mandate-gate/issuer wo revoke ...` now)…');
   const t0 = Date.now();
   while (index.status(workOrderHash(wo), companyA).status !== 'revoked' && Date.now() - t0 < 300_000) await new Promise((r) => setTimeout(r, 1000));
-  console.log(`revocation seen after ${((Date.now() - t0) / 1000).toFixed(0)} s at height ${index.lastHeight}`);
+  console.log(`revocation seen at ${new Date().toISOString()} (height ${index.lastHeight})`);
   await call('logs_read', { service: 'payments' });
 }
 gw.close(); ops.close(); process.exit(0);

@@ -8,9 +8,11 @@ import { decodeAnchor, toHex } from '@mandate-gate/core';
  */
 export interface RegisterDataEvent { sender: string; dataHex: string; txHash: string }
 export interface FinalizedBlock { height: bigint; hash: string; events: RegisterDataEvent[] }
+/** Emitted by polling sources when the node confirms there is no newer finalized block. */
+export interface TipHeartbeat { heartbeat: true; height: bigint }
 
 /** Source of finalized blocks; the real one wraps the Concordium gRPC client. */
-export interface ChainSource { blocks(fromHeight?: bigint): AsyncIterable<FinalizedBlock> }
+export interface ChainSource { blocks(fromHeight?: bigint): AsyncIterable<FinalizedBlock | TipHeartbeat> }
 
 export type MandateStatus =
   | { status: 'active'; issuedAtHeight: bigint; txHash: string }
@@ -55,13 +57,53 @@ export class MandateIndex {
     return { status: 'active', issuedAtHeight: iss.height, txHash: iss.txHash };
   }
 
-  /** Runs the follow loop until the source ends or the signal aborts. */
+  /** The view is confirmed current up to the chain tip (no newer finalized block exists). */
+  heartbeat(): void { this.lastBlockAt = this.clock(); }
+
+  /** Runs the follow loop until the source ends. */
   async follow(src: ChainSource, fromHeight?: bigint): Promise<void> {
-    for await (const b of src.blocks(fromHeight)) this.ingest(b);
+    for await (const b of src.blocks(fromHeight)) {
+      if ('heartbeat' in b) this.heartbeat(); else this.ingest(b);
+    }
   }
 }
 
-/** Real chain source over the Concordium node gRPC API (testnet). */
+/**
+ * Polling chain source (default): asks the node for the last finalized height every `intervalMs`
+ * and reads any new blocks by height. Detects a revocation within about one poll after the block
+ * is finalized, and emits heartbeats so the staleness check reflects "confirmed at tip".
+ */
+export async function pollingChainSource(host: string, port: number, intervalMs = 1000): Promise<ChainSource> {
+  const { ConcordiumGRPCNodeClient, credentials } = await import('@concordium/web-sdk/nodejs');
+  const client = new ConcordiumGRPCNodeClient(host, port, credentials.createSsl());
+  const eventsOf = async (hash: any): Promise<RegisterDataEvent[]> => {
+    const out: RegisterDataEvent[] = [];
+    for await (const item of client.getBlockTransactionEvents(hash)) {
+      const s = item as any;
+      if (s.transactionType === 'registerData' && s.dataRegistered?.data) {
+        out.push({ sender: s.sender.address, dataHex: s.dataRegistered.data, txHash: s.hash.toString() });
+      }
+    }
+    return out;
+  };
+  return {
+    async *blocks(fromHeight?: bigint) {
+      let next = fromHeight ?? (await client.getConsensusStatus()).lastFinalizedBlockHeight;
+      for (;;) {
+        const tip = (await client.getConsensusStatus()).lastFinalizedBlockHeight;
+        while (next <= tip) {
+          const [hash] = await client.getBlocksAtHeight(next);
+          yield { height: next, hash: hash.toString(), events: await eventsOf(hash) };
+          next += 1n;
+        }
+        yield { heartbeat: true as const, height: tip };
+        await new Promise((r) => setTimeout(r, intervalMs));
+      }
+    },
+  };
+}
+
+/** Streaming chain source over the Concordium node gRPC API (kept for comparison). */
 export async function grpcChainSource(host: string, port: number): Promise<ChainSource> {
   const { ConcordiumGRPCNodeClient, credentials } = await import('@concordium/web-sdk/nodejs');
   const client = new ConcordiumGRPCNodeClient(host, port, credentials.createSsl());

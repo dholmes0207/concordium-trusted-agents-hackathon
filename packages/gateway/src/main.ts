@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { Gateway, type GatewayConfig } from './gateway.js';
-import { MandateIndex, grpcChainSource } from './mandates.js';
+import { MandateIndex, pollingChainSource } from './mandates.js';
 import { RegistryAgentVerifier } from './agents.js';
 import { CCD_GRPC } from '@mandate-gate/core';
 
@@ -12,7 +12,7 @@ const verifier = cfg.onboardedOwners?.length ? new RegistryAgentVerifier(new Set
 let index: MandateIndex | undefined;
 if (cfg.mandates) {
   index = new MandateIndex(new Set(cfg.mandates.trustedIssuers), cfg.mandates.maxStalenessSeconds ?? 30);
-  const src = await grpcChainSource(CCD_GRPC.host, CCD_GRPC.port);
+  const src = await pollingChainSource(CCD_GRPC.host, CCD_GRPC.port);
   index.follow(src, cfg.mandates.startHeight !== undefined ? BigInt(cfg.mandates.startHeight) : undefined)
     .catch((e) => console.error('chain follower stopped (gateway now fails closed):', e.message));
 }
