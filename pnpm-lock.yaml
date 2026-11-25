@@ -234,6 +234,18 @@ importers:
         specifier: ^2.58.4
         version: 2.58.4(typescript@5.9.3)(zod@3.25.76)
 
+  packages/issuer:
+    dependencies:
+      '@concordium/web-sdk':
+        specifier: 12.0.3
+        version: 12.0.3(@protobuf-ts/runtime-rpc@2.11.1)(cbor2@1.12.0)
+      '@grpc/grpc-js':
+        specifier: ^1.12.0
+        version: 1.14.7
+      '@mandate-gate/core':
+        specifier: workspace:*
+        version: link:../core
+
   packages/mock-ops: {}
 
   spikes/s0-agent-key:

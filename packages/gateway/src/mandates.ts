@@ -68,7 +68,7 @@ export async function grpcChainSource(host: string, port: number): Promise<Chain
   return {
     async *blocks(fromHeight?: bigint) {
       const iter = fromHeight !== undefined
-        ? client.getFinalizedBlocksFrom({ value: fromHeight } as any)
+        ? client.getFinalizedBlocksFrom(fromHeight)
         : client.getFinalizedBlocks();
       for await (const blk of iter as AsyncIterable<any>) {
         const events: RegisterDataEvent[] = [];

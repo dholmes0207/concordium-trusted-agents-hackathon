@@ -2,6 +2,17 @@
 
 > Ghi chú ngắn để tiếp tục công việc ở phiên sau. **Bản mới nhất: `Tong-hop-sau-W6.md` (v5, 20/11)**; chi tiết thiết kế L1–L4 vẫn ở `Tong-hop-sau-W4.md`.
 
+## 0g. ✅ S1 hoàn tất (25/11, tối) — gateway chạy thật với chain
+
+| Bước | Kết quả | Link |
+|---|---|---|
+| Cấp phiếu `wo_20261125_1e788a` (agent 1505, 5 thao tác, hạn 8 giờ), anchor `MGATE-WO` từ company-A, **gateway-B sponsor phí** | Finalized; company-A trả 0 CCD, gateway-B trả ~5,3 CCD (`sponsorDetails`) | https://ccdexplorer.io/testnet/transaction/ffd8f75ffddebc1719a0d551dc53e1053532b8572c8e74c1687b35b46bd19030 |
+| Gateway chạy chế độ chain (kiểm agent on-chain + theo dõi block) | `logs_read`, `service_restart` → ok · `data_delete` → `work_order_out_of_scope` · `deploy_prod` → `approval_required` · mạo danh #601 → `agent_key_owner_differs_from_agent_owner` · thiếu phiếu → `work_order_missing_or_malformed` | `packages/gateway/scripts/testnet-e2e.ts` |
+| Thu hồi: anchor `MGATE-WOREV` (company-A tự trả ~4,25 CCD) | Gateway thấy thu hồi rồi từ chối `work_order_revoked`; độ trễ ~20–30 s sau khi finalized (follower đọc từng block, cần tối ưu) | https://ccdexplorer.io/testnet/transaction/aa1cac7f1a2eb1802faedfef223ad35be2c990dba284a978ab33516cbe2c4ab9 |
+
+Công cụ của công ty A: `pnpm --filter @mandate-gate/issuer wo issue [--sponsor]` / `wo revoke <file> [--sponsor]` (phiếu lưu ở `.data/work-orders/`, không commit).
+Việc tiếp: tối ưu follower (độ trễ thu hồi xuống vài giây), anchor audit `MGATE-AUD` từ gateway-B (L4), rồi L3 (hàng chờ duyệt + Verify & Access V1).
+
 ## 0f. ✅ S0 hoàn tất (25/11, tối)
 
 **Trang agent (GitHub Pages):** https://dholmes0207.github.io/concordium-trusted-agents-hackathon/ — tự kiểm 6 điều trong trình duyệt người xem (registry, Active, URL, SHA-256 tự tính, owner, badge check của Concordium); nguồn ở `site/index.html`, đăng bằng workflow `.github/workflows/pages.yml` (Pages source: GitHub Actions).

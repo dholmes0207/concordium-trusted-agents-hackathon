@@ -94,9 +94,9 @@ Then register `packages/agent-proxy` as a stdio MCP server in your agent (for Cl
 | Agent Registry (CIS-8004) + Agent Card | L1 agent identity: agent #1505, card hosted in this repo | ✅ Live on testnet |
 | Verified by Concordium badge | L1 five checks (registry, active, URL, bytes, owner) | ✅ `badge_valid: true`; gateway check `ok: true` |
 | CIS-8 external key binding | L1: EVM key (`eip155:84532`) that signs every request | ✅ Bound to the agent owner |
-| Register Data | L2 work orders and revocations, L4 audit anchors | Script ready (S1) |
+| Register Data | L2 work orders and revocations ([issue, sponsored](https://ccdexplorer.io/testnet/transaction/ffd8f75ffddebc1719a0d551dc53e1053532b8572c8e74c1687b35b46bd19030) · [revoke](https://ccdexplorer.io/testnet/transaction/aa1cac7f1a2eb1802faedfef223ad35be2c990dba284a978ab33516cbe2c4ab9)), L4 audit anchors | ✅ L2 live on testnet |
 | Verify & Access V1 | L3 human approval bound to the action (`ResourceID` = action digest) | Tested on testnet (S3a) |
-| Sponsored transactions | Fees paid by the gateway, not the agent or engineer | Planned |
+| Sponsored transactions | Fees paid by the gateway, not the agent or engineer | ✅ Work-order anchor sponsored by the gateway account |
 | x402 | Pay-per-privileged-action extension | Planned |
 
 ## 6. Team
