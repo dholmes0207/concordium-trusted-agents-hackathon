@@ -9,7 +9,8 @@
 | | |
 |---|---|
 | 🎥 **Demo video (≤ 3 min)** | *to come* |
-| 🔎 **CCDExplorer (testnet)** | *to come (agent registration, CIS-8 binding, anchors)* |
+| 🔎 **CCDExplorer (testnet)** | Agent **#1505** ([register](https://ccdexplorer.io/testnet/transaction/105b018650e557f75b1ebd940be2c2f5a2594b84ff2f80c8bd0558b24991bb65) · [pin card](https://ccdexplorer.io/testnet/transaction/50eb19421df3173f9b2664f754d8d7a522b1d2aeaae594f53a91b2f583b72eba) · [CIS-8 key binding](https://ccdexplorer.io/testnet/transaction/d219aef839d039136d67160d0053b83c90b7b86fb46c850f3f20fdbea39dd72a)) · badge `JyP9Y8gnY2peWyyQMsrAk` |
+| 🪪 **Agent Card** | [agent-card/mandate-gate-devops-agent.json](agent-card/mandate-gate-devops-agent.json) (SHA-256 pinned on chain) |
 | 🚀 **Path to production** | [docs/path-to-production.md](docs/path-to-production.md) |
 
 > **Status (25 Nov 2026):** build in progress. Working today: signed request envelopes, the MCP gateway with idempotency, size limits and a hash-chained audit log, the agent-side proxy, simulated customer infrastructure, and 15 automated tests. Next: on-chain agent checks (spike S0), work-order anchors and revocation (S1, L2), human approval with Verify & Access (L3).
@@ -89,9 +90,9 @@ Then register `packages/agent-proxy` as a stdio MCP server in your agent (for Cl
 
 | Component | Used for | Status |
 |---|---|---|
-| Agent Registry (CIS-8004) + Agent Card | L1 agent identity, minted via agentcards.site | Next (S0) |
-| Verified by Concordium badge | L1 five checks (registry, active, URL, bytes, owner) | Next (S0) |
-| CIS-8 external key binding | L1: EVM key that signs every request | Payload built (S0) |
+| Agent Registry (CIS-8004) + Agent Card | L1 agent identity: agent #1505, card hosted in this repo | ✅ Live on testnet |
+| Verified by Concordium badge | L1 five checks (registry, active, URL, bytes, owner) | ✅ `badge_valid: true`; gateway check `ok: true` |
+| CIS-8 external key binding | L1: EVM key (`eip155:84532`) that signs every request | ✅ Bound to the agent owner |
 | Register Data | L2 work orders and revocations, L4 audit anchors | Script ready (S1) |
 | Verify & Access V1 | L3 human approval bound to the action (`ResourceID` = action digest) | Tested on testnet (S3a) |
 | Sponsored transactions | Fees paid by the gateway, not the agent or engineer | Planned |

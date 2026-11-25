@@ -2,6 +2,20 @@
 
 > Ghi chú ngắn để tiếp tục công việc ở phiên sau. **Bản mới nhất: `Tong-hop-sau-W6.md` (v5, 20/11)**; chi tiết thiết kế L1–L4 vẫn ở `Tong-hop-sau-W4.md`.
 
+## 0f. ✅ S0 hoàn tất (25/11, tối)
+
+| Bước | Kết quả | Link |
+|---|---|---|
+| Tx 1: CIS-8004 `register` (company-A) | Agent **token 1505**, Active, badge `JyP9Y8gnY2peWyyQMsrAk` | https://ccdexplorer.io/testnet/transaction/105b018650e557f75b1ebd940be2c2f5a2594b84ff2f80c8bd0558b24991bb65 |
+| Agent Card | `agent-card/mandate-gate-devops-agent.json` (3.075 byte, SHA-256 `b7242ac8…c0ca`), host bằng raw GitHub; **không được sửa file** | https://raw.githubusercontent.com/dholmes0207/concordium-trusted-agents-hackathon/main/agent-card/mandate-gate-devops-agent.json |
+| Tx 2: `setAgentURI` (ghim URL + hash) | OK | https://ccdexplorer.io/testnet/transaction/50eb19421df3173f9b2664f754d8d7a522b1d2aeaae594f53a91b2f583b72eba |
+| Tx 3: CIS-8 `registerExternalKey` (key EVM `0xA319…c650`, `eip155:84532`) | OK | https://ccdexplorer.io/testnet/transaction/d219aef839d039136d67160d0053b83c90b7b86fb46c850f3f20fdbea39dd72a |
+| Kiểm L1 của gateway | **`ok: true`**, không lý do lỗi | `pnpm --filter spike-s0-agent-key verify-agent 1505 <company-A>` |
+| Check badge của Concordium | `badge_valid: true` | `agent-registry-mcp.concordium.com/v1/check-badge/JyP9Y8gnY2peWyyQMsrAk?network=testnet` |
+| Mạo danh agent #601 bằng key của mình | Bị chặn: `key_owner_differs_from_agent_owner` | |
+
+agentcards.site không dùng được (CDN esm.sh lỗi 500 với `@concordium/web-sdk@12`), nên chuyển sang hướng B: tự host card trong repo, tự đăng ký bằng script (bạn duyệt 25/11).
+
 ## 0e. Account testnet cho demo (25/11)
 
 | Vai trò | Địa chỉ | Index | Ghi chú |

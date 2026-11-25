@@ -9,7 +9,8 @@
     "verify-agent": "tsx verify-agent.ts",
     "register-agent": "tsx register-agent.ts",
     "submit": "tsx submit-payload.ts",
-    "build-card": "tsx build-card.ts"
+    "build-card": "tsx build-card.ts",
+    "pin-and-bind": "tsx pin-and-bind.ts"
   },
   "dependencies": {
     "@mandate-gate/core": "workspace:*",
