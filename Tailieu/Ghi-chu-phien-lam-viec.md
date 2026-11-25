@@ -2,6 +2,16 @@
 
 > Ghi chú ngắn để tiếp tục công việc ở phiên sau. **Bản mới nhất: `Tong-hop-sau-W6.md` (v5, 20/11)**; chi tiết thiết kế L1–L4 vẫn ở `Tong-hop-sau-W4.md`.
 
+## 0e. Account testnet cho demo (25/11)
+
+| Vai trò | Địa chỉ | Index | Ghi chú |
+|---|---|---|---|
+| **company-A** (owner agent, cấp phiếu giao việc) | `3zKuq9cgzYgSs1cXE2ugGq3WkBNkPsAChj1fLSH8HhoQXoNL6s` | 19840 | Identity 1 (IdP 0), 20.000 CCD test |
+| **gateway-B** (anchor audit, sponsor phí) | `2zmbEkwHcYCMz6369NicRQmu1bpxGS33KRM2PE4QAxUfQLWch8` | 19843 | Identity 1 (IdP 0), 20.000 CCD test |
+| Key agent (EVM, CIS-8) | `0xA3198Ee065B9f633aa36030C34310836Bf37c650` | — | `~/ccd-keys/agent-evm.json` |
+
+Còn chờ: xuất key 2 account vào `~/ccd-keys/company-A.export`, `~/ccd-keys/gateway-B.export`; mint agent trên agentcards.site bằng company-A.
+
 ## 0d. Cập nhật cuối phiên 25/11 (đêm)
 
 | Phần | Trạng thái |
