@@ -2,7 +2,19 @@
 
 > Ghi chú ngắn để tiếp tục công việc ở phiên sau. **Bản mới nhất: `Tong-hop-sau-W6.md` (v5, 20/11)**; chi tiết thiết kế L1–L4 vẫn ở `Tong-hop-sau-W4.md`.
 
-## 0k. ⏸ ĐANG LÀM DỞ (dừng 26/11 tối): nâng cấp #1 bảng điều khiển + #2 Kubernetes thật
+## 0l. ✅ #1 bảng điều khiển + #2 Kubernetes thật (26/11, đêm)
+
+- `packages/k8s-ops`: API vận hành của B trên cụm kind thật (kubectl: log, trạng thái + ghi chú phiên bản, rollout restart,
+  scale, set image chờ rollout và tự undo nếu lỗi; chỉ 3 service trong danh sách, kiểm định dạng phiên bản). `demo:up` tự dùng
+  cụm nếu đang chạy (`MGATE_INFRA=k8s|mock` để ép). Đã thử qua proxy + gateway: log thật thấy pool cạn, restart thật.
+- Bảng điều khiển `http://127.0.0.1:7400/dashboard`: phiếu (trạng thái chain, hạn, phạm vi, ngân sách x402), lệnh chờ duyệt,
+  dòng thời gian trực tiếp (SSE) từng lệnh qua các bước với link CCDExplorer; giao diện tối, điện thoại.
+- Kill switch của B: `POST /dashboard/suspend` → phiếu bị chặn ngay (`work_order_suspended_by_customer`), ghi audit `revocation`
+  (by: customer) và neo ngay; giữ nguyên sau khi khởi động lại. Có test (49 test).
+- **Chưa chạy live với Claude Code + duyệt ví trên cụm thật** (cần bạn): `pnpm infra:up` → `pnpm demo:up` → mở dashboard →
+  `claude` trong `demo/claude-agent`.
+
+## 0k. (đã xong ở 0l) nâng cấp #1 bảng điều khiển + #2 Kubernetes thật
 
 Bạn đã duyệt: làm **#1 bảng điều khiển của khách hàng** và **#2 hạ tầng thật bằng kind**, cho phép cài Docker/kind.
 
