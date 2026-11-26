@@ -251,6 +251,9 @@ importers:
       '@mandate-gate/agent-proxy':
         specifier: workspace:*
         version: link:../agent-proxy
+      '@mandate-gate/k8s-ops':
+        specifier: workspace:*
+        version: link:../k8s-ops
       '@mandate-gate/mock-ops':
         specifier: workspace:*
         version: link:../mock-ops
@@ -272,6 +275,8 @@ importers:
       '@mandate-gate/core':
         specifier: workspace:*
         version: link:../core
+
+  packages/k8s-ops: {}
 
   packages/mock-ops: {}
 

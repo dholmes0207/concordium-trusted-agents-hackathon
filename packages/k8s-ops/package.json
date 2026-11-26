@@ -1,0 +1,9 @@
+{
+  "name": "@mandate-gate/k8s-ops",
+  "private": true,
+  "type": "module",
+  "description": "Customer B's real infrastructure adapter: the ops API behind the gateway, implemented with kubectl on a local kind cluster",
+  "main": "src/server.ts",
+  "exports": { ".": "./src/server.ts" },
+  "scripts": { "start": "tsx src/main.ts" }
+}

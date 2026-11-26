@@ -11,7 +11,9 @@
     "test": "pnpm -r --filter './packages/*' --if-present test",
     "gateway": "pnpm --filter @mandate-gate/gateway start",
     "mock-ops": "pnpm --filter @mandate-gate/mock-ops start",
-    "demo:up": "pnpm --filter @mandate-gate/gateway demo:up"
+    "demo:up": "pnpm --filter @mandate-gate/gateway demo:up",
+    "infra:up": "sh infra/kind/up.sh",
+    "infra:down": "sh infra/kind/down.sh"
   },
   "devDependencies": {
     "typescript": "^5.6.3",
