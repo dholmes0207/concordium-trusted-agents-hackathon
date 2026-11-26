@@ -2,6 +2,35 @@
 
 > Ghi chú ngắn để tiếp tục công việc ở phiên sau. **Bản mới nhất: `Tong-hop-sau-W6.md` (v5, 20/11)**; chi tiết thiết kế L1–L4 vẫn ở `Tong-hop-sau-W4.md`.
 
+## 0k. ⏸ ĐANG LÀM DỞ (dừng 26/11 tối): nâng cấp #1 bảng điều khiển + #2 Kubernetes thật
+
+Bạn đã duyệt: làm **#1 bảng điều khiển của khách hàng** và **#2 hạ tầng thật bằng kind**, cho phép cài Docker/kind.
+
+**Đã xong (#2, phần cụm):**
+- Docker 29.9.3 có sẵn (user trong nhóm `docker`, không cần sudo). Đã cài `kind` v0.33.0 và `kubectl` v1.37.3 vào
+  `~/.local/bin` (tải bản chính thức, checksum khớp).
+- `infra/kind/`: `app/server.js` (service thật: v2.2.0 rò ~15% kết nối trên /charge → pool 20 cạn sau khoảng 1 phút,
+  p99 tăng; v2.2.1 hết rò), `Dockerfile`, `manifests.yaml` (namespace `customer-b`: payments ×2, billing, customer-db,
+  ConfigMap `releases` ghi chú phiên bản), `up.sh` (tạo cụm `mandate-gate`, build + nạp image, deploy, luôn đưa payments về
+  v2.2.0), `down.sh`.
+- Cụm đã tạo và chạy được (3 deployment Ready).
+
+**Việc tiếp theo (#2):**
+1. Viết `packages/k8s-ops` (cùng API `POST /ops/<action>` → `{ok, result}` như `mock-ops`, cổng 7401) gọi
+   `kubectl --context kind-mandate-gate -n customer-b`: `logs.read` = `kubectl logs deploy/<svc> --tail`;
+   `service.status` = deployment (image/phiên bản, replicas, ready, restarts) + ghi chú từ ConfigMap `releases`;
+   `service.restart` = `rollout restart` + chờ `rollout status`; `service.scale`; `deploy.prod` = `set image app=mgate/svc:<ver>`
+   + chờ rollout; `data.delete` (chỉ để bị chặn). Chỉ cho phép tên service trong danh sách, kiểm định dạng phiên bản.
+2. `demo-up`: `MGATE_INFRA=k8s` thì chạy k8s-ops thay mock-ops; cập nhật hướng dẫn demo, kịch bản video, docs.
+3. Chạy thử với Claude Code: điều tra log thật → restart (lỗi quay lại sau khoảng 1 phút) → deploy v2.2.1 → log hết lỗi.
+
+**Việc tiếp theo (#1):** trang bảng điều khiển do gateway phục vụ (ví dụ `/dashboard`): dòng thời gian mỗi lệnh
+L1→L4 (đèn xanh/đỏ, lý do), link CCDExplorer, thanh ngân sách x402, nút thu hồi phiếu (kill switch), duyệt ngay trên trang;
+cập nhật trực tiếp (SSE) từ audit log.
+
+**Sau khi khởi động lại máy:** container của kind dừng theo Docker. Chạy lại `sh infra/kind/up.sh` (bỏ qua bước tạo cụm nếu
+đã có); nếu `kubectl` báo lỗi kết nối thì `sh infra/kind/down.sh` rồi `sh infra/kind/up.sh`.
+
 ## 0j. ✅ Trang duyệt 216 KB đã thử với Browser Wallet (26/11, tối)
 
 Phiếu `aa3a7082…` (neo `3f45de1f…0d4b`). Lệnh deploy qua proxy → seq 45 `payment_required` → seq 47 VRA

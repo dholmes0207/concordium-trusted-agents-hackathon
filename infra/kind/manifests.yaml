@@ -1,0 +1,63 @@
+# Customer B's environment: three services in namespace customer-b.
+apiVersion: v1
+kind: Namespace
+metadata: { name: customer-b }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: { name: releases, namespace: customer-b }
+data:
+  payments: |
+    [{"version":"v2.2.1","notes":"Fix: /charge did not return DB connections to the pool on the card-declined path (leak introduced in v2.2.0)."},
+     {"version":"v2.2.0","notes":"New card-declined handling on /charge."}]
+  billing: '[{"version":"v1.8.3","notes":"Nightly invoice run."}]'
+  customer-db: '[]'
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: payments, namespace: customer-b, labels: { app: payments } }
+spec:
+  replicas: 2
+  selector: { matchLabels: { app: payments } }
+  template:
+    metadata: { labels: { app: payments } }
+    spec:
+      containers:
+        - name: app
+          image: mgate/svc:v2.2.0
+          imagePullPolicy: Never
+          env: [{ name: SERVICE, value: payments }]
+          readinessProbe: { httpGet: { path: /healthz, port: 8080 }, periodSeconds: 2 }
+          resources: { requests: { cpu: 10m, memory: 32Mi }, limits: { memory: 96Mi } }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: billing, namespace: customer-b, labels: { app: billing } }
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: billing } }
+  template:
+    metadata: { labels: { app: billing } }
+    spec:
+      containers:
+        - name: app
+          image: mgate/svc:v1.8.3
+          imagePullPolicy: Never
+          env: [{ name: SERVICE, value: billing }]
+          resources: { requests: { cpu: 10m, memory: 32Mi }, limits: { memory: 96Mi } }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: customer-db, namespace: customer-b, labels: { app: customer-db } }
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: customer-db } }
+  template:
+    metadata: { labels: { app: customer-db } }
+    spec:
+      containers:
+        - name: app
+          image: mgate/svc:pg-16
+          imagePullPolicy: Never
+          env: [{ name: SERVICE, value: customer-db }]
+          resources: { requests: { cpu: 10m, memory: 32Mi }, limits: { memory: 96Mi } }
