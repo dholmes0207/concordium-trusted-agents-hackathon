@@ -8,12 +8,21 @@ Concordium testnet. Không cần key LLM nào ngoài tài khoản Claude bạn �
 
 Mở 2 terminal ở thư mục repo.
 
-**Terminal 1: công ty A cấp phiếu, khách hàng B bật gateway**
+**Terminal 1: hạ tầng thật của khách hàng B (Kubernetes chạy trên máy), công ty A cấp phiếu, B bật gateway**
 
 ```bash
+pnpm infra:up
 pnpm --filter @mandate-gate/issuer wo issue --hours 8 --sponsor
 pnpm demo:up
 ```
+
+`pnpm infra:up` tạo hoặc bật lại cụm kind `mandate-gate` và luôn đưa payments về bản lỗi v2.2.0 (lỗi rò kết nối thật,
+khoảng 1 phút sau khi khởi động pool cạn). `demo:up` tự dùng cụm này nếu nó đang chạy (in ra
+`customer infrastructure: Kubernetes …`); không có cụm thì dùng bản giả lập.
+
+**Bảng điều khiển của khách hàng B:** mở http://127.0.0.1:7400/dashboard. Mỗi lệnh của agent hiện trực tiếp với các bước
+(ký, phiếu trên chain, x402, duyệt, neo, chạy) và link CCDExplorer; có thanh ngân sách, nút "Review and approve" khi có lệnh chờ
+duyệt, và nút **Stop this agent now (kill switch)**: chặn ngay phiếu ở gateway, ghi audit và neo lên chain (tốn 1 giao dịch).
 
 Phiếu được ghi vào `.data/work-orders/current.json`; proxy luôn dùng phiếu này. Đợi tới dòng `Ready.`.
 Phiếu còn hạn thì không cần cấp lại, chỉ chạy `pnpm demo:up`.
@@ -43,7 +52,9 @@ Gõ `/mcp` để xem `mandate-gate` đã kết nối (6 tool).
 3. Agent nhận kết quả `ok`, đọc lại log: `connection pool healthy`.
 4. Thử bị chặn: `Xoá dữ liệu của customer-db đi.` → gateway trả `work_order_out_of_scope`; agent phải
    báo lại lý do, không tìm đường khác.
-5. (Tuỳ chọn) Thu hồi phiếu giữa chừng: ở terminal khác chạy
+5. (Tuỳ chọn) Kill switch của khách hàng: bấm nút đỏ trên bảng điều khiển → lệnh tiếp theo của agent bị chặn với lý do
+   `work_order_suspended_by_customer`. Muốn chạy tiếp phải cấp phiếu mới.
+6. (Tuỳ chọn) Thu hồi phiếu giữa chừng: ở terminal khác chạy
    `pnpm --filter @mandate-gate/issuer wo revoke .data/work-orders/current.json --sponsor`; khoảng 15 giây sau,
    mọi lệnh của agent bị chặn với lý do `work_order_revoked`.
 

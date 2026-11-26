@@ -15,6 +15,8 @@ export interface AnchorEntry { seq: number; head: string; status: 'submitted' | 
 export class AuditAnchorer {
   private queue: Promise<unknown> = Promise.resolve();
   private last?: AnchorEntry;
+  /** Called after each finalized anchor (the dashboard listens). */
+  onFinalized?: (e: AnchorEntry) => void;
 
   constructor(private audit: AuditLog, private send: AnchorSender, private file: string) {
     if (existsSync(file)) {
@@ -42,6 +44,7 @@ export class AuditAnchorer {
         const e: AnchorEntry = { ...base, status: 'finalized', txHash: r.txHash };
         appendFileSync(this.file, JSON.stringify(e) + '\n');
         this.last = e;
+        this.onFinalized?.(e);
         return e;
       } catch (err) {
         const e: AnchorEntry = { ...base, status: 'failed', error: (err as Error).message.slice(0, 200) };

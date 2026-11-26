@@ -28,11 +28,12 @@ action, every 5 minutes and at shutdown; Claude Code as the agent; 48 automated 
 
 | Area | Hackathon | Production |
 |---|---|---|
-| Customer infrastructure | Simulated services (`mock-ops`) | Adapters for Kubernetes, CI/CD and cloud APIs behind the gateway |
+| Customer infrastructure | A real local Kubernetes cluster (kind) driven through `k8s-ops` (kubectl: logs, rollout restart, scale, set image with rollback); `mock-ops` remains for tests | Kubernetes API with a least-privilege service account, plus CI/CD and cloud adapters |
 | Company identity | A personal testnet identity plays company A (the business-identity provider required a real ID check, which we did not do) | Company account with a business identity (legal name / LEI) and a check of it at onboarding |
 | Approval display | The wallet does not show the request context; the gateway's page shows the action | ID App or wallet support for displaying `ContextString`; approval page served by the provider and cross-checked |
 | Approver binding | Salted commitment to the approver, tested offline; live runs accepted any verified account | Approver lists per customer, rotation, and break-glass rules |
 | Keys | Files in `~/ccd-keys` (mode 600) | HSM / KMS for the gateway and agent keys; separate hot wallet with a small balance for x402 |
+| Dashboard | Customer B's live dashboard with kill switch, served on 127.0.0.1 without login | Single sign-on and roles for the customer's operators |
 | Storage and scale | One gateway process, JSON-lines files | Database, several gateway replicas sharing one transaction queue per account |
 | Chain access | Public testnet gRPC and the hosted Agent Registry MCP | Own node(s) plus the hosted services as fallback; monitoring of chain lag |
 | Agent | Claude Code (HolmesGPT integration in progress) | HolmesGPT and other MCP agents; A2A where needed |

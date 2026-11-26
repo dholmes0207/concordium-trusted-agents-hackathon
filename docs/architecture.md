@@ -12,7 +12,8 @@ B's side against Concordium before anything runs.
 | agent-proxy | `packages/agent-proxy` | Company A | Stdio MCP server for the agent. Holds the agent's EVM key (bound to agent #1505 with CIS-8) and signs every call; carries the work order; pays x402 requirements from the agent wallet within budget |
 | Issuer CLI | `packages/issuer` | Company A | Builds, anchors and revokes work orders (`MGATE-WO` / `MGATE-WOREV`) |
 | MandateGate gateway | `packages/gateway` | Customer B | Streamable-HTTP MCP server and decision pipeline (L1–L4 + x402), approval pages, x402 facilitator, audit log and anchors |
-| Customer infrastructure | `packages/mock-ops` | Customer B | Simulated services (payments, billing, customer-db) reachable only from the gateway |
+| Customer infrastructure | `infra/kind` + `packages/k8s-ops` (`packages/mock-ops` in tests) | Customer B | A real Kubernetes cluster (kind) with payments, billing and customer-db; the ops API behind the gateway drives it with kubectl |
+| Customer dashboard | `packages/gateway/src/dashboard.ts` | Customer B | Live view of every agent call through the checks, budget, pending approvals, and a kill switch that stops a work order at once and anchors the stop |
 | Shared core | `packages/core` | both | Request envelope (EIP-191), JCS hashing, CBOR anchors, work-order schema, approval digest, audit log, chain helpers |
 | Concordium testnet | | | Agent Registry (CIS-8004), CIS-8 key registry, Register Data anchors, Verify & Access V1, sponsored transactions |
 
@@ -79,7 +80,7 @@ are business data), the audit records (may contain operational details; the hash
 make them tamper evident), and the engineer's identity (the proof reveals only an account credential
 id and the issuer; a work order can commit to the approver with a salted hash instead of naming them).
 
-**Threats covered, with tests** (`packages/gateway/test/*.ts`, 48 tests in total with `packages/core`):
+**Threats covered, with tests** (`packages/gateway/test/*.ts`, 49 tests in total with `packages/core`):
 
 | Threat | Defence |
 |---|---|
@@ -87,6 +88,7 @@ id and the issuer; a work order can commit to the approver with a salted hash in
 | Replayed or altered request | Signed envelope with short validity, request-id ledger, params hash |
 | Agent acts outside its mandate | Work-order scope per action and resource, expiry, rate limit |
 | Mandate withdrawn | Revocation anchor followed block by block; about 15 s after finality in live tests |
+| Customer wants it stopped now | Kill switch on the dashboard: work order suspended at the gateway immediately, recorded and anchored |
 | Gateway cannot see the chain | Chain view older than 60 s → every request denied |
 | Approval reused for another action | ResourceID = digest of audience, agent, work order, request, action, resource, params, nonce, expiry; bound into the VRA anchor (spike S3a) |
 | Wrong person approves | Optional salted commitment to the approver's account credential in the work order |

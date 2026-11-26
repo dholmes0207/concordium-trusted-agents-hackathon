@@ -8,6 +8,7 @@ import { startMockOps } from '@mandate-gate/mock-ops';
 import { startK8sOps, DEFAULT_K8S } from '@mandate-gate/k8s-ops';
 import type { GatewayConfig } from '../src/gateway.js';
 import { startGateway } from '../src/run.js';
+import { WorkOrderSchema } from '@mandate-gate/core';
 
 const root = join(import.meta.dirname, '../../..');
 const meta = join(root, '.data/work-orders/current.meta.json');
@@ -32,7 +33,8 @@ if (infra === 'k8s') {
   await startMockOps(7401);
   console.log('customer infrastructure (simulated) on http://127.0.0.1:7401  (run infra/kind/up.sh for the real cluster)');
 }
-const { index } = await startGateway(cfg, 7400, { startHeight: BigInt(m.anchorHeight) - 2n });
+const { index, gw } = await startGateway(cfg, 7400, { startHeight: BigInt(m.anchorHeight) - 2n });
+gw.watchWorkOrder(WorkOrderSchema.parse(JSON.parse(readFileSync(join(root, '.data/work-orders/current.json'), 'utf8'))));
 const owner = cfg.mandates!.trustedIssuers[0];
 process.stdout.write(`reading testnet from height ${BigInt(m.anchorHeight) - 2n} for work order ${m.hash.slice(0, 12)}…`);
 for (let i = 0; i < 300; i++) {
@@ -40,4 +42,4 @@ for (let i = 0; i < 300; i++) {
   if (st === 'active' || st === 'revoked') { console.log(` ${st}.`); break; }
   await new Promise((r) => setTimeout(r, 1000));
 }
-console.log('\nReady. Open Claude Code in demo/claude-agent and give it the incident. Ctrl+C to stop.\n');
+console.log('\nReady. Dashboard: http://127.0.0.1:7400/dashboard\nOpen Claude Code in demo/claude-agent and give it the incident. Ctrl+C to stop.\n');

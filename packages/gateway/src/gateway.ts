@@ -15,6 +15,7 @@ import type { ApprovalService, PendingApproval } from './approvals.js';
 import { BudgetBook, paymentSignature, type PaymentProcessor, type PaymentsConfig } from './payments.js';
 import type { PaymentPayload } from '@x402/core/types';
 import { readFileSync, existsSync } from 'node:fs';
+import { DASHBOARD_HTML } from './dashboard.js';
 import { fileURLToPath } from 'node:url';
 
 export interface TrustedAgent { tokenId: string; address: string; owner?: string }
@@ -67,17 +68,34 @@ export class Gateway {
   /** Called when an approval is waiting (prints the link in the demo). */
   onApprovalPending?: (p: PendingApproval, url: string) => void;
   private baseUrl = '';
+  /** Dashboard: live listeners, work orders seen on requests, and customer-side suspensions (kill switch). */
+  private listeners = new Set<(e: unknown) => void>();
+  private seenWorkOrders = new Map<string, WorkOrder>();
+  private suspended = new Set<string>();
 
   constructor(readonly cfg: GatewayConfig, mandateIndex?: MandateIndex, private agentVerifier?: AgentVerifier,
     anchorSender?: AnchorSender, readonly approvals?: ApprovalService, readonly payments?: PaymentProcessor) {
     this.ledger = new RequestLedger(join(cfg.dataDir, 'requests.jsonl'));
     this.audit = new AuditLog(join(cfg.dataDir, 'audit.jsonl'));
     this.budget = new BudgetBook(join(cfg.dataDir, 'audit.jsonl'));
+    // Customer-side suspensions survive restarts: they are audit records.
+    const auditFile = join(cfg.dataDir, 'audit.jsonl');
+    if (existsSync(auditFile)) {
+      for (const l of readFileSync(auditFile, 'utf8').split('\n')) {
+        if (!l.trim()) continue;
+        const rec = JSON.parse(l) as { kind: string; data: { by?: string; workOrderHash?: string } };
+        if (rec.kind === 'revocation' && rec.data.by === 'customer' && rec.data.workOrderHash) this.suspended.add(rec.data.workOrderHash);
+      }
+    }
+    // Every audit record is also pushed to dashboard listeners.
+    const append = this.audit.append.bind(this.audit);
+    this.audit.append = (kind, data) => { const rec = append(kind, data); this.emit({ type: 'audit', record: rec }); return rec; };
     for (const p of approvals?.recover() ?? []) {
       this.audit.append('decision', { approvalId: p.id, action: p.subject.action, decision: 'deny', reason: 'approval_interrupted_by_restart', digest: p.digest });
     }
     if (anchorSender) {
       this.anchorer = new AuditAnchorer(this.audit, anchorSender, join(cfg.dataDir, 'anchors.jsonl'));
+      this.anchorer.onFinalized = (e) => this.emit({ type: 'anchor', entry: e });
       if (cfg.audit?.intervalSeconds) this.anchorer.startTimer(cfg.audit.intervalSeconds);
     }
     if (cfg.mandates) {
@@ -94,6 +112,8 @@ export class Gateway {
     const wo = parsed.data;
     const h = workOrderHash(wo);
     if (auth.request.workOrderHash !== h) return { ok: false, reason: 'work_order_hash_mismatch' };
+    this.seenWorkOrders.set(h, wo);
+    if (this.suspended.has(h)) return { ok: false, reason: 'work_order_suspended_by_customer' };
     const st = this.mandates.status(h, wo.issuer.account);
     if (st.status === 'stale') return { ok: false, reason: 'revocation_status_stale' };
     if (st.status === 'revoked') return { ok: false, reason: 'work_order_revoked' };
@@ -243,6 +263,79 @@ export class Gateway {
     }
   }
 
+  /** Shows a work order on the dashboard before the agent's first call (it is still checked per request). */
+  watchWorkOrder(wo: WorkOrder) { this.seenWorkOrders.set(workOrderHash(wo), wo); this.emit({ type: 'work_order' }); }
+
+  private emit(e: unknown) { for (const l of this.listeners) { try { l(e); } catch { /* listener gone */ } } }
+
+  /**
+   * Customer B's kill switch: stops a work order at this gateway at once, whatever company A does.
+   * Recorded in the audit log and anchored immediately, so the stop itself is on chain.
+   */
+  async suspendWorkOrder(hash: string, note = 'kill switch'): Promise<{ seq: number; anchorTx?: string }> {
+    if (!/^[0-9a-f]{64}$/.test(hash)) throw new Error('bad work order hash');
+    this.suspended.add(hash);
+    const rec = this.audit.append('revocation', { by: 'customer', workOrderHash: hash, note });
+    let anchorTx: string | undefined;
+    if (this.anchorer) anchorTx = (await this.anchorer.anchorNow()).txHash;
+    return { seq: rec.seq, anchorTx };
+  }
+
+  /** Snapshot for the dashboard: work orders, budget, chain view, approvals, recent audit records. */
+  dashboardState() {
+    const file = join(this.cfg.dataDir, 'audit.jsonl');
+    const records = existsSync(file) ? readFileSync(file, 'utf8').split('\n').filter((l) => l.trim()).slice(-400).map((l) => JSON.parse(l)) : [];
+    const price = this.payments?.requirements();
+    return {
+      audience: this.cfg.audience,
+      chain: this.mandates ? { lastHeight: String(this.mandates.lastHeight) } : null,
+      lastAnchor: this.anchorer?.lastFinalized ?? null,
+      anchors: existsSync(join(this.cfg.dataDir, 'anchors.jsonl'))
+        ? readFileSync(join(this.cfg.dataDir, 'anchors.jsonl'), 'utf8').split('\n').filter((l) => l.trim()).map((l) => JSON.parse(l)).filter((a) => a.status === 'finalized')
+        : [],
+      payments: price ? { priceMicroCcd: price.amount, payTo: price.payTo } : null,
+      workOrders: [...this.seenWorkOrders.entries()].map(([hash, wo]) => ({
+        hash, id: wo.id, issuer: wo.issuer.account, agent: wo.agent.tokenId, expiresAt: wo.expiresAt,
+        actions: wo.scope.actions.map((a) => ({ action: a.action, resources: a.resources, approval: a.approval })),
+        chainStatus: this.mandates?.status(hash, wo.issuer.account).status ?? 'n/a',
+        suspended: this.suspended.has(hash),
+        budget: wo.budget ? { maxMicroCcd: wo.budget.maxSpendMicroCcd, spentMicroCcd: String(this.budget.spentOf(hash)) } : null,
+      })),
+      pendingApprovals: this.approvals?.list().map((p) => ({ id: p.id, consent: p.consent, expiresAt: p.subject.expiresAt, vraTx: p.vraTx ?? null })) ?? [],
+      records,
+    };
+  }
+
+  private async dashboardRoutes(req: IncomingMessage, res: import('node:http').ServerResponse) {
+    const url = new URL(req.url!, 'http://x');
+    if (url.pathname === '/dashboard' && req.method === 'GET') {
+      res.writeHead(200, { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' }).end(DASHBOARD_HTML); return;
+    }
+    if (url.pathname === '/dashboard/state' && req.method === 'GET') {
+      res.writeHead(200, { 'content-type': 'application/json', 'cache-control': 'no-store' }).end(JSON.stringify(this.dashboardState())); return;
+    }
+    if (url.pathname === '/dashboard/events' && req.method === 'GET') {
+      res.writeHead(200, { 'content-type': 'text/event-stream', 'cache-control': 'no-store', connection: 'keep-alive' });
+      res.write(': connected\n\n');
+      const l = (e: unknown) => res.write(`data: ${JSON.stringify(e)}\n\n`);
+      const ping = setInterval(() => res.write(': ping\n\n'), 15_000);
+      this.listeners.add(l);
+      req.on('close', () => { clearInterval(ping); this.listeners.delete(l); });
+      return;
+    }
+    if (url.pathname === '/dashboard/suspend' && req.method === 'POST') {
+      try {
+        const body = (await readJson(req, 4096)) as { workOrderHash?: string };
+        const out = await this.suspendWorkOrder(String(body.workOrderHash ?? ''));
+        res.writeHead(200, { 'content-type': 'application/json' }).end(JSON.stringify({ ok: true, ...out }));
+      } catch (e) {
+        res.writeHead(400, { 'content-type': 'application/json' }).end(JSON.stringify({ ok: false, error: (e as Error).message }));
+      }
+      return;
+    }
+    res.writeHead(404).end();
+  }
+
   /** Anchors whatever the audit log holds beyond the last anchor (call before exiting). */
   async flushAnchors(): Promise<void> {
     if (!this.anchorer || this.audit.lastSeq <= (this.anchorer.lastFinalized?.seq ?? -1)) return;
@@ -274,6 +367,7 @@ export class Gateway {
     this.baseUrl = this.cfg.approvalBaseUrl ?? `http://${host}:${port}`;
     const server = createServer(async (req, res) => {
       if (req.url?.startsWith('/approvals') || req.url === '/approve.js') { await this.approvalRoutes(req, res, max); return; }
+      if (req.url?.startsWith('/dashboard')) { await this.dashboardRoutes(req, res); return; }
       if (req.url !== '/mcp') { res.writeHead(404).end(); return; }
       if (req.method !== 'POST') { res.writeHead(405).end(); return; }
       let body: unknown;

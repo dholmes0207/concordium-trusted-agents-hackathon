@@ -191,3 +191,17 @@ test('approvals survive a restart: a held approval is closed as interrupted, not
   assert.equal(b.get(p.id)?.reason, 'approval_interrupted_by_restart');
   assert.equal((await b.submit(p.id, { resourceId: p.digest })).status, 'expired'); // cannot be approved late
 });
+
+test('customer kill switch: stops the work order at once, is anchored, and shows on the dashboard', async () => {
+  const wo = makeWo(); block('MGATE-WO', wo);
+  assert.equal((await call(wo, 'logs_read', { service: 'payments' })).status, 'ok');
+  const before = anchored.length;
+  const hash = (await (await fetch(`${BASE}/dashboard/state`)).json()).workOrders.find((w: { id: string }) => w.id === wo.id).hash;
+  const r = await (await fetch(`${BASE}/dashboard/suspend`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ workOrderHash: hash }) })).json();
+  assert.equal(r.ok, true);
+  assert.ok(anchored.length > before && r.anchorTx);
+  assert.equal((await call(wo, 'logs_read', { service: 'payments' })).reason, 'work_order_suspended_by_customer');
+  const st = await (await fetch(`${BASE}/dashboard/state`)).json();
+  assert.equal(st.workOrders.find((w: { hash: string }) => w.hash === hash).suspended, true);
+  assert.match(await (await fetch(`${BASE}/dashboard`)).text(), /Stop this agent now/);
+});
