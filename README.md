@@ -14,7 +14,7 @@
 | 🪪 **Agent Card** | [agent-card/mandate-gate-devops-agent.json](agent-card/mandate-gate-devops-agent.json) (SHA-256 pinned on chain) |
 | 🚀 **Path to production** | [docs/path-to-production.md](docs/path-to-production.md) |
 
-> **Status (26 Nov 2026):** all four layers are implemented. L1 on-chain agent checks and L2 anchored, revocable work orders run live on testnet. L3 (approval held until an engineer answers a Verify & Access V1 request whose `ResourceID` is the action digest) and L4 (audit head anchored as `MGATE-AUD` before every level-2 action, fail closed) pass 38 automated tests and ran live on testnet with the Browser Wallet ([VRA](https://ccdexplorer.io/testnet/transaction/0ac27871fda1d2b975d3a98dfbe2e83937cfe32ae18c7b41599dbd3cd7633227) → [VAA](https://ccdexplorer.io/testnet/transaction/ad4768043e829c66ef2c2c269fab3cb011eb3fa7dc5c789f573e193c452b241d) → [audit anchor](https://ccdexplorer.io/testnet/transaction/29908ace3784c9af96670eb11cf7a4ed8c24dc9f6b7a5ed355c2c0bd636bf37d) → deploy). Then: HolmesGPT as the agent, ID App approval, x402.
+> **Status (26 Nov 2026):** all four layers are implemented. L1 on-chain agent checks and L2 anchored, revocable work orders run live on testnet. L3 (approval held until an engineer answers a Verify & Access V1 request whose `ResourceID` is the action digest) and L4 (audit head anchored as `MGATE-AUD` before every level-2 action, fail closed) pass 38 automated tests and ran live on testnet with the Browser Wallet ([VRA](https://ccdexplorer.io/testnet/transaction/0ac27871fda1d2b975d3a98dfbe2e83937cfe32ae18c7b41599dbd3cd7633227) → [VAA](https://ccdexplorer.io/testnet/transaction/ad4768043e829c66ef2c2c269fab3cb011eb3fa7dc5c789f573e193c452b241d) → [audit anchor](https://ccdexplorer.io/testnet/transaction/29908ace3784c9af96670eb11cf7a4ed8c24dc9f6b7a5ed355c2c0bd636bf37d) → deploy). x402 is in too: each level-2 action costs 0.5 test CCD from the agent's own wallet, settled only after approval, capped by the work order's budget ([live payment](https://ccdexplorer.io/testnet/transaction/ec5f414e40bf801bd8f833464ba1c247a108a2547292c95e87eafe2474e32cb4)). Claude Code runs as the agent today (`demo/claude-agent`); next: HolmesGPT, ID App approval.
 
 ---
 
@@ -110,7 +110,7 @@ Then register `packages/agent-proxy` as a stdio MCP server in your agent (for Cl
 | Register Data | L2 work orders and revocations ([issue, sponsored](https://ccdexplorer.io/testnet/transaction/ffd8f75ffddebc1719a0d551dc53e1053532b8572c8e74c1687b35b46bd19030) · [revoke](https://ccdexplorer.io/testnet/transaction/aa1cac7f1a2eb1802faedfef223ad35be2c990dba284a978ab33516cbe2c4ab9)), L4 audit anchors (`MGATE-AUD`, before each level-2 action) | ✅ L2 and L4 live on testnet |
 | Verify & Access V1 | L3 human approval bound to the action (`ResourceID` = action digest; VRA anchored by the gateway, proof checked with `VerificationAuditRecordV1.createChecked`, VAA anchored) | ✅ Live on testnet with Browser Wallet |
 | Sponsored transactions | Fees paid by the gateway, not the agent or engineer | ✅ Work-order anchor sponsored by the gateway account |
-| x402 | Pay-per-privileged-action extension | Planned |
+| x402 (`@x402/concordium`) | 0.5 CCD per level-2 action from the agent wallet, gateway as facilitator and fee sponsor, budget per work order | ✅ Live payment on testnet |
 
 ## 6. Team
 

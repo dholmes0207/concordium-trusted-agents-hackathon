@@ -33,7 +33,11 @@ Gõ `/mcp` để xem `mandate-gate` đã kết nối (6 tool).
    - Agent đọc log, xem trạng thái (cấp 0), có thể restart (cấp 1). Log sau restart báo lỗi quay lại
      và có bản v2.2.1 sửa lỗi rò kết nối, nên agent đề xuất `deploy_prod` v2.2.1 (cấp 2).
    - Claude Code hỏi bạn trước mỗi lần gọi tool: đó là lớp duyệt của phía công ty A.
-2. Gateway giữ lệnh deploy. **Terminal 1** in link `http://127.0.0.1:7400/approvals/ap_…`:
+2. **x402:** trước khi giữ lệnh, gateway báo phí 0,5 CCD; proxy tự trả bằng ví agent
+   (`~/ccd-keys/agent-wallet.export`, agent không thấy key). Tiền chỉ bị trừ **sau khi bạn duyệt**;
+   bị từ chối hay hết giờ thì giao dịch không được gửi. Mỗi phiếu tối đa 10 CCD (20 lần deploy), vượt
+   thì gateway và proxy đều chặn (`budget_exceeded`).
+   Gateway giữ lệnh deploy. **Terminal 1** in link `http://127.0.0.1:7400/approvals/ap_…`:
    mở bằng Chrome có Browser Wallet (Testnet) → **Approve with Concordium wallet** → chọn account → Approve.
    Có 5 phút.
 3. Agent nhận kết quả `ok`, đọc lại log: `connection pool healthy`.
@@ -58,4 +62,5 @@ pnpm --filter @mandate-gate/gateway verify-audit $PWD/.data/gateway --gateway 2z
 | `connection refused` | Terminal 1 chưa chạy `pnpm demo:up` |
 | Deploy bị cắt sau 60 giây | Claude Code chưa nhận `MCP_TOOL_TIMEOUT`: thoát và mở lại bằng `MCP_TOOL_TIMEOUT=420000 claude` |
 
-Mỗi lần deploy tốn khoảng 3 giao dịch test của gateway-B (VRA, VAA, neo audit); mỗi lần cấp phiếu thêm 1.
+Mỗi lần deploy: ví agent trả 0,5 CCD; gateway-B gửi khoảng 4 giao dịch (VRA, VAA, tài trợ phí thanh toán,
+neo audit). Mỗi lần cấp phiếu thêm 1 giao dịch của công ty A (gateway-B trả phí).
