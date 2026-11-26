@@ -1,0 +1,6 @@
+{
+  "env": {
+    "MCP_TOOL_TIMEOUT": "420000"
+  },
+  "enabledMcpjsonServers": ["mandate-gate"]
+}

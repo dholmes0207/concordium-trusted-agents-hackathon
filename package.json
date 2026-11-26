@@ -10,7 +10,8 @@
     "typecheck": "pnpm -r --filter './packages/*' --filter './spikes/s0-agent-key' --filter './spikes/s1-anchor' exec tsc --noEmit -p .",
     "test": "pnpm -r --filter './packages/*' --if-present test",
     "gateway": "pnpm --filter @mandate-gate/gateway start",
-    "mock-ops": "pnpm --filter @mandate-gate/mock-ops start"
+    "mock-ops": "pnpm --filter @mandate-gate/mock-ops start",
+    "demo:up": "pnpm --filter @mandate-gate/gateway demo:up"
   },
   "devDependencies": {
     "typescript": "^5.6.3",

@@ -15,19 +15,27 @@ export function createMockOps() {
   const log = (s: Service, msg: string) => { s.logs.push(`${new Date().toISOString()} ${msg}`); if (s.logs.length > 50) s.logs.shift(); };
   log(services.payments, 'WARN p99 latency 1840ms on /charge (threshold 800ms)');
   log(services.payments, 'ERROR connection pool exhausted (max=20) after deploy v2.2.0');
+  log(services.payments, 'INFO release v2.2.1 is available: fixes a connection leak in /charge introduced in v2.2.0');
   log(services.billing, 'INFO nightly invoice run completed');
 
   const actions: Record<string, (p: any) => unknown> = {
     'logs.read': ({ service, lines = 20 }) => { const s = get(service); return { service, lines: s.logs.slice(-Math.min(lines, 50)) }; },
     'service.status': ({ service }) => { const s = get(service); return { service, version: s.version, replicas: s.replicas, status: s.status }; },
-    'service.restart': ({ service }) => { const s = get(service); s.status = 'running'; log(s, 'INFO restarted by operator'); return { service, status: s.status }; },
+    'service.restart': ({ service }) => {
+      const s = get(service); s.status = 'running'; log(s, 'INFO restarted by operator');
+      // The leak is in the code: a restart only buys time.
+      if (service === 'payments' && s.version === 'v2.2.0') log(s, 'ERROR connection pool exhausted again 40s after restart (leak in /charge)');
+      return { service, status: s.status };
+    },
     'service.scale': ({ service, replicas }) => {
       const s = get(service); if (!Number.isInteger(replicas) || replicas < 0 || replicas > 10) throw new Error('replicas must be 0..10');
       s.replicas = replicas; log(s, `INFO scaled to ${replicas}`); return { service, replicas };
     },
     'deploy.prod': ({ service, version }) => {
       const s = get(service); if (typeof version !== 'string' || !/^v?\d+\.\d+\.\d+$/.test(version)) throw new Error('bad version');
-      const from = s.version; s.version = version; log(s, `INFO deployed ${version} (was ${from})`); return { service, from, to: version };
+      const from = s.version; s.version = version; log(s, `INFO deployed ${version} (was ${from})`);
+      if (service === 'payments' && version !== 'v2.2.0') log(s, 'INFO connection pool healthy (6/20 in use), p99 latency 210ms on /charge');
+      return { service, from, to: version };
     },
     'data.delete': ({ service }) => { const s = get(service); s.status = 'deleted'; log(s, 'WARN data deleted'); return { service, status: s.status }; },
   };

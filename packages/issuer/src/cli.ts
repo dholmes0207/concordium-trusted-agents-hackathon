@@ -5,10 +5,11 @@
 //   pnpm wo revoke <wo-file> [--sponsor]       anchor MGATE-WOREV for an issued work order
 //   pnpm wo show   <wo-file>                   print the order and its hash
 // Orders are written to .data/work-orders/ (not secret, not committed).
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync, copyFileSync } from 'node:fs';
+import { BlockHash } from '@concordium/web-sdk';
 import { join, resolve } from 'node:path';
 import { randomBytes } from 'node:crypto';
-import { WorkOrderSchema, workOrderHash, workOrderHashBytes, loadAgentKey, CCD_TESTNET_CAIP2, sendAnchor, loadAccount, approverCommitment, type WorkOrder } from '@mandate-gate/core';
+import { WorkOrderSchema, workOrderHash, workOrderHashBytes, loadAgentKey, CCD_TESTNET_CAIP2, sendAnchor, loadAccount, approverCommitment, grpc, type WorkOrder } from '@mandate-gate/core';
 
 
 const DIR = resolve(process.env.MGATE_DATA ?? join(import.meta.dirname, '../../../.data/work-orders'));
@@ -60,6 +61,11 @@ if (cmd === 'issue') {
   console.log('hash       :', workOrderHash(wo));
   const r = await sendAnchor({ type: 'MGATE-WO', version: 1, hash: workOrderHashBytes(wo) }, 'company-A.export', flag('--sponsor') ? 'gateway-B.export' : undefined);
   console.log('anchored   :', JSON.stringify(r, null, 2));
+  // current.json is what the demo agent and gateway use; the height tells the gateway where to start reading.
+  const height = (await grpc().getBlockInfo(BlockHash.fromHexString(r.block))).blockHeight.toString();
+  copyFileSync(file, join(DIR, 'current.json'));
+  writeFileSync(join(DIR, 'current.meta.json'), JSON.stringify({ file, hash: workOrderHash(wo), anchorTx: r.txHash, anchorHeight: height }, null, 2));
+  console.log('current    :', join(DIR, 'current.json'), `(anchored at height ${height})`);
 } else if (cmd === 'revoke' && arg) {
   const wo = WorkOrderSchema.parse(JSON.parse(readFileSync(arg, 'utf8')));
   console.log('revoking   :', wo.id, workOrderHash(wo));

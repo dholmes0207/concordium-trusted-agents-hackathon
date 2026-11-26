@@ -1,0 +1,11 @@
+{
+  "audience": "mgate:customer-b",
+  "mockOpsUrl": "http://127.0.0.1:7401",
+  "dataDir": "../../.data/gateway",
+  "trustedAgents": [],
+  "onboardedOwners": ["3zKuq9cgzYgSs1cXE2ugGq3WkBNkPsAChj1fLSH8HhoQXoNL6s"],
+  "mandates": { "trustedIssuers": ["3zKuq9cgzYgSs1cXE2ugGq3WkBNkPsAChj1fLSH8HhoQXoNL6s"], "maxStalenessSeconds": 60 },
+  "audit": {},
+  "approvals": { "holdSeconds": 300 },
+  "gatewayAccountKey": "gateway-B.export"
+}

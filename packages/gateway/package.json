@@ -11,13 +11,15 @@
     "./approvals": "./src/approvals.ts",
     "./verifier": "./src/verifier.ts",
     "./anchorer": "./src/anchorer.ts",
-    "./txqueue": "./src/txqueue.ts"
+    "./txqueue": "./src/txqueue.ts",
+    "./run": "./src/run.ts"
   },
   "scripts": {
     "start": "node web/build.mjs && tsx src/main.ts",
     "test": "tsx --test test/*.test.ts",
     "build:web": "node web/build.mjs",
-    "verify-audit": "tsx scripts/verify-audit.ts"
+    "verify-audit": "tsx scripts/verify-audit.ts",
+    "demo:up": "tsx scripts/demo-up.ts"
   },
   "dependencies": {
     "@concordium/browser-wallet-api-helpers": "3.3.0",
