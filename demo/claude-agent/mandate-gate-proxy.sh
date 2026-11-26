@@ -9,4 +9,7 @@ export MGATE_AUDIENCE="${MGATE_AUDIENCE:-mgate:customer-b}"
 export MGATE_AGENT_TOKEN_ID="${MGATE_AGENT_TOKEN_ID:-1505}"
 export MGATE_WORK_ORDER="${MGATE_WORK_ORDER:-$repo/.data/work-orders/current.json}"
 export MGATE_AGENT_MODEL="${MGATE_AGENT_MODEL:-claude-code}"
+# x402: the agent wallet pays for level-2 actions; local stop rule at 10 CCD per proxy run.
+export MGATE_PAYER_KEY="${MGATE_PAYER_KEY:-agent-wallet.export}"
+export MGATE_MAX_SPEND_MICRO_CCD="${MGATE_MAX_SPEND_MICRO_CCD:-10000000}"
 cd "$repo/packages/agent-proxy" && exec "$repo/node_modules/.bin/tsx" src/main.ts

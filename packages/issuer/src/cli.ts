@@ -1,5 +1,5 @@
 // Company A's work-order tool.
-//   pnpm wo issue  [--hours 8] [--sponsor] [--approver <credId|did>]
+//   pnpm wo issue  [--hours 8] [--sponsor] [--approver <credId|did>] [--budget-micro-ccd 10000000]
 //                                              build a work order for agent 1505, anchor MGATE-WO;
 //                                              --approver names the engineer who may approve (salted commitment)
 //   pnpm wo revoke <wo-file> [--sponsor]       anchor MGATE-WOREV for an issued work order
@@ -39,6 +39,7 @@ function demoOrder(hours: number, commitment?: string): WorkOrder {
     ] },
     notBefore: now - 60,
     expiresAt: now + hours * 3600,
+    budget: { maxSpendMicroCcd: opt('--budget-micro-ccd', '10000000') }, // x402: 10 CCD per work order (D4)
     ...(commitment ? { approval: { scheme: 'mgate/approver/v1' as const, approverCommitment: commitment } } : {}),
     nonce: randomBytes(16).toString('hex'),
   };

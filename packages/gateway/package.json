@@ -27,6 +27,8 @@
     "@grpc/grpc-js": "^1.14.7",
     "@mandate-gate/core": "workspace:*",
     "@modelcontextprotocol/sdk": "1.32.2",
+    "@x402/concordium": "2.32.0",
+    "@x402/core": "2.32.0",
     "zod": "^3.25.0"
   },
   "devDependencies": {

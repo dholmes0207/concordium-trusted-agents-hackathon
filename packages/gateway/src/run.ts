@@ -5,6 +5,7 @@ import { ApprovalService } from './approvals.js';
 import { SdkApprovalBackend } from './verifier.js';
 import { SerialQueue } from './txqueue.js';
 import type { AnchorSender } from './anchorer.js';
+import { X402Processor } from './payments.js';
 import { CCD_GRPC, sendAnchor } from '@mandate-gate/core';
 
 /** Builds a gateway from its config in chain mode: on-chain agent checks, mandate index, L3, L4. */
@@ -24,10 +25,12 @@ export async function startGateway(cfg: GatewayConfig, port: number, opts: { sta
   const approvals = key && cfg.approvals
     ? new ApprovalService(new SdkApprovalBackend(key, txq, cfg.approvals.idpIndexes ?? [0]), cfg.approvals.holdSeconds ?? 300) : undefined;
 
-  const gw = new Gateway(cfg, index, verifier, anchorSender, approvals);
+  const payments = key && cfg.payments ? new X402Processor(cfg.payments, key, txq) : undefined;
+  const gw = new Gateway(cfg, index, verifier, anchorSender, approvals, payments);
   gw.onApprovalPending = (p, url) => console.log(`\n⏸  ${p.subject.action} on ${p.subject.resource} is waiting for approval (${cfg.approvals?.holdSeconds ?? 300} s):\n   ${url}\n   ${p.consent}\n`);
   const server = await gw.listen(port);
   console.log(`MandateGate listening on http://127.0.0.1:${port}/mcp (audience ${cfg.audience})` +
-    `${approvals ? ', approvals on' : ''}${anchorSender ? ', audit anchors on' : ''}`);
+    `${approvals ? ', approvals on' : ''}${anchorSender ? ', audit anchors on' : ''}` +
+    `${payments ? `, x402 ${Number(cfg.payments!.priceMicroCcd) / 1e6} CCD per level-2 action` : ''}`);
   return { gw, server, index, txq };
 }

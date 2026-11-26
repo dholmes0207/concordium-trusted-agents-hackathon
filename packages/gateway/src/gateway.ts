@@ -12,6 +12,8 @@ import { MandateIndex } from './mandates.js';
 import type { AgentVerifier } from './agents.js';
 import { AuditAnchorer, type AnchorSender } from './anchorer.js';
 import type { ApprovalService, PendingApproval } from './approvals.js';
+import { BudgetBook, paymentSignature, type PaymentProcessor, type PaymentsConfig } from './payments.js';
+import type { PaymentPayload } from '@x402/core/types';
 import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
@@ -36,35 +38,41 @@ export interface GatewayConfig {
   approvals?: { holdSeconds?: number; idpIndexes?: number[] };
   /** Customer B's account key file in ~/ccd-keys (pays for VRA/VAA, audit anchors, sponsorship). */
   gatewayAccountKey?: string;
+  /** x402 extension: price per level-2 action, paid by the agent wallet within the work-order budget. */
+  payments?: PaymentsConfig;
 }
 
 export type Decision =
   | { status: 'ok'; result: unknown }
   | { status: 'denied'; reason: string }
-  | { status: 'approval_required'; reason: string };
+  | { status: 'approval_required'; reason: string }
+  | { status: 'payment_required'; reason: string; accepts: unknown[]; budget: { maxMicroCcd: string; spentMicroCcd: string } };
 
 const authSchema = z.object({
   request: z.object({}).passthrough(),
   signature: z.string().regex(/^0x[0-9a-fA-F]{130}$/),
   workOrder: z.object({}).passthrough().optional(),
+  payment: z.object({}).passthrough().optional(),
 });
 
-export type GatewayAuth = SignedRequest & { workOrder?: unknown };
+export type GatewayAuth = SignedRequest & { workOrder?: unknown; payment?: unknown };
 
 export class Gateway {
   readonly ledger: RequestLedger;
   readonly audit: AuditLog;
   readonly mandates?: MandateIndex;
   readonly anchorer?: AuditAnchorer;
+  readonly budget: BudgetBook;
   private rate = new Map<string, number[]>(); // `${woHash}|${action}` -> timestamps (ms)
   /** Called when an approval is waiting (prints the link in the demo). */
   onApprovalPending?: (p: PendingApproval, url: string) => void;
   private baseUrl = '';
 
   constructor(readonly cfg: GatewayConfig, mandateIndex?: MandateIndex, private agentVerifier?: AgentVerifier,
-    anchorSender?: AnchorSender, readonly approvals?: ApprovalService) {
+    anchorSender?: AnchorSender, readonly approvals?: ApprovalService, readonly payments?: PaymentProcessor) {
     this.ledger = new RequestLedger(join(cfg.dataDir, 'requests.jsonl'));
     this.audit = new AuditLog(join(cfg.dataDir, 'audit.jsonl'));
+    this.budget = new BudgetBook(join(cfg.dataDir, 'audit.jsonl'));
     if (anchorSender) {
       this.anchorer = new AuditAnchorer(this.audit, anchorSender, join(cfg.dataDir, 'anchors.jsonl'));
       if (cfg.audit?.intervalSeconds) this.anchorer.startTimer(cfg.audit.intervalSeconds);
@@ -147,9 +155,36 @@ export class Gateway {
       return deny('rate_limited');
     }
 
+    // x402: level-2 actions are paid from the agent wallet, within the work order's budget.
+    let pay: { payload: PaymentPayload; req: ReturnType<PaymentProcessor['requirements']>; sig: string; payer: string } | undefined;
+    if (this.payments && tool.level === 2) {
+      const req = this.payments.requirements();
+      const max = m.wo?.budget ? BigInt(m.wo.budget.maxSpendMicroCcd) : null;
+      const spent = m.woHash ? this.budget.spentOf(m.woHash) : 0n;
+      if (max === null) { this.ledger.finish(r.requestId, 'failed'); return deny('work_order_has_no_budget'); }
+      if (spent + BigInt(req.amount) > max) { this.ledger.finish(r.requestId, 'failed'); return deny('budget_exceeded', { spentMicroCcd: String(spent), maxMicroCcd: String(max) }); }
+      if (!auth.payment) {
+        this.ledger.finish(r.requestId, 'failed');
+        const rec = this.audit.append('decision', { requestId: r.requestId, action: tool.action, decision: 'payment_required', amountMicroCcd: req.amount, payTo: req.payTo });
+        return { status: 'payment_required', reason: 'payment_required', accepts: [req], budget: { maxMicroCcd: String(max), spentMicroCcd: String(spent) }, auditSeq: rec.seq };
+      }
+      const payload = auth.payment as PaymentPayload;
+      const sig = paymentSignature(payload);
+      if (!this.budget.claim(sig)) { this.ledger.finish(r.requestId, 'failed'); return deny('payment_replayed'); }
+      const v = await this.payments.verify(payload, req).catch((e) => ({ ok: false as const, reason: (e as Error).message }));
+      if (!v.ok) { this.budget.release(sig); this.ledger.finish(r.requestId, 'failed'); return deny(`payment_invalid: ${v.reason}`); }
+      pay = { payload, req, sig, payer: v.payer };
+    }
+    const failPaid = (reason: string, extra: Record<string, unknown> = {}) => {
+      if (pay) this.budget.release(pay.sig); // never settled: the signed transfer simply expires
+      this.ledger.finish(r.requestId, 'failed');
+      return deny(reason, extra);
+    };
+
     let approvalId: string | undefined;
     if (m.needsApproval) {
       if (!this.approvals) {
+        if (pay) this.budget.release(pay.sig);
         this.ledger.finish(r.requestId, 'failed');
         const rec = this.audit.append('decision', { requestId: r.requestId, action: tool.action, decision: 'needs_approval', reason: 'approval_flow_not_enabled' });
         return { status: 'approval_required', reason: 'approval_flow_not_enabled', auditSeq: rec.seq };
@@ -163,14 +198,22 @@ export class Gateway {
       this.audit.append('approval_requested', { requestId: r.requestId, approvalId: p.id, digest: p.digest, vraTx: p.vraTx ?? null, status: p.status, reason: p.reason ?? null });
       if (p.status === 'pending') this.onApprovalPending?.(p, `${this.baseUrl}/approvals/${p.id}`);
       const done = await this.approvals.wait(p.id);
-      if (done.status !== 'approved') {
-        this.ledger.finish(r.requestId, 'failed');
-        return deny(done.reason ?? `approval_${done.status}`, { approvalId: p.id });
-      }
+      if (done.status !== 'approved') return failPaid(done.reason ?? `approval_${done.status}`, { approvalId: p.id });
       this.audit.append('approval', { requestId: r.requestId, approvalId: p.id, digest: p.digest, approver: done.approver, vraTx: done.vraTx, vaaTx: done.vaaTx ?? null });
       // The work order may have been revoked while the action was held.
       const again = this.checkMandate(tool, auth);
-      if (!again.ok) { this.ledger.finish(r.requestId, 'failed'); return deny(again.reason, { approvalId: p.id }); }
+      if (!again.ok) return failPaid(again.reason, { approvalId: p.id });
+    }
+
+    if (pay && this.payments) {
+      // Budget again: another paid action of the same work order may have settled meanwhile.
+      const max = BigInt(m.wo!.budget!.maxSpendMicroCcd);
+      if (this.budget.spentOf(m.woHash!) + BigInt(pay.req.amount) > max) return failPaid('budget_exceeded');
+      const st = await this.payments.settle(pay.payload, pay.req).catch((e) => ({ ok: false as const, reason: (e as Error).message }));
+      if (!st.ok) return failPaid(`payment_settle_failed: ${st.reason}`);
+      this.budget.add(m.woHash!, BigInt(pay.req.amount));
+      this.audit.append('payment', { requestId: r.requestId, workOrderHash: m.woHash, payer: st.payer || pay.payer, payTo: pay.req.payTo,
+        amountMicroCcd: pay.req.amount, txHash: st.txHash, signature: pay.sig, spentMicroCcd: String(this.budget.spentOf(m.woHash!)) });
     }
 
     // Fail-closed: the allow decision must be durable before executing.

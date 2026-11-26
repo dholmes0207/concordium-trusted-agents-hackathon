@@ -7,5 +7,6 @@
   "mandates": { "trustedIssuers": ["3zKuq9cgzYgSs1cXE2ugGq3WkBNkPsAChj1fLSH8HhoQXoNL6s"], "maxStalenessSeconds": 60 },
   "audit": {},
   "approvals": { "holdSeconds": 300 },
-  "gatewayAccountKey": "gateway-B.export"
+  "gatewayAccountKey": "gateway-B.export",
+  "payments": { "priceMicroCcd": "500000", "payTo": "2zmbEkwHcYCMz6369NicRQmu1bpxGS33KRM2PE4QAxUfQLWch8", "maxTimeoutSeconds": 540 }
 }
