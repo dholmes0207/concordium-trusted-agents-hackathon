@@ -2,6 +2,17 @@
 
 > Ghi chú ngắn để tiếp tục công việc ở phiên sau. **Bản mới nhất: `Tong-hop-sau-W6.md` (v5, 20/11)**; chi tiết thiết kế L1–L4 vẫn ở `Tong-hop-sau-W4.md`.
 
+## 0i. ✅ Demo đầy đủ với Claude Code + x402 (26/11, 21:25 giờ VN)
+
+Claude Code (thư mục `demo/claude-agent`) nhận câu "Service payments đang chậm và báo lỗi…", tự đọc
+status và log, xác định v2.2.0 rò kết nối, gọi `deploy_prod` v2.2.1. Audit log (`.data/gateway`):
+seq 25 `payment_required` → proxy tự trả bằng ví agent → seq 28 VRA `b4fadf92…59a8` → seq 29 bạn duyệt
+bằng Browser Wallet, VAA `1e77c500…de96` → seq 30 **thanh toán 0,5 CCD** từ ví agent `4WZGyWnH…`
+(`0f1a6ba9…1425`, gateway-B trả phí; đã chi 0,5/10 CCD) → seq 31 allow → **neo audit `982d5ba2…cb6d`** →
+seq 32 deploy chạy; log sau deploy: pool 6/20, p99 210 ms. Mọi request ghi `runtime=claude-code`.
+`verify-audit`: 39 bản ghi nguyên vẹn, anchor seq 31 MATCH. Các lệnh đọc sau đó (seq 33–38) chưa neo vì
+gateway chỉ neo trước hành động cấp 2; muốn neo định kỳ thì thêm `"audit": {"intervalSeconds": 300}`.
+
 ## 0h. L3 + L4 đã cài (26/11, rạng sáng)
 
 - **Node 22** cho cả repo (`.nvmrc`, `engines`, CI). Shell mới đã dùng 22.23.3; nếu một shell cũ còn Node 20: `nvm use 22`.
