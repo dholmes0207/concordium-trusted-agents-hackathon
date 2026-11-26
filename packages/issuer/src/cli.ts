@@ -15,7 +15,9 @@ import { WorkOrderSchema, workOrderHash, workOrderHashBytes, loadAgentKey, CCD_T
 const DIR = resolve(process.env.MGATE_DATA ?? join(import.meta.dirname, '../../../.data/work-orders'));
 const AGENT_TOKEN_ID = process.env.MGATE_AGENT_TOKEN_ID ?? '1505';
 const AUDIENCE = process.env.MGATE_AUDIENCE ?? 'mgate:customer-b';
-const [cmd, arg] = process.argv.slice(2);
+const [cmd, rawArg] = process.argv.slice(2);
+// pnpm --filter runs us inside packages/issuer: resolve file paths against where the user typed the command.
+const arg = rawArg && resolve(process.env.INIT_CWD ?? process.cwd(), rawArg);
 const flag = (n: string) => process.argv.includes(n);
 const opt = (n: string, d: string) => { const i = process.argv.indexOf(n); return i > 0 ? process.argv[i + 1] : d; };
 
