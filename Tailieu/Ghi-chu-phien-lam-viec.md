@@ -2,6 +2,13 @@
 
 > Ghi chú ngắn để tiếp tục công việc ở phiên sau. **Bản mới nhất: `Tong-hop-sau-W6.md` (v5, 20/11)**; chi tiết thiết kế L1–L4 vẫn ở `Tong-hop-sau-W4.md`.
 
+## 0j. ✅ Trang duyệt 216 KB đã thử với Browser Wallet (26/11, tối)
+
+Phiếu `aa3a7082…` (neo `3f45de1f…0d4b`). Lệnh deploy qua proxy → seq 45 `payment_required` → seq 47 VRA
+`1a3f6ee0…a980` → seq 48 duyệt bằng ví (VAA `3d3e692e…f285`) → seq 49 thanh toán 0,5 CCD `d57ad92d…0cec` →
+seq 50 allow, neo `7bd7c4d8…1c45` → seq 51 deploy chạy. Ctrl+C neo nốt (`e4613278…ef66`, seq 51);
+`verify-audit`: 52 bản ghi, mọi anchor MATCH, RESULT OK. Bundle không WASM dùng được với ví, không cần `MGATE_FULL_BUNDLE`.
+
 ## 0i. ✅ Demo đầy đủ với Claude Code + x402 (26/11, 21:25 giờ VN)
 
 Claude Code (thư mục `demo/claude-agent`) nhận câu "Service payments đang chậm và báo lỗi…", tự đọc

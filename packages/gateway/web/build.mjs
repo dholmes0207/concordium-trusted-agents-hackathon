@@ -2,6 +2,7 @@ import { build } from 'esbuild';
 
 // The approval page only needs VerificationRequestV1.fromJSON (rebuilds the request object the wallet
 // expects); that code path never calls the Concordium WASM, so the 5 MB rust-bindings are left out.
+// Verified with the Concordium Browser Wallet on testnet (26 Nov 2026).
 const noWasm = {
   name: 'no-concordium-wasm',
   setup(b) {
