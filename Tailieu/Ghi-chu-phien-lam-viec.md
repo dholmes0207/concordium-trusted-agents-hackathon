@@ -12,6 +12,8 @@ bằng Browser Wallet, VAA `1e77c500…de96` → seq 30 **thanh toán 0,5 CCD** 
 seq 32 deploy chạy; log sau deploy: pool 6/20, p99 210 ms. Mọi request ghi `runtime=claude-code`.
 `verify-audit`: 39 bản ghi nguyên vẹn, anchor seq 31 MATCH. Các lệnh đọc sau đó (seq 33–38) chưa neo vì
 gateway chỉ neo trước hành động cấp 2; muốn neo định kỳ thì thêm `"audit": {"intervalSeconds": 300}`.
+Hai tình huống bị chặn cũng chạy với Claude Code: seq 42 xoá dữ liệu customer-db → `work_order_out_of_scope`;
+thu hồi phiếu `wo_20261126_e652ec` (`wo revoke … --sponsor`) → seq 43 đọc log → `work_order_revoked`.
 
 ## 0h. L3 + L4 đã cài (26/11, rạng sáng)
 
