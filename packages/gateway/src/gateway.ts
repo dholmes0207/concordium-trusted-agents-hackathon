@@ -73,6 +73,9 @@ export class Gateway {
     this.ledger = new RequestLedger(join(cfg.dataDir, 'requests.jsonl'));
     this.audit = new AuditLog(join(cfg.dataDir, 'audit.jsonl'));
     this.budget = new BudgetBook(join(cfg.dataDir, 'audit.jsonl'));
+    for (const p of approvals?.recover() ?? []) {
+      this.audit.append('decision', { approvalId: p.id, action: p.subject.action, decision: 'deny', reason: 'approval_interrupted_by_restart', digest: p.digest });
+    }
     if (anchorSender) {
       this.anchorer = new AuditAnchorer(this.audit, anchorSender, join(cfg.dataDir, 'anchors.jsonl'));
       if (cfg.audit?.intervalSeconds) this.anchorer.startTimer(cfg.audit.intervalSeconds);
@@ -238,6 +241,12 @@ export class Gateway {
       const rec = this.audit.append('execution', { requestId: r.requestId, ok: false, error: 'infrastructure_unreachable' });
       return { status: 'denied', reason: 'infrastructure_unreachable', auditSeq: rec.seq };
     }
+  }
+
+  /** Anchors whatever the audit log holds beyond the last anchor (call before exiting). */
+  async flushAnchors(): Promise<void> {
+    if (!this.anchorer || this.audit.lastSeq <= (this.anchorer.lastFinalized?.seq ?? -1)) return;
+    await this.anchorer.anchorNow();
   }
 
   /** One MCP server per HTTP request (stateless streamable HTTP). */

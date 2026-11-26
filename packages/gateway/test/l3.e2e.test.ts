@@ -177,3 +177,17 @@ test('level-0 actions are not delayed by anchoring', async () => {
   assert.equal((await call(wo, 'logs_read', { service: 'payments' })).status, 'ok');
   assert.equal(anchored.length, before);
 });
+
+test('approvals survive a restart: a held approval is closed as interrupted, not left open', async () => {
+  const file = join(mkdtempSync(join(tmpdir(), 'mgate-ap-')), 'approvals.jsonl');
+  const a = new ApprovalService(backend, 60, file);
+  const p = await a.create({ audience: 'mgate:customer-b', agentTokenId: '42', workOrderHash: 'ab'.repeat(32), requestHash: 'cd'.repeat(32),
+    action: 'deploy.prod', resource: 'svc:payments', paramsHash: 'ef'.repeat(32) }, deploy);
+  assert.equal(p.status, 'pending');
+  const b = new ApprovalService(backend, 60, file); // the gateway restarted
+  const interrupted = b.recover();
+  assert.deepEqual(interrupted.map((x) => x.id), [p.id]);
+  assert.equal(b.get(p.id)?.status, 'expired');
+  assert.equal(b.get(p.id)?.reason, 'approval_interrupted_by_restart');
+  assert.equal((await b.submit(p.id, { resourceId: p.digest })).status, 'expired'); // cannot be approved late
+});

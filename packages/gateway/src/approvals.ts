@@ -1,4 +1,5 @@
 import { randomBytes } from 'node:crypto';
+import { appendFileSync, existsSync, readFileSync } from 'node:fs';
 import {
   approvalDigest, consentText, approverCommitment, type ApprovalSubject,
 } from '@mandate-gate/core';
@@ -38,7 +39,28 @@ export class ApprovalService {
   private items = new Map<string, PendingApproval>();
   private waiters = new Map<string, Array<(p: PendingApproval) => void>>();
 
-  constructor(private backend: ApprovalBackend, private holdSeconds = 300) {}
+  /** `file`: optional JSON-lines journal, so approvals survive a gateway restart (see recover()). */
+  constructor(private backend: ApprovalBackend, private holdSeconds = 300, private file?: string) {}
+
+  private persist(p: PendingApproval) {
+    if (this.file) appendFileSync(this.file, JSON.stringify(p) + '\n');
+  }
+
+  /**
+   * Reloads the journal. A held call cannot outlive the gateway process (the agent's connection is
+   * gone), so approvals still pending are closed as expired. Returns those, for the audit log.
+   */
+  recover(): PendingApproval[] {
+    if (!this.file || !existsSync(this.file)) return [];
+    for (const l of readFileSync(this.file, 'utf8').split('\n')) {
+      if (!l.trim()) continue;
+      const p = JSON.parse(l) as PendingApproval;
+      this.items.set(p.id, p);
+    }
+    const interrupted = [...this.items.values()].filter((p) => p.status === 'pending' || p.status === 'creating');
+    for (const p of interrupted) this.settle(p, 'expired', 'approval_interrupted_by_restart');
+    return interrupted;
+  }
 
   get(id: string) { return this.items.get(id); }
   list() { return [...this.items.values()].filter((p) => p.status === 'pending'); }
@@ -53,6 +75,7 @@ export class ApprovalService {
     try {
       const { requestJson, vraTx } = await this.backend.createRequest(p);
       Object.assign(p, { requestJson, vraTx, status: 'pending' });
+      this.persist(p);
     } catch (e) {
       this.settle(p, 'failed', `request_not_anchored: ${(e as Error).message}`);
     }
@@ -100,6 +123,7 @@ export class ApprovalService {
   private settle(p: PendingApproval, status: PendingApproval['status'], reason?: string): PendingApproval {
     if (p.status === 'approved' || p.status === 'rejected' || p.status === 'expired') return p; // single use (AB4)
     p.status = status; if (reason) p.reason = reason;
+    this.persist(p);
     for (const w of this.waiters.get(p.id) ?? []) w(p);
     this.waiters.delete(p.id);
     return p;
