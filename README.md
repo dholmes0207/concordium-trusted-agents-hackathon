@@ -14,7 +14,7 @@
 | 🪪 **Agent Card** | [agent-card/mandate-gate-devops-agent.json](agent-card/mandate-gate-devops-agent.json) (SHA-256 pinned on chain) |
 | 🚀 **Path to production** | [docs/path-to-production.md](docs/path-to-production.md) |
 
-> **Status (26 Nov 2026):** all four layers are implemented. L1 on-chain agent checks and L2 anchored, revocable work orders run live on testnet. L3 (approval held until an engineer answers a Verify & Access V1 request whose `ResourceID` is the action digest) and L4 (audit head anchored as `MGATE-AUD` before every level-2 action, fail closed) pass 38 automated tests and ran live on testnet with the Browser Wallet ([VRA](https://ccdexplorer.io/testnet/transaction/0ac27871fda1d2b975d3a98dfbe2e83937cfe32ae18c7b41599dbd3cd7633227) → [VAA](https://ccdexplorer.io/testnet/transaction/ad4768043e829c66ef2c2c269fab3cb011eb3fa7dc5c789f573e193c452b241d) → [audit anchor](https://ccdexplorer.io/testnet/transaction/29908ace3784c9af96670eb11cf7a4ed8c24dc9f6b7a5ed355c2c0bd636bf37d) → deploy). x402 is in too: each level-2 action costs 0.5 test CCD from the agent's own wallet, settled only after approval, capped by the work order's budget ([live payment](https://ccdexplorer.io/testnet/transaction/ec5f414e40bf801bd8f833464ba1c247a108a2547292c95e87eafe2474e32cb4)). Claude Code runs as the agent today (`demo/claude-agent`); next: HolmesGPT, ID App approval.
+> **Status (26 Nov 2026):** all four layers are implemented. L1 on-chain agent checks and L2 anchored, revocable work orders run live on testnet. L3 (approval held until an engineer answers a Verify & Access V1 request whose `ResourceID` is the action digest) and L4 (audit head anchored as `MGATE-AUD` before every level-2 action, fail closed) pass 48 automated tests and ran live on testnet with the Browser Wallet ([VRA](https://ccdexplorer.io/testnet/transaction/0ac27871fda1d2b975d3a98dfbe2e83937cfe32ae18c7b41599dbd3cd7633227) → [VAA](https://ccdexplorer.io/testnet/transaction/ad4768043e829c66ef2c2c269fab3cb011eb3fa7dc5c789f573e193c452b241d) → [audit anchor](https://ccdexplorer.io/testnet/transaction/29908ace3784c9af96670eb11cf7a4ed8c24dc9f6b7a5ed355c2c0bd636bf37d) → deploy). x402 is in too: each level-2 action costs 0.5 test CCD from the agent's own wallet, settled only after approval, capped by the work order's budget ([live payment](https://ccdexplorer.io/testnet/transaction/ec5f414e40bf801bd8f833464ba1c247a108a2547292c95e87eafe2474e32cb4)). Claude Code runs as the agent today (`demo/claude-agent`); next: HolmesGPT, ID App approval.
 
 ---
 
@@ -47,7 +47,7 @@ agent-proxy (company A) ── signed request ──▶ MandateGate (customer B,
                                                 Concordium testnet
 ```
 
-The agent itself is not modified: it sees ordinary MCP tools (`logs_read`, `service_restart`, `deploy_prod`, …). Details: [docs/architecture.md](docs/architecture.md).
+The agent itself is not modified: it sees ordinary MCP tools (`logs_read`, `service_restart`, `deploy_prod`, …). Details: [docs/architecture.md](docs/architecture.md) (pipeline, trust model, threats and tests) · on-chain evidence: [docs/concordium-integration.md](docs/concordium-integration.md).
 
 ## 3. Repository layout
 
@@ -72,7 +72,7 @@ Prerequisites: Node.js 22 (`.nvmrc`), pnpm 12. Keys never live in the repository
 
 ```bash
 pnpm install
-pnpm test          # 38 offline tests: envelope, audit chain, work orders, gateway end to end (L1–L4, fake chain)
+pnpm test          # 48 offline tests: envelope, audit chain, work orders, gateway end to end (L1–L4, fake chain)
 pnpm typecheck
 ```
 
