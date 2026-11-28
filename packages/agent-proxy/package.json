@@ -8,7 +8,8 @@
     ".": "./src/proxy.ts"
   },
   "scripts": {
-    "start": "tsx src/main.ts"
+    "start": "tsx src/main.ts",
+    "watcher": "tsx src/watcher.ts"
   },
   "dependencies": {
     "@concordium/web-sdk": "12.0.3",

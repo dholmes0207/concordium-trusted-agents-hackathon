@@ -12,4 +12,7 @@ export MGATE_AGENT_MODEL="${MGATE_AGENT_MODEL:-claude-code}"
 # x402: the agent wallet pays for level-2 actions; local stop rule at 10 CCD per proxy run.
 export MGATE_PAYER_KEY="${MGATE_PAYER_KEY:-agent-wallet.export}"
 export MGATE_MAX_SPEND_MICRO_CCD="${MGATE_MAX_SPEND_MICRO_CCD:-10000000}"
+# Delegation: company A's sub-agents (public registry info) and where signed delegations go.
+export MGATE_SUB_AGENTS="${MGATE_SUB_AGENTS:-$here/sub-agents.json}"
+export MGATE_DELEGATIONS_DIR="${MGATE_DELEGATIONS_DIR:-$repo/.data/delegations}"
 cd "$repo/packages/agent-proxy" && exec "$repo/node_modules/.bin/tsx" src/main.ts

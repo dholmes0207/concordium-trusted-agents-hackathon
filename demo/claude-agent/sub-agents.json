@@ -1,0 +1,8 @@
+[
+  {
+    "name": "payments-watcher",
+    "tokenId": "1558",
+    "keyAddress": "0x7bd7Bbf443Fdd5360E0C0A170f2C62D0903e470C",
+    "description": "MandateGate Payments Watcher: watches one service after a change; reads logs and status, restarts within a limit."
+  }
+]

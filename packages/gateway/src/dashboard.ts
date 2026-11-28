@@ -54,6 +54,11 @@ const REASONS = {
   work_order_out_of_scope: 'Outside the work order: this action or service was not authorised.',
   work_order_revoked: 'The work order was revoked on chain by the agent\'s owner.',
   work_order_suspended_by_customer: 'Stopped by customer B (kill switch).',
+  delegation_scope_wider_than_parent: 'The delegation tries to give more than the delegating agent has.',
+  delegation_outlives_parent: 'The delegation lasts longer than the mandate it comes from.',
+  delegation_not_allowed: 'The work order does not allow delegation.', delegation_too_deep: 'Too many levels of delegation.',
+  delegation_bad_signature: 'Delegation not signed by the delegating agent\'s key.', delegation_wrong_delegator: 'Delegation signed by an agent that does not hold the parent mandate.',
+  delegation_budget_exceeds_parent: 'The delegation\'s budget is larger than what is left above it.',
   work_order_expired: 'The work order has expired.', work_order_not_anchored: 'The work order is not anchored on chain.',
   work_order_missing_or_malformed: 'No valid work order attached.', revocation_status_stale: 'Gateway cannot see recent blocks: failing closed.',
   approval_timeout: 'Nobody approved within 5 minutes.', rejected_by_approver: 'The engineer rejected it.',
@@ -81,19 +86,27 @@ function render(state) {
   const anchors = (state.anchors || []).filter((a) => a.status === 'finalized').sort((a, b) => a.seq - b.seq);
   const anchorFor = (seq) => anchors.find((a) => a.seq >= seq);
 
-  // Work orders
-  $('#wos').innerHTML = state.workOrders.length ? state.workOrders.map((w) => {
-    const st = w.suspended ? '<span class="chip bad">stopped by customer</span>' : w.chainStatus === 'active' ? '<span class="chip ok">active on chain</span>'
+  // Work orders, each followed by the delegations hanging off it
+  const card = (w) => {
+    const isDl = w.kind === 'delegation';
+    const st = w.suspended ? '<span class="chip bad">stopped by customer</span>' : w.chainStatus === 'active' ? '<span class="chip ok">' + (isDl ? 'valid' : 'active on chain') + '</span>'
       : '<span class="chip bad">' + esc(w.chainStatus) + '</span>';
     const left = w.expiresAt * 1000 - Date.now();
     const b = w.budget; const pct = b ? Math.min(100, 100 * Number(b.spentMicroCcd) / Number(b.maxMicroCcd)) : 0;
-    return '<div class="card"><div class="row"><b class="mono">' + esc(w.id) + '</b>' + st + '</div>'
-      + '<div class="small muted">agent #' + esc(w.agent) + ' · issued by <span class="mono">' + short(w.issuer) + '</span> · '
-      + (left > 0 ? 'expires in ' + Math.round(left / 60000) + ' min' : 'expired') + '</div>'
+    const who = isDl ? 'agent #' + esc(w.agent) + ' · delegated by agent #' + esc(w.delegator) : 'agent #' + esc(w.agent) + ' · issued by <span class="mono">' + short(w.issuer) + '</span>';
+    return '<div class="card"' + (isDl ? ' style="margin-left:18px;border-left:3px solid var(--acc)"' : '') + '><div class="row"><b class="mono">' + esc(w.id) + '</b>' + st + '</div>'
+      + '<div class="small muted">' + who + ' · ' + (left > 0 ? 'expires in ' + Math.round(left / 60000) + ' min' : 'expired') + '</div>'
+      + (isDl && w.purpose ? '<div class="small" style="margin-top:6px">“' + esc(w.purpose) + '”</div>' : '')
+      + (!isDl && w.maxDepth ? '<div class="small muted">may delegate to sub-agents (' + w.maxDepth + ' level' + (w.maxDepth > 1 ? 's' : '') + ')</div>' : '')
       + (b ? '<div class="small" style="margin-top:8px">x402 budget: ' + ccd(b.spentMicroCcd) + ' of ' + ccd(b.maxMicroCcd) + '</div><div class="meter"><i style="width:' + pct + '%"></i></div>' : '')
-      + '<ul class="scope">' + w.actions.map((a) => '<li><span class="mono">' + esc(a.action) + '</span> on ' + esc(a.resources.join(', ')) + (a.approval === 'required' ? ' · <span class="chip wait">approval</span>' : '') + '</li>').join('') + '</ul>'
-      + '<button data-wo="' + esc(w.hash) + '" ' + (w.suspended ? 'disabled' : '') + '>' + (w.suspended ? 'Stopped' : 'Stop this agent now (kill switch)') + '</button></div>';
-  }).join('') : '<div class="card muted small">No work order seen yet. They appear with the agent\'s first request.</div>';
+      + '<ul class="scope">' + w.actions.map((a) => '<li><span class="mono">' + esc(a.action) + '</span> on ' + esc(a.resources.join(', ')) + (a.maxPerHour ? ' · max ' + a.maxPerHour + '/h' : '') + (a.approval === 'required' ? ' · <span class="chip wait">approval</span>' : '') + '</li>').join('') + '</ul>'
+      + '<button data-wo="' + esc(w.hash) + '" ' + (w.suspended ? 'disabled' : '') + '>' + (w.suspended ? 'Stopped' : isDl ? 'Stop this sub-agent' : 'Stop this agent now (kill switch)') + '</button></div>';
+  };
+  const roots = state.workOrders.filter((w) => w.kind !== 'delegation');
+  const kids = (h) => state.workOrders.filter((w) => w.kind === 'delegation' && w.parent === h);
+  const tree = (w) => card(w) + kids(w.hash).map(tree).join('');
+  $('#wos').innerHTML = roots.length ? roots.map(tree).join('') : '<div class="card muted small">No work order seen yet. They appear with the agent\'s first request.</div>';
+  const byHash = Object.fromEntries(state.workOrders.map((w) => [w.hash, w]));
 
   // Pending approvals
   $('#pending').innerHTML = state.pendingApprovals.length ? state.pendingApprovals.map((p) =>
@@ -119,7 +132,11 @@ function render(state) {
     else if (apReq && !ap) chip = '<span class="chip wait">waiting for approval</span>';
     else chip = '<span class="chip info">in progress</span>';
     const steps = [];
-    if (req) { steps.push('<span class="step ok">✓ agent #' + esc(req.data.agent) + ' signed</span>', '<span class="step ok">✓ work order on chain</span>'); }
+    if (req) {
+      steps.push('<span class="step ok">✓ agent #' + esc(req.data.agent) + ' signed</span>', '<span class="step ok">✓ work order on chain</span>');
+      const ch = req.data.delegationChain;
+      if (ch && ch.length > 1) { const leaf = byHash[ch[ch.length - 1]]; steps.push('<span class="step ok">✓ delegated by #' + esc(leaf ? leaf.delegator : '?') + ' (' + (ch.length - 1) + ' link' + (ch.length > 2 ? 's' : '') + ', narrowed)</span>'); }
+    }
     if (payReq) steps.push('<span class="step info">' + ccd(payReq.data.amountMicroCcd) + ' requested · agent pays and retries</span>');
     if (apReq) steps.push('<span class="step ' + (ap ? 'ok' : deny ? 'bad' : 'wait') + '">' + (ap ? '✓' : deny ? '✕' : '…') + ' approval ' + txl(apReq.data.vraTx, 'request') + (ap ? ' · ' + txl(ap.data.vaaTx, 'verified') : '') + '</span>');
     if (pay) steps.push('<span class="step ok">✓ paid ' + ccd(pay.data.amountMicroCcd) + ' ' + txl(pay.data.txHash, 'tx') + '</span>');
@@ -138,7 +155,7 @@ async function refresh() { try { render(await (await fetch('/dashboard/state')).
 const soon = () => { clearTimeout(timer); timer = setTimeout(refresh, 250); };
 document.addEventListener('click', async (e) => {
   const b = e.target.closest('button[data-wo]'); if (!b) return;
-  if (!confirm('Stop this agent now? Every further call under this work order will be refused, and the stop is anchored on chain.')) return;
+  if (!confirm('Stop it now? Every further call under this work order or delegation (and any sub-agent below it) will be refused, and the stop is anchored on chain.')) return;
   b.disabled = true; b.textContent = 'Stopping and anchoring…';
   const r = await (await fetch('/dashboard/suspend', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ workOrderHash: b.dataset.wo }) })).json();
   if (!r.ok) { alert(r.error); b.disabled = false; }

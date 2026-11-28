@@ -18,5 +18,8 @@ const server = buildProxyServer({
   runtime: { model: process.env.MGATE_AGENT_MODEL, version: process.env.MGATE_AGENT_VERSION },
   payer: process.env.MGATE_PAYER_KEY ? (() => { const a = loadAccount(process.env.MGATE_PAYER_KEY!); return { accountAddress: a.address, signer: a.signer }; })() : undefined,
   maxSpendMicroCcd: process.env.MGATE_MAX_SPEND_MICRO_CCD ? BigInt(process.env.MGATE_MAX_SPEND_MICRO_CCD) : undefined,
+  // Delegation: roster of company A's sub-agents and where signed delegations are written.
+  subAgents: process.env.MGATE_SUB_AGENTS ? JSON.parse(readFileSync(process.env.MGATE_SUB_AGENTS, 'utf8')) : undefined,
+  delegationsDir: process.env.MGATE_DELEGATIONS_DIR,
 });
 await server.connect(new StdioServerTransport());

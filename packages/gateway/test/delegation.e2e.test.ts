@@ -8,7 +8,7 @@ import type { Hex } from 'viem';
 import { generatePrivateKey, privateKeyToAccount } from 'viem/accounts';
 import type { PaymentPayload, PaymentRequirements } from '@x402/core/types';
 import { startMockOps } from '@mandate-gate/mock-ops';
-import { signedCall, connectGateway, type ProxyConfig } from '@mandate-gate/agent-proxy';
+import { signedCall, connectGateway, delegateTask, type ProxyConfig, type DelegationFile } from '@mandate-gate/agent-proxy';
 import {
   toolByName, encodeAnchor, workOrderHashBytes, toHex, fromHex, signDelegation, delegationHash,
   type WorkOrder, type Delegation, type SignedDelegation,
@@ -201,4 +201,20 @@ test('budgets: a delegation cannot exceed what the parent has left, and sub-agen
   assert.equal((await leadDeploy).status, 'ok');
   // Parent's 1 CCD is now spent (0.5 by the sub-agent, 0.5 by the lead): nobody can pay any more.
   assert.equal((await call({ ...leadCfg, workOrder: wo }, 'deploy_prod', { service: 'payments', version: 'v2.2.3' }, payment())).reason, 'budget_exceeded');
+});
+
+test('the lead agent delegates with the delegate_task tool; the sub-agent works from the file it wrote', async () => {
+  const wo = makeWo(); anchor('MGATE-WO', woHash(wo));
+  const dir = mkdtempSync(join(tmpdir(), 'mgate-dlfiles-'));
+  const leadWithTeam: ProxyConfig = { ...leadCfg, workOrder: wo, delegationsDir: dir,
+    subAgents: [{ name: 'payments-watcher', tokenId: '77', keyAddress: sub }] };
+  const out = await delegateTask(leadWithTeam, { subAgent: 'payments-watcher', purpose: 'Watch payments after the deploy', minutes: 30,
+    allow: [{ action: 'logs.read', services: ['payments'] }, { action: 'service.restart', services: ['payments'], maxPerHour: 2 }] });
+  const file = JSON.parse(readFileSync(out.file, 'utf8')) as DelegationFile;
+  assert.equal(file.delegations.length, 1);
+  assert.equal(out.delegation.scope.actions[1].maxPerHour, 2);
+  assert.equal((await call({ ...subCfg, workOrder: file.workOrder, delegations: file.delegations }, 'logs_read', { service: 'payments' })).status, 'ok');
+  // The proxy refuses to sign something wider than the lead holds (deploy.prod needs approval upstream; data.delete is not granted at all).
+  await assert.rejects(delegateTask(leadWithTeam, { subAgent: 'payments-watcher', purpose: 'x', minutes: 5, allow: [{ action: 'data.delete', services: ['payments'] }] }), /delegation_scope_wider_than_parent/);
+  await assert.rejects(delegateTask(leadWithTeam, { subAgent: 'nobody', purpose: 'x', minutes: 5, allow: [{ action: 'logs.read', services: ['payments'] }] }), /unknown sub-agent/);
 });
