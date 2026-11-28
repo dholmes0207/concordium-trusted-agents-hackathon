@@ -205,9 +205,9 @@ Thanks!
 
 | # | Câu hỏi | Trạng thái | Trả lời (Piotr, 24/11 23:24) |
 |---|---|---|---|
-| 1 | Tiêu chí chấm chi tiết | ✅ Đã trả lời | Đã gửi tiêu chí chi tiết cho Encode; Encode sẽ cập nhật lên trang programme sớm → **theo dõi trang programme** |
+| 1 | Tiêu chí chấm chi tiết | ✅ Đã trả lời | Đã gửi tiêu chí chi tiết cho Encode. **Đã có trên trang programme (xem 28/11):** không chấm số giao dịch; 4 tiêu chí: Depth of integration (identity, Agent Registry, agent payments) · Credible path to production · It works (demo end-to-end) · Usefulness. Judging 10–11/12 |
 | 2 | Gateway + agent MCP có sẵn có đúng "your existing agent" | ✅ Đã trả lời (23:46) | **"yes"** |
 | 3 | Namespace EVM cho agent testnet (`eip155:8453` hay `eip155:84532`) | ✅ Đã trả lời (23:46) | **"either should be good"** |
 | 4 | Office hours | ✅ Đã trả lời | **Office hours làm bất đồng bộ trên Discord** (không có buổi live) |
 | 5 | Ví hiện `ContextString` | ✅ Đã trả lời (23:46) | **"at some point, but currently the ID App is the place to demo consent flows"** → ví sẽ hiện về sau; hiện tại demo consent bằng **ID App** |
-| 6 | Global FinReg testnet đòi Veriff (ID + selfie); có cách test không (đăng 23:33) | ⏳ Chờ | — |
+| 6 | Global FinReg testnet đòi Veriff (ID + selfie); có cách test không (đăng 23:33) | ⏳ Chờ (đến 28/11 chưa có trả lời, không có DM) | Piotr hỏi lại "Are there any pending questions?" (28/11 00:16 VN) → nên nhắc lại câu này |
