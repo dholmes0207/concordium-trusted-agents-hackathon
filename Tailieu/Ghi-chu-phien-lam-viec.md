@@ -2,6 +2,13 @@
 
 > Ghi chú ngắn để tiếp tục công việc ở phiên sau. **Bản mới nhất: `Tong-hop-sau-W6.md` (v5, 20/11)**; chi tiết thiết kế L1–L4 vẫn ở `Tong-hop-sau-W4.md`.
 
+## 0m. ✅ Demo đầy đủ trên Kubernetes thật + bảng điều khiển (28/11, 22:14–22:18 giờ VN)
+
+Claude Code đọc status/log thật từ cụm kind (pool 20/20, p99 5000 ms) → `deploy_prod` v2.2.1 → seq 78 `payment_required` →
+seq 80 VRA `43cc0ba1…c8b` → seq 81 duyệt bằng ví từ bảng điều khiển (VAA `a012e24b…1aa`) → seq 82 thanh toán 0,5 CCD `d8abf341…2e2`
+→ seq 83 allow, neo `d8793c43…218` → seq 84 rollout thật sang `mgate/svc:v2.2.1` (khoảng 8 s). Neo định kỳ 5 phút chạy (seq 80, `c7581021…c2d`).
+Sau deploy: pool 0–1/20, p99 khoảng 160 ms, 30/30 request thành công mỗi 10 s. Kill switch chưa thử live.
+
 ## 0l. ✅ #1 bảng điều khiển + #2 Kubernetes thật (26/11, đêm)
 
 - `packages/k8s-ops`: API vận hành của B trên cụm kind thật (kubectl: log, trạng thái + ghi chú phiên bản, rollout restart,
