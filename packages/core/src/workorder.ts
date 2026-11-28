@@ -6,25 +6,29 @@ import { taggedHash, toHex } from './canonical.js';
  * actions at one customer gateway for a limited time. A anchors `woHash` on chain with a
  * MGATE-WO RegisterData anchor and revokes it with MGATE-WOREV.
  */
+export const ScopeSchema = z.object({
+  actions: z.array(z.object({
+    action: z.string().min(1).max(64),
+    resources: z.array(z.string().min(1).max(128)).min(1).max(32),
+    approval: z.enum(['none', 'required']),
+    maxPerHour: z.number().int().min(1).max(10_000).optional(),
+  })).min(1).max(32),
+});
+
 export const WorkOrderSchema = z.object({
   v: z.literal(1),
   id: z.string().regex(/^wo_[A-Za-z0-9_-]{4,64}$/),
   issuer: z.object({ network: z.string(), account: z.string().min(40).max(60) }),
   audience: z.string().min(1).max(128),
   agent: z.object({ tokenId: z.string().regex(/^\d+$/), keyAddress: z.string().regex(/^0x[0-9a-fA-F]{40}$/) }),
-  scope: z.object({
-    actions: z.array(z.object({
-      action: z.string().min(1).max(64),
-      resources: z.array(z.string().min(1).max(128)).min(1).max(32),
-      approval: z.enum(['none', 'required']),
-      maxPerHour: z.number().int().min(1).max(10_000).optional(),
-    })).min(1).max(32),
-  }),
+  scope: ScopeSchema,
   approval: z.object({
     scheme: z.literal('mgate/approver/v1'),
     approverCommitment: z.string().regex(/^[0-9a-f]{64}$/),
   }).optional(),
   budget: z.object({ maxSpendMicroCcd: z.string().regex(/^\d+$/) }).optional(),
+  /** Multi-level delegation: how many levels of sub-agents the agent may hand work to (absent = none). */
+  delegation: z.object({ maxDepth: z.number().int().min(1).max(3) }).optional(),
   notBefore: z.number().int(),
   expiresAt: z.number().int(),
   nonce: z.string().regex(/^[0-9a-f]{32,64}$/),
@@ -48,7 +52,7 @@ export type ScopeResult =
 
 /** Pure checks of one request against a work order (V3, without the chain part). */
 export function checkScope(
-  wo: WorkOrder,
+  wo: Pick<WorkOrder, 'audience' | 'agent' | 'scope' | 'notBefore' | 'expiresAt'>,
   req: { audience: string; tokenId: string; keyAddress: string; action: string; resource: string },
   now = Math.floor(Date.now() / 1000),
 ): ScopeResult {

@@ -67,9 +67,10 @@ export class BudgetBook {
     if (auditFile && existsSync(auditFile)) {
       for (const l of readFileSync(auditFile, 'utf8').split('\n')) {
         if (!l.trim()) continue;
-        const r = JSON.parse(l) as { kind: string; data: { workOrderHash?: string; amountMicroCcd?: string; signature?: string } };
+        const r = JSON.parse(l) as { kind: string; data: { workOrderHash?: string; chain?: string[]; amountMicroCcd?: string; signature?: string } };
         if (r.kind === 'payment' && r.data.workOrderHash && r.data.amountMicroCcd) {
-          this.add(r.data.workOrderHash, BigInt(r.data.amountMicroCcd));
+          // A sub-agent's payment counts against every link of its delegation chain.
+          for (const h of r.data.chain ?? [r.data.workOrderHash]) this.add(h, BigInt(r.data.amountMicroCcd));
           if (r.data.signature) this.used.add(r.data.signature);
         }
       }

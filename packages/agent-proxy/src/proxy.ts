@@ -9,6 +9,7 @@ import type { AccountAddress, AccountSigner } from '@concordium/web-sdk';
 import {
   TOOLS, resourceFor, signRequest, paramsHash, newRequestId, workOrderHash,
   CCD_TESTNET_CAIP2, CIS8004_CONTRACT, AGENT_KEY_NAMESPACE, AGENT_KEY_TYPE,
+  delegationHash, type SignedDelegation,
   type AgentRequest, type ToolDef, type WorkOrder,
 } from '@mandate-gate/core';
 
@@ -19,6 +20,8 @@ export interface ProxyConfig {
   agentAddress: string;
   privateKey: Hex; // the agent's EVM key; never exposed to the agent/LLM
   workOrder?: WorkOrder; // L2 mandate carried with every call
+  /** For a sub-agent: the signed delegations from the root work order down to this agent. */
+  delegations?: SignedDelegation[];
   runtime?: { model?: string; version?: string };
   ttlSeconds?: number;
   /** x402: the agent wallet that pays for level-2 actions (key stays in the proxy). */
@@ -39,7 +42,9 @@ export async function signedCall(cfg: ProxyConfig, tool: ToolDef, params: Record
       tokenId: cfg.agentTokenId,
       key: { namespace: AGENT_KEY_NAMESPACE, keyType: AGENT_KEY_TYPE, address: cfg.agentAddress },
     },
-    workOrderHash: cfg.workOrder ? workOrderHash(cfg.workOrder) : null,
+    // The request names the link the agent acts under: the last delegation, or the work order itself.
+    workOrderHash: cfg.delegations?.length ? delegationHash(cfg.delegations[cfg.delegations.length - 1].delegation)
+      : cfg.workOrder ? workOrderHash(cfg.workOrder) : null,
     action: tool.action,
     resource: resourceFor(params as { service?: string }),
     paramsHash: paramsHash(params),
@@ -49,7 +54,8 @@ export async function signedCall(cfg: ProxyConfig, tool: ToolDef, params: Record
     ...(cfg.runtime ? { agentRuntime: cfg.runtime } : {}),
   };
   const signed = await signRequest(request, cfg.privateKey);
-  return { ...signed, ...(cfg.workOrder ? { workOrder: cfg.workOrder } : {}), ...(payment ? { payment } : {}) };
+  return { ...signed, ...(cfg.workOrder ? { workOrder: cfg.workOrder } : {}),
+    ...(cfg.delegations?.length ? { delegations: cfg.delegations } : {}), ...(payment ? { payment } : {}) };
 }
 
 type Out = { content: Array<{ type: 'text'; text: string }>; isError?: boolean };

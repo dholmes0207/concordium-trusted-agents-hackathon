@@ -6,6 +6,8 @@ import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/
 import {
   TOOLS, resourceFor, verifyEnvelope, requestHash, RequestLedger, AuditLog,
   WorkOrderSchema, workOrderHash, checkScope,
+  SignedDelegationSchema, delegationHash, checkAttenuation, verifyDelegationSignature,
+  type Delegation, type Grant,
   type SignedRequest, type ToolDef, type WorkOrder,
 } from '@mandate-gate/core';
 import { MandateIndex } from './mandates.js';
@@ -54,9 +56,17 @@ const authSchema = z.object({
   signature: z.string().regex(/^0x[0-9a-fA-F]{130}$/),
   workOrder: z.object({}).passthrough().optional(),
   payment: z.object({}).passthrough().optional(),
+  delegations: z.array(z.object({}).passthrough()).max(4).optional(),
 });
 
-export type GatewayAuth = SignedRequest & { workOrder?: unknown; payment?: unknown };
+export type GatewayAuth = SignedRequest & { workOrder?: unknown; delegations?: unknown[]; payment?: unknown };
+
+/** One link of the mandate chain (root work order first) with its budget, if any. */
+interface ChainLink { hash: string; budget?: { maxSpendMicroCcd: string } }
+type MandateCheck =
+  | { ok: true; wo: WorkOrder | null; woHash: string | null; chain: ChainLink[]; needsApproval: boolean; maxPerHour?: number }
+  | { ok: false; reason: string };
+type SeenGrant = { kind: 'work_order'; wo: WorkOrder } | { kind: 'delegation'; d: Delegation; root: string };
 
 export class Gateway {
   readonly ledger: RequestLedger;
@@ -70,7 +80,7 @@ export class Gateway {
   private baseUrl = '';
   /** Dashboard: live listeners, work orders seen on requests, and customer-side suspensions (kill switch). */
   private listeners = new Set<(e: unknown) => void>();
-  private seenWorkOrders = new Map<string, WorkOrder>();
+  private seenWorkOrders = new Map<string, SeenGrant>();
   private suspended = new Set<string>();
 
   constructor(readonly cfg: GatewayConfig, mandateIndex?: MandateIndex, private agentVerifier?: AgentVerifier,
@@ -103,26 +113,59 @@ export class Gateway {
     }
   }
 
-  /** L2 (V3): work order present, matches the request, anchored, not revoked, fresh, in scope. */
-  private checkMandate(tool: ToolDef, auth: GatewayAuth):
-    { ok: true; wo: WorkOrder | null; woHash: string | null; needsApproval: boolean; maxPerHour?: number } | { ok: false; reason: string } {
-    if (!this.mandates) return { ok: true, wo: null, woHash: null, needsApproval: tool.level === 2 };
+  /**
+   * L2 (V3): work order present, matches the request, anchored, not revoked, fresh, in scope.
+   * With delegations: the root work order is anchored, every link is signed by the agent it was given
+   * to and only narrows its parent, no link is revoked or suspended, and the request is checked
+   * against the last link (the agent actually calling).
+   */
+  private async checkMandate(tool: ToolDef, auth: GatewayAuth): Promise<MandateCheck> {
+    if (!this.mandates) return { ok: true, wo: null, woHash: null, chain: [], needsApproval: tool.level === 2 };
     const parsed = WorkOrderSchema.safeParse(auth.workOrder);
     if (!parsed.success) return { ok: false, reason: 'work_order_missing_or_malformed' };
     const wo = parsed.data;
-    const h = workOrderHash(wo);
-    if (auth.request.workOrderHash !== h) return { ok: false, reason: 'work_order_hash_mismatch' };
-    this.seenWorkOrders.set(h, wo);
-    if (this.suspended.has(h)) return { ok: false, reason: 'work_order_suspended_by_customer' };
-    const st = this.mandates.status(h, wo.issuer.account);
+    const rootHash = workOrderHash(wo);
+    if (!this.seenWorkOrders.has(rootHash)) this.seenWorkOrders.set(rootHash, { kind: 'work_order', wo });
+    const live = (h: string) => (this.suspended.has(h) ? 'work_order_suspended_by_customer' : null);
+    if (live(rootHash)) return { ok: false, reason: live(rootHash)! };
+    const st = this.mandates.status(rootHash, wo.issuer.account);
     if (st.status === 'stale') return { ok: false, reason: 'revocation_status_stale' };
     if (st.status === 'revoked') return { ok: false, reason: 'work_order_revoked' };
     if (st.status === 'unknown') return { ok: false, reason: 'work_order_not_anchored' };
+
+    // Delegation chain, root → leaf.
+    const chain: ChainLink[] = [{ hash: rootHash, budget: wo.budget }];
+    let grant: Grant = wo; let grantHash = rootHash; let depth = 0;
+    const links = auth.delegations ?? [];
+    if (!Array.isArray(links) || links.length > 4) return { ok: false, reason: 'delegation_malformed' };
+    for (const raw of links) {
+      const sd = SignedDelegationSchema.safeParse(raw);
+      if (!sd.success) return { ok: false, reason: 'delegation_malformed' };
+      const d = sd.data.delegation;
+      const h = delegationHash(d);
+      const parentLeft = chain[chain.length - 1].budget
+        ? BigInt(chain[chain.length - 1].budget!.maxSpendMicroCcd) - this.budget.spentOf(grantHash) : null;
+      const att = checkAttenuation(grant, grantHash, depth, wo.delegation?.maxDepth, d, parentLeft);
+      if (!att.ok) return { ok: false, reason: att.reason };
+      if (!(await verifyDelegationSignature(sd.data))) return { ok: false, reason: 'delegation_bad_signature' };
+      if (!this.seenWorkOrders.has(h)) this.seenWorkOrders.set(h, { kind: 'delegation', d, root: rootHash });
+      if (live(h)) return { ok: false, reason: live(h)! };
+      const rev = this.mandates.revocation(h);
+      if (rev === 'stale') return { ok: false, reason: 'revocation_status_stale' };
+      if (rev === 'revoked') return { ok: false, reason: 'work_order_revoked' };
+      chain.push({ hash: h, budget: d.budget });
+      grant = d; grantHash = h; depth = d.depth;
+    }
+    if (auth.request.workOrderHash !== grantHash) return { ok: false, reason: 'work_order_hash_mismatch' };
     const r = auth.request;
-    const sc = checkScope(wo, { audience: this.cfg.audience, tokenId: r.agent.tokenId, keyAddress: r.agent.key.address, action: r.action, resource: r.resource });
+    const sc = checkScope(grant, { audience: this.cfg.audience, tokenId: r.agent.tokenId, keyAddress: r.agent.key.address, action: r.action, resource: r.resource });
     if (!sc.ok) return { ok: false, reason: `work_order_${sc.reason}` };
     // B's policy may only raise the bar: level 2 always needs approval.
-    return { ok: true, wo, woHash: h, needsApproval: tool.level === 2 || sc.approval === 'required', maxPerHour: sc.maxPerHour };
+    return { ok: true, wo, woHash: grantHash, chain, needsApproval: tool.level === 2 || sc.approval === 'required', maxPerHour: sc.maxPerHour };
+  }
+
+  private chainHasRoom(chain: ChainLink[], amount: bigint): boolean {
+    return chain.every((c) => c.budget && this.budget.spentOf(c.hash) + amount <= BigInt(c.budget.maxSpendMicroCcd));
   }
 
   private overRate(key: string, maxPerHour?: number): boolean {
@@ -160,7 +203,7 @@ export class Gateway {
     }
 
     // L2: mandate (negative tests #7 #8 #9 #10 #21).
-    const m = this.checkMandate(tool, auth);
+    const m = await this.checkMandate(tool, auth);
     if (!m.ok) return deny(m.reason);
 
     // L1: idempotency (negative test #17).
@@ -171,6 +214,7 @@ export class Gateway {
     this.audit.append('request', {
       requestId: r.requestId, requestHash: rh, agent: r.agent.tokenId, action: r.action, resource: r.resource,
       workOrderHash: r.workOrderHash, agentRuntime: r.agentRuntime ?? null,
+      ...(m.chain.length > 1 ? { delegationChain: m.chain.map((c) => c.hash) } : {}),
     });
 
     if (m.woHash && this.overRate(`${m.woHash}|${tool.action}`, m.maxPerHour)) {
@@ -182,10 +226,12 @@ export class Gateway {
     let pay: { payload: PaymentPayload; req: ReturnType<PaymentProcessor['requirements']>; sig: string; payer: string } | undefined;
     if (this.payments && tool.level === 2) {
       const req = this.payments.requirements();
-      const max = m.wo?.budget ? BigInt(m.wo.budget.maxSpendMicroCcd) : null;
+      // Every link of the chain must have a budget and room for this payment (a sub-agent spends from all of them).
+      const leaf = m.chain[m.chain.length - 1];
+      const max = leaf?.budget ? BigInt(leaf.budget.maxSpendMicroCcd) : null;
       const spent = m.woHash ? this.budget.spentOf(m.woHash) : 0n;
-      if (max === null) { this.ledger.finish(r.requestId, 'failed'); return deny('work_order_has_no_budget'); }
-      if (spent + BigInt(req.amount) > max) { this.ledger.finish(r.requestId, 'failed'); return deny('budget_exceeded', { spentMicroCcd: String(spent), maxMicroCcd: String(max) }); }
+      if (max === null || m.chain.some((c) => !c.budget)) { this.ledger.finish(r.requestId, 'failed'); return deny('work_order_has_no_budget'); }
+      if (!this.chainHasRoom(m.chain, BigInt(req.amount))) { this.ledger.finish(r.requestId, 'failed'); return deny('budget_exceeded', { spentMicroCcd: String(spent), maxMicroCcd: String(max) }); }
       if (!auth.payment) {
         this.ledger.finish(r.requestId, 'failed');
         const rec = this.audit.append('decision', { requestId: r.requestId, action: tool.action, decision: 'payment_required', amountMicroCcd: req.amount, payTo: req.payTo });
@@ -224,18 +270,17 @@ export class Gateway {
       if (done.status !== 'approved') return failPaid(done.reason ?? `approval_${done.status}`, { approvalId: p.id });
       this.audit.append('approval', { requestId: r.requestId, approvalId: p.id, digest: p.digest, approver: done.approver, vraTx: done.vraTx, vaaTx: done.vaaTx ?? null });
       // The work order may have been revoked while the action was held.
-      const again = this.checkMandate(tool, auth);
+      const again = await this.checkMandate(tool, auth);
       if (!again.ok) return failPaid(again.reason, { approvalId: p.id });
     }
 
     if (pay && this.payments) {
       // Budget again: another paid action of the same work order may have settled meanwhile.
-      const max = BigInt(m.wo!.budget!.maxSpendMicroCcd);
-      if (this.budget.spentOf(m.woHash!) + BigInt(pay.req.amount) > max) return failPaid('budget_exceeded');
+      if (!this.chainHasRoom(m.chain, BigInt(pay.req.amount))) return failPaid('budget_exceeded');
       const st = await this.payments.settle(pay.payload, pay.req).catch((e) => ({ ok: false as const, reason: (e as Error).message }));
       if (!st.ok) return failPaid(`payment_settle_failed: ${st.reason}`);
-      this.budget.add(m.woHash!, BigInt(pay.req.amount));
-      this.audit.append('payment', { requestId: r.requestId, workOrderHash: m.woHash, payer: st.payer || pay.payer, payTo: pay.req.payTo,
+      for (const c of m.chain) this.budget.add(c.hash, BigInt(pay.req.amount));
+      this.audit.append('payment', { requestId: r.requestId, workOrderHash: m.woHash, chain: m.chain.map((c) => c.hash), payer: st.payer || pay.payer, payTo: pay.req.payTo,
         amountMicroCcd: pay.req.amount, txHash: st.txHash, signature: pay.sig, spentMicroCcd: String(this.budget.spentOf(m.woHash!)) });
     }
 
@@ -264,7 +309,7 @@ export class Gateway {
   }
 
   /** Shows a work order on the dashboard before the agent's first call (it is still checked per request). */
-  watchWorkOrder(wo: WorkOrder) { this.seenWorkOrders.set(workOrderHash(wo), wo); this.emit({ type: 'work_order' }); }
+  watchWorkOrder(wo: WorkOrder) { this.seenWorkOrders.set(workOrderHash(wo), { kind: 'work_order', wo }); this.emit({ type: 'work_order' }); }
 
   private emit(e: unknown) { for (const l of this.listeners) { try { l(e); } catch { /* listener gone */ } } }
 
@@ -294,13 +339,22 @@ export class Gateway {
         ? readFileSync(join(this.cfg.dataDir, 'anchors.jsonl'), 'utf8').split('\n').filter((l) => l.trim()).map((l) => JSON.parse(l)).filter((a) => a.status === 'finalized')
         : [],
       payments: price ? { priceMicroCcd: price.amount, payTo: price.payTo } : null,
-      workOrders: [...this.seenWorkOrders.entries()].map(([hash, wo]) => ({
-        hash, id: wo.id, issuer: wo.issuer.account, agent: wo.agent.tokenId, expiresAt: wo.expiresAt,
-        actions: wo.scope.actions.map((a) => ({ action: a.action, resources: a.resources, approval: a.approval })),
-        chainStatus: this.mandates?.status(hash, wo.issuer.account).status ?? 'n/a',
-        suspended: this.suspended.has(hash),
-        budget: wo.budget ? { maxMicroCcd: wo.budget.maxSpendMicroCcd, spentMicroCcd: String(this.budget.spentOf(hash)) } : null,
-      })),
+      workOrders: [...this.seenWorkOrders.entries()].map(([hash, g]) => {
+        const x = g.kind === 'work_order' ? g.wo : g.d;
+        const chainStatus = g.kind === 'work_order'
+          ? this.mandates?.status(hash, g.wo.issuer.account).status ?? 'n/a'
+          : (this.mandates?.revocation(hash) === 'revoked' || this.mandates?.status(g.root, (this.seenWorkOrders.get(g.root) as { wo: WorkOrder } | undefined)?.wo.issuer.account ?? '').status === 'revoked' ? 'revoked' : 'active');
+        return {
+          hash, kind: g.kind, id: x.id, agent: x.agent.tokenId, expiresAt: x.expiresAt,
+          issuer: g.kind === 'work_order' ? g.wo.issuer.account : null,
+          delegator: g.kind === 'delegation' ? g.d.delegator.tokenId : null,
+          parent: g.kind === 'delegation' ? g.d.parent : null, purpose: g.kind === 'delegation' ? g.d.purpose ?? null : null,
+          maxDepth: g.kind === 'work_order' ? g.wo.delegation?.maxDepth ?? 0 : null,
+          actions: x.scope.actions.map((a) => ({ action: a.action, resources: a.resources, approval: a.approval, maxPerHour: a.maxPerHour ?? null })),
+          chainStatus, suspended: this.suspended.has(hash),
+          budget: x.budget ? { maxMicroCcd: x.budget.maxSpendMicroCcd, spentMicroCcd: String(this.budget.spentOf(hash)) } : null,
+        };
+      }),
       pendingApprovals: this.approvals?.list().map((p) => ({ id: p.id, consent: p.consent, expiresAt: p.subject.expiresAt, vraTx: p.vraTx ?? null })) ?? [],
       records,
     };

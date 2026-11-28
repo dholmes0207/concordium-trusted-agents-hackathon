@@ -57,6 +57,16 @@ export class MandateIndex {
     return { status: 'active', issuedAtHeight: iss.height, txHash: iss.txHash };
   }
 
+  /**
+   * Revocation only, for links that are never anchored themselves (delegations): any trusted issuer
+   * may revoke them on chain with MGATE-WOREV. Fails closed when the view is stale.
+   */
+  revocation(hash: string): 'ok' | 'revoked' | 'stale' {
+    const age = (this.clock() - this.lastBlockAt) / 1000;
+    if (this.lastBlockAt === 0 || age > this.maxStalenessSeconds) return 'stale';
+    return this.revoked.has(hash) ? 'revoked' : 'ok';
+  }
+
   /** The view is confirmed current up to the chain tip (no newer finalized block exists). */
   heartbeat(): void { this.lastBlockAt = this.clock(); }
 
