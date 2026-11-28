@@ -2,7 +2,7 @@
 
 > Ghi chú ngắn để tiếp tục công việc ở phiên sau. **Bản mới nhất: `Tong-hop-sau-W6.md` (v5, 20/11)**; chi tiết thiết kế L1–L4 vẫn ở `Tong-hop-sau-W4.md`.
 
-## 0n. ✅ #6 Uỷ quyền nhiều tầng (28/11, đêm) — D1–D7 xong, D8 (demo live với bạn) còn lại
+## 0n. ✅ #6 Uỷ quyền nhiều tầng (28/11, đêm) — D1–D8 xong
 
 - Core `delegation.ts`: phiếu con ký bằng khoá CIS-8 của agent giao (`MGATE/v1/delegation`), quy tắc chỉ được thu hẹp
   (hành động, service kể cả wildcard, duyệt, tần suất, thời gian, ngân sách x402, độ sâu theo `delegation.maxDepth` của phiếu gốc).
@@ -15,8 +15,10 @@
 - Phiếu cha mới cho phép uỷ quyền: `wo_20261128_280b46` (hash `9a66234f…`, neo `26f9caa0…d719`, 8 giờ). Issuer mặc định `--delegation-depth 1`.
 - Chạy thử live (không ví): #1505 uỷ quyền qua tool → watcher restart 2 lần khi pool cạn, lần 3 bị chặn `rate_limited`;
   10 lệnh của #1558 ghi đủ chuỗi, neo đến seq 121.
-- **Còn lại (D8, cần bạn):** demo đầy đủ với Claude Code: deploy (duyệt ví) → bảo agent giao việc theo dõi → `pnpm sub-agent`
-  → thử "Stop this agent now" trên phiếu cha để thấy cả hai dừng.
+- ✅ **D8 live với Claude Code (23:25–23:30 giờ VN):** deploy v2.2.1 (seq 131 VRA `5b541027…591f`, seq 132 VAA `239fef64…542d`,
+  seq 133 thanh toán `1bee7921…fc76`, seq 134 allow neo `325503d8…82af`) → Claude Code tự gọi `delegate_task` (phiếu con
+  `dl_20261128_6cadee`, #1505 → #1558) → watcher đọc log qua chuỗi 2 mắt xích (seq 142, 145) → kill switch trên phiếu cha
+  (seq 148, neo `100cb1c9…f8d6`) → cả hai bị chặn `work_order_suspended_by_customer` (seq 149, 150).
 
 ## 0m. ✅ Demo đầy đủ trên Kubernetes thật + bảng điều khiển (28/11, 22:14–22:18 giờ VN)
 
