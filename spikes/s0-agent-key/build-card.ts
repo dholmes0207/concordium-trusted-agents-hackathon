@@ -1,27 +1,25 @@
 // S0: build the final Agent Card for the minted agent and write it, byte for byte, to
 // agent-card/mandate-gate-devops-agent.json. After this file is pinned on chain it must not change.
-// Usage: pnpm build-card <tokenId>
-import { writeFileSync } from 'node:fs';
+// Usage: pnpm build-card <tokenId> [--agent watcher]
+import { writeFileSync, existsSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { RegistryMcp, CCD_NETWORK } from '@mandate-gate/core';
 
-export const CARD_PATH = '../../agent-card/mandate-gate-devops-agent.json';
-export const CARD_URL = 'https://raw.githubusercontent.com/dholmes0207/concordium-trusted-agents-hackathon/main/agent-card/mandate-gate-devops-agent.json';
+import { profileFromArgs, REPO } from './profiles.js';
+const profile = profileFromArgs();
+const CARD_PATH = '../../agent-card/' + profile.file;
+const CARD_URL = profile.url;
 const OWNER = '3zKuq9cgzYgSs1cXE2ugGq3WkBNkPsAChj1fLSH8HhoQXoNL6s';
-const REPO = 'https://github.com/dholmes0207/concordium-trusted-agents-hackathon';
 
 const tokenId = process.argv[2];
-if (!tokenId) { console.error('usage: pnpm build-card <tokenId>'); process.exit(1); }
+if (!tokenId || tokenId.startsWith('--')) { console.error('usage: pnpm build-card <tokenId> [--agent watcher]'); process.exit(1); }
+if (existsSync(CARD_PATH)) { console.error(CARD_PATH, 'already exists and may be pinned on chain: refusing to overwrite'); process.exit(1); }
 const mcp = new RegistryMcp(); await mcp.init();
 const r = await mcp.call('build_agent_card', {
-  network: CCD_NETWORK, name: 'Mandate Gate Demo - DevOps Agent',
-  description: "HolmesGPT-based DevOps agent operated by company A. Acts on customer infrastructure only through the customer's MandateGate gateway, with a signed work order and human approval for risky actions.",
+  network: CCD_NETWORK, name: profile.name,
+  description: profile.description,
   agent_uri: CARD_URL, owner_account: OWNER, token_id: tokenId, version: '1.0.0',
-  skills: [
-    { id: 'logs.read', name: 'Read service logs', description: 'Read recent log lines of a service in the customer environment.', tags: ['ops', 'read-only'] },
-    { id: 'service.restart', name: 'Restart a service', description: 'Restart a service (reversible).', tags: ['ops'] },
-    { id: 'deploy.prod', name: 'Deploy to production', description: 'Deploy a version to production; requires a named engineer to approve each action.', tags: ['ops', 'requires-approval'] },
-  ],
+  skills: profile.skills,
   provider: { organization: 'Mandate Gate Demo (company A)', url: REPO },
   documentation_url: REPO,
 });

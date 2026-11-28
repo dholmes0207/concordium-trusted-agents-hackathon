@@ -1,7 +1,7 @@
 // S0 tx 2 + tx 3, then the gateway's on-chain L1 check.
 //  tx 2: CIS-8004 setAgentURI pins the card URL + SHA-256 (fetched from the public URL).
 //  tx 3: CIS-8 registerExternalKey binds the agent's EVM key to company A.
-// Usage: pnpm pin-and-bind <tokenId> [--submit]
+// Usage: pnpm pin-and-bind <tokenId> [--agent watcher] [--submit]
 import { createHash } from 'node:crypto';
 import { privateKeyToAccount } from 'viem/accounts';
 import {
@@ -12,7 +12,9 @@ import {
 import { RegistryAgentVerifier } from '@mandate-gate/gateway/agents';
 import { AccountAddress } from '@concordium/web-sdk';
 import { describe, submitUpdate, loadAccount, type McpUpdatePayload } from './chain.js';
-import { CARD_URL } from './card-url.js';
+import { profileFromArgs } from './profiles.js';
+const profile = profileFromArgs();
+const CARD_URL = profile.url;
 
 const tokenId = process.argv[2];
 const submit = process.argv.includes('--submit');
@@ -27,7 +29,7 @@ const pin: McpUpdatePayload = await mcp.call('build_set_agent_uri', { network: C
 console.log('tx 2:', describe(pin), '| card sha256', cardSha);
 
 // tx 3: CIS-8 binding of the agent key.
-const key = loadAgentKey();
+const key = loadAgentKey(profile.keyName);
 const pub = key.publicKey.replace(/^0x/, '');
 const canon = await mcp.call('build_cis8_canonical_bytes', {
   network: CCD_NETWORK, concordium_account: owner, external_namespace: AGENT_KEY_NAMESPACE,
@@ -39,7 +41,7 @@ const bind: McpUpdatePayload = await mcp.call('build_cis8_register', {
   network: CCD_NETWORK, sender: owner,
   external_key: { namespace: AGENT_KEY_NAMESPACE, key_type: AGENT_KEY_TYPE, public_key_hex: pub },
   proof: { scheme: AGENT_PROOF_SCHEME, signature_hex: signature.replace(/^0x/, '') },
-  metadata: [{ key: 'role', value: 'mandate-gate-agent' }, { key: 'agent_token_id', value: tokenId }],
+  metadata: [{ key: 'role', value: profile.role }, { key: 'agent_token_id', value: tokenId }],
 });
 console.log('tx 3:', describe(bind), '| key', key.address, AGENT_KEY_NAMESPACE);
 
