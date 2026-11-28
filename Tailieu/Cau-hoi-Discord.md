@@ -210,4 +210,4 @@ Thanks!
 | 3 | Namespace EVM cho agent testnet (`eip155:8453` hay `eip155:84532`) | ✅ Đã trả lời (23:46) | **"either should be good"** |
 | 4 | Office hours | ✅ Đã trả lời | **Office hours làm bất đồng bộ trên Discord** (không có buổi live) |
 | 5 | Ví hiện `ContextString` | ✅ Đã trả lời (23:46) | **"at some point, but currently the ID App is the place to demo consent flows"** → ví sẽ hiện về sau; hiện tại demo consent bằng **ID App** |
-| 6 | Global FinReg testnet đòi Veriff (ID + selfie); có cách test không (đăng 23:33) | ⏳ Chờ (đến 28/11 chưa có trả lời, không có DM) | Piotr hỏi lại "Are there any pending questions?" (28/11 00:16 VN) → nên nhắc lại câu này |
+| 6 | Global FinReg testnet đòi Veriff (ID + selfie); có cách test không (đăng 23:33) | ⏳ Chờ (đến 28/11 chưa có trả lời, không có DM) | Piotr hỏi lại "Are there any pending questions?" (28/11 00:16 VN) → **đã nhắc lại 28/11**, kèm câu hỏi mới: "Human Consent Request" (roadmap) có dùng được trên testnet trước 9/12 không |
