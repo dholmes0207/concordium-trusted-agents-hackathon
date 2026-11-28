@@ -15,6 +15,7 @@
 | Customer B (gateway, fee sponsor, payment recipient) | [`2zmbEkwH…QLWch8`](https://ccdexplorer.io/testnet/account/2zmbEkwHcYCMz6369NicRQmu1bpxGS33KRM2PE4QAxUfQLWch8) |
 | Agent wallet (x402 payer) | [`4WZGyWnH…6gZxPCaYb9`](https://ccdexplorer.io/testnet/account/4WZGyWnHBfXRPpv2BZLcXt3AKQADYjkpwNxkb6DL6gZxPCaYb9) |
 | Agent signing key | EVM `0xA3198Ee065B9f633aa36030C34310836Bf37c650` (`eip155:84532`), bound with CIS-8 |
+| Sub-agent | **#1558** "MandateGate Payments Watcher", card [agent-card/mandate-gate-payments-watcher.json](../agent-card/mandate-gate-payments-watcher.json), key `0x7bd7Bbf443Fdd5360E0C0A170f2C62D0903e470C` bound with CIS-8 |
 
 ## Components
 
@@ -27,6 +28,17 @@
   not onboarded. Level-2 actions re-check without cache.
 - **Evidence:** [register](https://ccdexplorer.io/testnet/transaction/105b018650e557f75b1ebd940be2c2f5a2594b84ff2f80c8bd0558b24991bb65) ·
   [pin card](https://ccdexplorer.io/testnet/transaction/50eb19421df3173f9b2664f754d8d7a522b1d2aeaae594f53a91b2f583b72eba)
+
+### Agent-to-agent delegation (sub-agent #1558)
+- **Why:** real operations split work between agents; the customer must be able to check that a sub-agent only
+  got a narrower part of a mandate it can trace back to the provider, and stop either of them.
+- **How:** the sub-agent is registered like #1505 (CIS-8004, pinned card, CIS-8 key under the same owner). The lead
+  signs a delegation with its CIS-8-bound key; the gateway runs L1 on the sub-agent and checks the chain back to the
+  anchored root work order on every call (see [architecture.md](architecture.md#multi-level-delegation)).
+- **Evidence:** [register #1558](https://ccdexplorer.io/testnet/transaction/86a49947b09dba549991ada0c2151422d8b9139cf68a4296e4ac0434aa831533) ·
+  [pin card](https://ccdexplorer.io/testnet/transaction/d4b97fa8aa29ed4975d44d9e84aebeac7552017358df8233a1c7d767860b89da) ·
+  [CIS-8 key](https://ccdexplorer.io/testnet/transaction/37121d6358a0c7b5deecdc271c281fd868cedef96d2a1fe006232241b435251c) ·
+  root work order allowing delegation [26f9caa0…](https://ccdexplorer.io/testnet/transaction/26f9caa002c42d7ae0be2e82f9da6a8580bbb515edd19e0587e87c83c217d719)
 
 ### Verified by Concordium badge
 - **Why:** one public, checkable signal that the registry entry, card URL, card bytes and owner agree.
@@ -105,6 +117,7 @@ None of our own: MandateGate uses Concordium's deployed Agent Registry (`<12802,
 |---|---|
 | Agent #1505 registered | [105b0186…](https://ccdexplorer.io/testnet/transaction/105b018650e557f75b1ebd940be2c2f5a2594b84ff2f80c8bd0558b24991bb65) |
 | Agent Card pinned | [50eb1942…](https://ccdexplorer.io/testnet/transaction/50eb19421df3173f9b2664f754d8d7a522b1d2aeaae594f53a91b2f583b72eba) |
+| Sub-agent #1558 registered / card pinned / key bound | [86a49947…](https://ccdexplorer.io/testnet/transaction/86a49947b09dba549991ada0c2151422d8b9139cf68a4296e4ac0434aa831533) · [d4b97fa8…](https://ccdexplorer.io/testnet/transaction/d4b97fa8aa29ed4975d44d9e84aebeac7552017358df8233a1c7d767860b89da) · [37121d63…](https://ccdexplorer.io/testnet/transaction/37121d6358a0c7b5deecdc271c281fd868cedef96d2a1fe006232241b435251c) |
 | CIS-8 key binding | [d219aef8…](https://ccdexplorer.io/testnet/transaction/d219aef839d039136d67160d0053b83c90b7b86fb46c850f3f20fdbea39dd72a) |
 | Work order (sponsored) | [ffd8f75f…](https://ccdexplorer.io/testnet/transaction/ffd8f75ffddebc1719a0d551dc53e1053532b8572c8e74c1687b35b46bd19030) |
 | Work order revocation | [aa1cac7f…](https://ccdexplorer.io/testnet/transaction/aa1cac7f1a2eb1802faedfef223ad35be2c990dba284a978ab33516cbe2c4ab9) |

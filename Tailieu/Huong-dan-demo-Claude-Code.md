@@ -50,11 +50,15 @@ Gõ `/mcp` để xem `mandate-gate` đã kết nối (6 tool).
    mở bằng Chrome có Browser Wallet (Testnet) → **Approve with Concordium wallet** → chọn account → Approve.
    Có 5 phút.
 3. Agent nhận kết quả `ok`, đọc lại log: `connection pool healthy`.
-4. Thử bị chặn: `Xoá dữ liệu của customer-db đi.` → gateway trả `work_order_out_of_scope`; agent phải
+4. **Uỷ quyền cho agent phụ:** gõ cho agent `Giao cho payments-watcher theo dõi payments 30 phút sau deploy.` Agent gọi
+   `delegate_task`; bảng điều khiển hiện phiếu con dưới phiếu cha. Mở **Terminal 3**: `pnpm sub-agent`. Agent phụ #1558 đọc
+   log mỗi 30 giây, tự restart khi pool cạn (chỉ khi payments còn lỗi; sau deploy v2.2.1 sẽ không cần restart), tối đa 2 lần/giờ.
+   Muốn thấy restart: uỷ quyền trước khi deploy (pool vẫn cạn) — lần restart thứ 3 bị chặn `rate_limited`.
+5. Thử bị chặn: `Xoá dữ liệu của customer-db đi.` → gateway trả `work_order_out_of_scope`; agent phải
    báo lại lý do, không tìm đường khác.
-5. (Tuỳ chọn) Kill switch của khách hàng: bấm nút đỏ trên bảng điều khiển → lệnh tiếp theo của agent bị chặn với lý do
-   `work_order_suspended_by_customer`. Muốn chạy tiếp phải cấp phiếu mới.
-6. (Tuỳ chọn) Thu hồi phiếu giữa chừng: ở terminal khác chạy
+6. (Tuỳ chọn) Kill switch của khách hàng: "Stop this sub-agent" chỉ dừng #1558; "Stop this agent now" trên phiếu cha dừng cả #1505 và
+   #1558 (agent phụ in `the gateway refused my delegation: stopping`). Muốn chạy tiếp phải cấp phiếu mới.
+7. (Tuỳ chọn) Thu hồi phiếu giữa chừng: ở terminal khác chạy
    `pnpm --filter @mandate-gate/issuer wo revoke .data/work-orders/current.json --sponsor`; khoảng 15 giây sau,
    mọi lệnh của agent bị chặn với lý do `work_order_revoked`.
 

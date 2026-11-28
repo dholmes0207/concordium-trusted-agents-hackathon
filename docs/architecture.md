@@ -10,6 +10,7 @@ B's side against Concordium before anything runs.
 |---|---|---|---|
 | Agent | any MCP client: Claude Code today (`demo/claude-agent`), HolmesGPT next | Company A | Investigates and decides; sees only the six tools, never a key |
 | agent-proxy | `packages/agent-proxy` | Company A | Stdio MCP server for the agent. Holds the agent's EVM key (bound to agent #1505 with CIS-8) and signs every call; carries the work order; pays x402 requirements from the agent wallet within budget |
+| Sub-agent "Payments Watcher" | `packages/agent-proxy/src/watcher.ts` (`pnpm sub-agent`) | Company A | Agent #1558: watches one service under a delegation signed by #1505; reads logs and status, restarts within the delegated limit |
 | Issuer CLI | `packages/issuer` | Company A | Builds, anchors and revokes work orders (`MGATE-WO` / `MGATE-WOREV`) |
 | MandateGate gateway | `packages/gateway` | Customer B | Streamable-HTTP MCP server and decision pipeline (L1–L4 + x402), approval pages, x402 facilitator, audit log and anchors |
 | Customer infrastructure | `infra/kind` + `packages/k8s-ops` (`packages/mock-ops` in tests) | Customer B | A real Kubernetes cluster (kind) with payments, billing and customer-db; the ops API behind the gateway drives it with kubectl |
@@ -68,6 +69,23 @@ the next audit anchor (before the next level-2 action, every 5 minutes, and at s
 | 9 | Allow decision written, then anchored (level 2) | `audit_anchor_failed` |
 | 10 | Execute, record the outcome | |
 
+## Multi-level delegation
+
+The lead agent can hand a narrower part of its work order to another registered agent of company A
+(`delegate_task` tool). The delegation is signed with the lead's CIS-8-bound key and carries a link to its
+parent; nothing new is anchored, because the chain hangs off the anchored root work order and every link is
+recorded in the audit log (and so in the L4 anchors).
+
+```text
+company A ──work order (anchored, delegation.maxDepth=1)──▶ agent #1505 ──delegation (signed by #1505)──▶ agent #1558
+```
+
+The gateway checks the whole chain on every call by the sub-agent: root anchored and not revoked; each link
+signed by the agent that holds its parent; each link only narrows (actions, resources including wildcards,
+approval, rate limit, time, x402 budget) and the chain is no deeper than the root allows; no link revoked on
+chain (`MGATE-WOREV`) or stopped by the customer; the sub-agent itself passes L1. Payments by a sub-agent count
+against every link's budget. Revoking or stopping a link stops everything below it, not above it.
+
 ## Trust model
 
 **On chain (Concordium testnet):** agent identity and its Agent Card hash (CIS-8004), the binding of
@@ -80,7 +98,7 @@ are business data), the audit records (may contain operational details; the hash
 make them tamper evident), and the engineer's identity (the proof reveals only an account credential
 id and the issuer; a work order can commit to the approver with a salted hash instead of naming them).
 
-**Threats covered, with tests** (`packages/gateway/test/*.ts`, 49 tests in total with `packages/core`):
+**Threats covered, with tests** (`packages/gateway/test/*.ts`, 58 tests in total with `packages/core`):
 
 | Threat | Defence |
 |---|---|
@@ -88,6 +106,9 @@ id and the issuer; a work order can commit to the approver with a salted hash in
 | Replayed or altered request | Signed envelope with short validity, request-id ledger, params hash |
 | Agent acts outside its mandate | Work-order scope per action and resource, expiry, rate limit |
 | Mandate withdrawn | Revocation anchor followed block by block; about 15 s after finality in live tests |
+| A sub-agent receives more than its delegator holds | Attenuation check per link (`delegation_scope_wider_than_parent`, `…_outlives_parent`, `…_budget_exceeds_parent`, `…_too_deep`) |
+| Forged or altered delegation | Signature by the delegator's CIS-8-bound key over the delegation hash (`delegation_bad_signature`, `delegation_wrong_delegator`) |
+| Delegated agent misbehaves | Its link can be revoked or stopped alone; stopping the parent stops it too; its spending counts against the parent's budget |
 | Customer wants it stopped now | Kill switch on the dashboard: work order suspended at the gateway immediately, recorded and anchored |
 | Gateway cannot see the chain | Chain view older than 60 s → every request denied |
 | Approval reused for another action | ResourceID = digest of audience, agent, work order, request, action, resource, params, nonce, expiry; bound into the VRA anchor (spike S3a) |

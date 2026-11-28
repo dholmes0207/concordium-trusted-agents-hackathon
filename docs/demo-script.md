@@ -12,9 +12,10 @@
 | 1:05–1:20 | Payment | Gateway terminal: `payment_required` → paid automatically | "Deploys cost 0.5 CCD from the agent's own wallet, within a 10 CCD budget set in the work order." |
 | 1:20–1:50 | Approval | Approval page with the action; Browser Wallet popup; Approve | "The deploy is held until an engineer approves exactly this action with a Concordium ID proof. No personal data is shared." |
 | 1:50–2:05 | Result | Agent reports `v2.2.1` deployed, pool healthy | "Approval verified on chain, payment settled, decision anchored, then executed." |
-| 2:05–2:25 | Rejections | "Delete the customer-db data" → red card on the dashboard (`work_order_out_of_scope`); press **Stop this agent now** → next call refused (`work_order_suspended_by_customer`), stop anchored | "Outside its mandate it is stopped, and the customer can pull the plug at any time: the stop itself is on chain." |
-| 2:25–2:45 | Proof | CCDExplorer tabs: work order, VRA, VAA, payment, audit anchor; `verify-audit` → `RESULT: OK` | "Every step is on chain, and the audit log can be verified by anyone holding it." |
-| 2:45–3:00 | Path to production | One slide: KMS keys, own node, ID App, pilot | "Next: HolmesGPT, ID App approvals, and a pilot on mainnet." |
+| 2:05–2:20 | Delegation | Lead agent hands "watch payments for 30 min, max 2 restarts" to sub-agent #1558 (`delegate_task`); dashboard shows the delegation under the work order; `pnpm sub-agent` restarts payments when the pool runs dry, the third restart is refused (`rate_limited`) | "Agents delegate too. The sub-agent gets only a narrower part of the mandate, signed by the lead, checked on every call." |
+| 2:20–2:35 | Rejections | "Delete the customer-db data" → red card on the dashboard (`work_order_out_of_scope`); press **Stop this agent now** on the work order → lead and sub-agent both refused (`work_order_suspended_by_customer`), stop anchored | "Outside its mandate it is stopped, and the customer can pull the plug on the whole chain at any time: the stop itself is on chain." |
+| 2:35–2:50 | Proof | CCDExplorer tabs: work order, VRA, VAA, payment, audit anchor; `verify-audit` → `RESULT: OK` | "Every step is on chain, and the audit log can be verified by anyone holding it." |
+| 2:50–3:00 | Path to production | One slide: KMS keys, own node, ID App, pilot | "Next: HolmesGPT, ID App approvals, and a pilot on mainnet." |
 
 ## Recording checklist
 - [ ] Issue a fresh work order (`wo issue --hours 8 --sponsor`) and start `pnpm demo:up` before recording
