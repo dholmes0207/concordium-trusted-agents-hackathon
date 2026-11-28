@@ -2,6 +2,22 @@
 
 > Ghi chú ngắn để tiếp tục công việc ở phiên sau. **Bản mới nhất: `Tong-hop-sau-W6.md` (v5, 20/11)**; chi tiết thiết kế L1–L4 vẫn ở `Tong-hop-sau-W4.md`.
 
+## 0n. ✅ #6 Uỷ quyền nhiều tầng (28/11, đêm) — D1–D7 xong, D8 (demo live với bạn) còn lại
+
+- Core `delegation.ts`: phiếu con ký bằng khoá CIS-8 của agent giao (`MGATE/v1/delegation`), quy tắc chỉ được thu hẹp
+  (hành động, service kể cả wildcard, duyệt, tần suất, thời gian, ngân sách x402, độ sâu theo `delegation.maxDepth` của phiếu gốc).
+- Gateway kiểm cả chuỗi mỗi lệnh; thu hồi / kill switch dây chuyền xuống dưới; tiền agent phụ tiêu trừ vào mọi tầng; audit ghi
+  `delegationChain`; bảng điều khiển hiện phiếu con dưới phiếu cha, có nút "Stop this sub-agent". 58 test.
+- Agent phụ **#1558 "MandateGate Payments Watcher"**: đăng ký `86a49947…1533`, ghim card `d4b97fa8…89da`, khoá CIS-8
+  `37121d63…251c` (khoá `~/ccd-keys/agent-watcher-evm.json`, địa chỉ `0x7bd7…470C`); kiểm L1 `ok: true`.
+  Card `agent-card/mandate-gate-payments-watcher.json` đã ghim: **không sửa**.
+- Proxy có tool `delegate_task` (danh sách agent phụ: `demo/claude-agent/sub-agents.json`); `pnpm sub-agent` chạy watcher.
+- Phiếu cha mới cho phép uỷ quyền: `wo_20261128_280b46` (hash `9a66234f…`, neo `26f9caa0…d719`, 8 giờ). Issuer mặc định `--delegation-depth 1`.
+- Chạy thử live (không ví): #1505 uỷ quyền qua tool → watcher restart 2 lần khi pool cạn, lần 3 bị chặn `rate_limited`;
+  10 lệnh của #1558 ghi đủ chuỗi, neo đến seq 121.
+- **Còn lại (D8, cần bạn):** demo đầy đủ với Claude Code: deploy (duyệt ví) → bảo agent giao việc theo dõi → `pnpm sub-agent`
+  → thử "Stop this agent now" trên phiếu cha để thấy cả hai dừng.
+
 ## 0m. ✅ Demo đầy đủ trên Kubernetes thật + bảng điều khiển (28/11, 22:14–22:18 giờ VN)
 
 Claude Code đọc status/log thật từ cụm kind (pool 20/20, p99 5000 ms) → `deploy_prod` v2.2.1 → seq 78 `payment_required` →
